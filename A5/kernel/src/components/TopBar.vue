@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useTranslation } from '../composables/useTranslation'
+import { useI18n } from 'vue-i18n'
 import { USERS } from '../constants/constants'
 
-const { t } = useTranslation()
+const { t } = useI18n()
 const showUserMenu = ref(false)
 const selectedUser = ref<typeof USERS[number]>(USERS[0])
 
@@ -57,7 +57,7 @@ const logout = () => {
         </button>
         <div 
           v-if="showUserMenu" 
-          class="absolute top-[calc(100%+0.5vh)] right-0 bg-white border border-gray-300 rounded-lg shadow-lg min-w-[200px] z-[1000] overflow-hidden"
+          class="absolute top-[calc(100%+0.5vh)] right-0 bg-white border border-gray-300 rounded-lg shadow-lg min-w-50 z-50 overflow-hidden"
         >
           <!-- User Cards -->
           <div class="py-1">
@@ -68,7 +68,7 @@ const logout = () => {
               :class="{ 'bg-gray-100': selectedUser.id === user.id }"
               @click="selectUser(user)"
             >
-              <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 flex-shrink-0">
+              <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 shrink-0">
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
                 </svg>

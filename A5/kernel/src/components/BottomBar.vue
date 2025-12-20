@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { useTranslation } from '../composables/useTranslation'
+import { useI18n } from 'vue-i18n'
 import { TABS } from '../constants/constants'
 
-const { t } = useTranslation()
+const { t } = useI18n()
 const router = useRouter()
 const route = useRoute()
 
@@ -35,7 +35,7 @@ const setActiveTab = (tabId: string) => {
       >
         <span 
           v-if="activeTab === tab.id"
-          class="absolute top-0 left-0 right-0 h-[3px] bg-gray-900 rounded-b"
+          class="absolute top-0 left-0 right-0 h-0.75 bg-gray-900 rounded-b"
         />
         {{ tab.label }}
       </button>
