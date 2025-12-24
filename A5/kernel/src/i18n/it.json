@@ -2,6 +2,10 @@
   "app": {
     "title": "Nucleo"
   },
+  "login": {
+    "subtitle": "Chi sta usando l'app?",
+    "addProfile": "Aggiungi"
+  },
   "topbar": {
     "notifications": "Notifiche",
     "user": "Main User"
