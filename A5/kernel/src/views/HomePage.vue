@@ -162,10 +162,27 @@ const handleAppointmentClick = (id: string) => {
 
 .section-card {
   padding: 1.25rem;
+  animation: slideInDown 0.5s cubic-bezier(0, 0, 0.2, 1);
+  animation-fill-mode: both;
+}
+
+.section-card:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.section-card:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.section-card:nth-child(4) {
+  animation-delay: 0.3s;
 }
 
 .quick-actions {
   margin: 1rem;
+  animation: fadeIn 0.5s cubic-bezier(0, 0, 0.2, 1);
+  animation-delay: 0.1s;
+  animation-fill-mode: both;
 }
 
 .widget-column {
@@ -175,6 +192,9 @@ const handleAppointmentClick = (id: string) => {
 .widget-card {
   position: sticky;
   margin-top: 1.65rem;
+  animation: fadeIn 0.5s cubic-bezier(0, 0, 0.2, 1);
+  animation-delay: 0.2s;
+  animation-fill-mode: both;
 }
 
 .font-hand {
@@ -194,6 +214,26 @@ const handleAppointmentClick = (id: string) => {
 
   .widget-card {
     position: static;
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 
