@@ -169,9 +169,9 @@ const handleBackdropClick = (event: MouseEvent) => {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(224, 242, 254, 0.3) 0%, rgba(221, 214, 254, 0.3) 50%, rgba(252, 231, 243, 0.3) 100%);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  background: linear-gradient(135deg, rgba(224, 242, 254, 0.30) 0%, rgba(221, 214, 254, 0.30) 50%, rgba(252, 231, 243, 0.30) 100%);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   display: flex;
   align-items: center;
   justify-content: center;
