@@ -1,5 +1,6 @@
 import type { Document } from '../components/DocumentCard.vue'
 import type { Appointment } from '../components/AppointmentCard.vue'
+import type { HealthParameter, HealthAlert, HealthMetricHistory } from '../types/health'
 
 // Documenti centralizzati
 export const MOCK_DOCUMENTS: Document[] = [
@@ -150,3 +151,189 @@ export const getRecentDocuments = (count: number = 3): Document[] => {
 export const getUpcomingAppointments = (count: number = 3): Appointment[] => {
   return MOCK_APPOINTMENTS.slice(0, count)
 }
+
+export const HEALTH_PARAMETERS: HealthParameter[] = [
+  {
+    id: 'cholesterol',
+    name: 'Colesterolo',
+    value: 185,
+    unit: 'mg/dL',
+    normalRange: { min: 120, max: 200 },
+    trend: 'up',
+  },
+  {
+    id: 'blood-pressure-sys',
+    name: 'Pressione sistolica',
+    value: 120,
+    unit: 'mmHg',
+    normalRange: { min: 90, max: 120 },
+    trend: 'stable',
+  },
+  {
+    id: 'blood-pressure-dia',
+    name: 'Pressione diastolica',
+    value: 80,
+    unit: 'mmHg',
+    normalRange: { min: 60, max: 80 },
+    trend: 'stable',
+  },
+  {
+    id: 'heart-rate',
+    name: 'Frequenza cardiaca',
+    value: 72,
+    unit: 'bpm',
+    normalRange: { min: 60, max: 100 },
+    trend: 'down',
+  },
+  {
+    id: 'glucose',
+    name: 'Glicemia',
+    value: 105,
+    unit: 'mg/dL',
+    normalRange: { min: 70, max: 100 },
+    trend: 'up',
+  },
+  {
+    id: 'oxygen',
+    name: 'Saturazione O₂',
+    value: 98,
+    unit: '%',
+    normalRange: { min: 95, max: 100 },
+    trend: 'stable',
+  }
+]
+
+export const HEALTH_ALERTS: HealthAlert[] = [
+  {
+    id: 'alert-1',
+    parameterId: 'glucose',
+    parameterName: 'Glicemia leggermente elevata',
+    severity: 'warning',
+    message: 'Il tuo livello di glicemia è di 105 mg/dL, leggermente sopra il range ottimale.',
+    recommendation: 'Riduci il consumo di zuccheri e carboidrati raffinati. Aumenta l\'attività fisica.',
+  },
+]
+
+// Storico parametri per grafici
+export const CHOLESTEROL_HISTORY: HealthMetricHistory = {
+  parameterId: 'cholesterol',
+  data: [
+    { date: '1 Nov', value: 165 },
+    { date: '8 Nov', value: 170 },
+    { date: '15 Nov', value: 175 },
+    { date: '22 Nov', value: 180 },
+    { date: '29 Nov', value: 178 },
+    { date: '6 Dic', value: 185 },
+  ],
+}
+
+export const BLOOD_PRESSURE_SYS_HISTORY: HealthMetricHistory = {
+  parameterId: 'blood-pressure-sys',
+  data: [
+    { date: '1 Nov', value: 118 },
+    { date: '8 Nov', value: 120 },
+    { date: '15 Nov', value: 122 },
+    { date: '22 Nov', value: 119 },
+    { date: '29 Nov', value: 121 },
+    { date: '6 Dic', value: 120 },
+  ],
+}
+
+export const HEART_RATE_HISTORY: HealthMetricHistory = {
+  parameterId: 'heart-rate',
+  data: [
+    { date: '1 Nov', value: 78 },
+    { date: '8 Nov', value: 76 },
+    { date: '15 Nov', value: 75 },
+    { date: '22 Nov', value: 74 },
+    { date: '29 Nov', value: 73 },
+    { date: '6 Dic', value: 72 },
+  ],
+}
+
+export const GLUCOSE_HISTORY: HealthMetricHistory = {
+  parameterId: 'glucose',
+  data: [
+    { date: '1 Nov', value: 92 },
+    { date: '8 Nov', value: 95 },
+    { date: '15 Nov', value: 98 },
+    { date: '22 Nov', value: 102 },
+    { date: '29 Nov', value: 103 },
+    { date: '6 Dic', value: 105 },
+  ],
+}
+
+export const WEIGHT_HISTORY: HealthMetricHistory = {
+  parameterId: 'weight',
+  data: [
+    { date: '1 Nov', value: 73.2 },
+    { date: '8 Nov', value: 72.8 },
+    { date: '15 Nov', value: 72.5 },
+    { date: '22 Nov', value: 72.7 },
+    { date: '29 Nov', value: 72.3 },
+    { date: '6 Dic', value: 72.5 },
+  ],
+}
+
+export const BLOOD_PRESSURE_DIA_HISTORY: HealthMetricHistory = {
+  parameterId: 'blood-pressure-dia',
+  data: [
+    { date: '1 Nov', value: 78 },
+    { date: '8 Nov', value: 79 },
+    { date: '15 Nov', value: 81 },
+    { date: '22 Nov', value: 79 },
+    { date: '29 Nov', value: 80 },
+    { date: '6 Dic', value: 80 },
+  ],
+}
+
+// Helper per ottenere un parametro specifico
+export const getHealthParameter = (id: string): HealthParameter | undefined => {
+  return HEALTH_PARAMETERS.find(p => p.id === id)
+}
+
+// Helper per ottenere lo storico di un parametro
+export const getHealthHistory = (id: string): HealthMetricHistory | undefined => {
+  const histories: Record<string, HealthMetricHistory> = {
+    'cholesterol': CHOLESTEROL_HISTORY,
+    'blood-pressure-sys': BLOOD_PRESSURE_SYS_HISTORY,
+    'blood-pressure-dia': BLOOD_PRESSURE_DIA_HISTORY,
+    'heart-rate': HEART_RATE_HISTORY,
+    'glucose': GLUCOSE_HISTORY,
+    'weight': WEIGHT_HISTORY,
+  }
+  return histories[id]
+}
+
+// Dati widget aggiuntivi
+export const WIDGET_DATA = {
+  nextMedicationReminder: {
+    medication: 'Vitamina D',
+    time: '20:00',
+    daysLeft: 0, // oggi
+  },
+  dailySteps: {
+    current: 8234,
+    goal: 10000,
+  },
+  sleepHours: {
+    lastNight: 7.5,
+    average: 7.2,
+    goal: 8,
+  },
+  waterIntake: {
+    glasses: 6,
+    goal: 8,
+  },
+  nextVaccine: {
+    name: 'Antinfluenzale',
+    date: '15 Gen 2025',
+    daysLeft: 16,
+  },
+  mood: {
+    current: 'good', // good, neutral, bad
+    label: 'Buono',
+    emoji: '😊',
+  },
+}
+

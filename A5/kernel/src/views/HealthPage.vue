@@ -1,122 +1,23 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import HealthAlert from '../components/HealthAlert.vue';
-import HealthMetricWidget from '../components/HealthMetricWidget.vue';
-import HealthChart from '../components/HealthChart.vue';
-import type { HealthParameter, HealthAlert as HealthAlertType, HealthMetricHistory } from '../types/health';
+import { ref } from 'vue'
+import HealthAlert from '../components/HealthAlert.vue'
+import HealthMetricWidget from '../components/HealthMetricWidget.vue'
+import HealthChart from '../components/HealthChart.vue'
+import { 
+  HEALTH_PARAMETERS, 
+  HEALTH_ALERTS,
+  CHOLESTEROL_HISTORY,
+  BLOOD_PRESSURE_SYS_HISTORY,
+  HEART_RATE_HISTORY,
+  GLUCOSE_HISTORY
+} from '../constants/mockData'
 
-// Mock data for health parameters
-const healthParameters = ref<HealthParameter[]>([
-  {
-    id: 'cholesterol',
-    name: 'Colesterolo',
-    value: 185,
-    unit: 'mg/dL',
-    normalRange: { min: 120, max: 200 },
-    trend: 'up',
-  },
-  {
-    id: 'blood-pressure-sys',
-    name: 'Pressione sistolica',
-    value: 120,
-    unit: 'mmHg',
-    normalRange: { min: 90, max: 120 },
-    trend: 'stable',
-  },
-  {
-    id: 'blood-pressure-dia',
-    name: 'Pressione diastolica',
-    value: 80,
-    unit: 'mmHg',
-    normalRange: { min: 60, max: 80 },
-    trend: 'stable',
-  },
-  {
-    id: 'heart-rate',
-    name: 'Frequenza cardiaca',
-    value: 72,
-    unit: 'bpm',
-    normalRange: { min: 60, max: 100 },
-    trend: 'down',
-  },
-  {
-    id: 'glucose',
-    name: 'Glicemia',
-    value: 105,
-    unit: 'mg/dL',
-    normalRange: { min: 70, max: 100 },
-    trend: 'up',
-  },
-  {
-    id: 'oxygen',
-    name: 'Saturazione O₂',
-    value: 98,
-    unit: '%',
-    normalRange: { min: 95, max: 100 },
-    trend: 'stable',
-  },
-]);
-
-// Mock data for alerts
-const alerts = ref<HealthAlertType[]>([
-  {
-    id: 'alert-1',
-    parameterId: 'glucose',
-    parameterName: 'Glicemia leggermente elevata',
-    severity: 'warning',
-    message: 'Il tuo livello di glicemia è di 105 mg/dL, leggermente sopra il range ottimale.',
-    recommendation: 'Riduci il consumo di zuccheri e carboidrati raffinati. Aumenta l\'attività fisica.',
-  },
-]);
-
-// Mock data for chart history
-const cholesterolHistory = ref<HealthMetricHistory>({
-  parameterId: 'cholesterol',
-  data: [
-    { date: '1 Nov', value: 165 },
-    { date: '8 Nov', value: 170 },
-    { date: '15 Nov', value: 175 },
-    { date: '22 Nov', value: 180 },
-    { date: '29 Nov', value: 178 },
-    { date: '6 Dic', value: 185 },
-  ],
-});
-
-const bloodPressureSysHistory = ref<HealthMetricHistory>({
-  parameterId: 'blood-pressure-sys',
-  data: [
-    { date: '1 Nov', value: 118 },
-    { date: '8 Nov', value: 120 },
-    { date: '15 Nov', value: 122 },
-    { date: '22 Nov', value: 119 },
-    { date: '29 Nov', value: 121 },
-    { date: '6 Dic', value: 120 },
-  ],
-});
-
-const heartRateHistory = ref<HealthMetricHistory>({
-  parameterId: 'heart-rate',
-  data: [
-    { date: '1 Nov', value: 78 },
-    { date: '8 Nov', value: 76 },
-    { date: '15 Nov', value: 75 },
-    { date: '22 Nov', value: 74 },
-    { date: '29 Nov', value: 73 },
-    { date: '6 Dic', value: 72 },
-  ],
-});
-
-const glucoseHistory = ref<HealthMetricHistory>({
-  parameterId: 'glucose',
-  data: [
-    { date: '1 Nov', value: 92 },
-    { date: '8 Nov', value: 95 },
-    { date: '15 Nov', value: 98 },
-    { date: '22 Nov', value: 102 },
-    { date: '29 Nov', value: 103 },
-    { date: '6 Dic', value: 105 },
-  ],
-});
+const healthParameters = ref(HEALTH_PARAMETERS)
+const alerts = ref(HEALTH_ALERTS)
+const cholesterolHistory = ref(CHOLESTEROL_HISTORY)
+const bloodPressureSysHistory = ref(BLOOD_PRESSURE_SYS_HISTORY)
+const heartRateHistory = ref(HEART_RATE_HISTORY)
+const glucoseHistory = ref(GLUCOSE_HISTORY)
 </script>
 
 <template>
