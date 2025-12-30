@@ -128,5 +128,95 @@
     "footer": {
       "version": "Nucleo v0.1 · Prototipo"
     }
+  },
+  "widgets": {
+    "selector": {
+      "title": "Personalizza i tuoi widget",
+      "subtitle": "Selezionati: {count} / {total}",
+      "close": "Chiudi",
+      "cancel": "Annulla",
+      "save": "Salva",
+      "selected": "Selezionato",
+      "select": "Seleziona"
+    },
+    "categories": {
+      "quick": "Widget rapidi",
+      "healthMetric": "Parametri vitali",
+      "healthChart": "Grafici andamento"
+    },
+    "items": {
+      "nextVisit": {
+        "name": "Prossima visita",
+        "description": "Giorni alla prossima visita medica"
+      },
+      "newDocs": {
+        "name": "Documenti nuovi",
+        "description": "Numero di documenti aggiunti recentemente"
+      },
+      "medicationReminder": {
+        "name": "Promemoria farmaci",
+        "description": "Prossimo farmaco da assumere oggi"
+      },
+      "nextVaccine": {
+        "name": "Prossimo vaccino",
+        "description": "Giorni al prossimo richiamo vaccinale"
+      },
+      "heartRate": {
+        "name": "Frequenza cardiaca",
+        "description": "Battiti cardiaci al minuto"
+      },
+      "bloodPressureSys": {
+        "name": "Pressione sistolica",
+        "description": "Pressione arteriosa massima"
+      },
+      "bloodPressureDia": {
+        "name": "Pressione diastolica",
+        "description": "Pressione arteriosa minima"
+      },
+      "glucose": {
+        "name": "Glicemia",
+        "description": "Livello di glucosio nel sangue"
+      },
+      "oxygen": {
+        "name": "Saturazione O₂",
+        "description": "Percentuale ossigeno nel sangue"
+      },
+      "cholesterol": {
+        "name": "Colesterolo",
+        "description": "Livello colesterolo totale"
+      },
+      "heartRateChart": {
+        "name": "Grafico frequenza cardiaca",
+        "description": "Andamento battito cardiaco ultimi 6 giorni"
+      },
+      "glucoseChart": {
+        "name": "Grafico glicemia",
+        "description": "Andamento livello glucosio"
+      },
+      "bloodPressureSysChart": {
+        "name": "Grafico pressione sistolica",
+        "description": "Trend pressione massima"
+      },
+      "cholesterolChart": {
+        "name": "Grafico colesterolo",
+        "description": "Trend colesterolo totale"
+      }
+    },
+    "emptyState": {
+      "title": "Nessun widget selezionato",
+      "description": "Clicca sul pulsante + per aggiungere widget alla tua dashboard",
+      "addButton": "Aggiungi widget"
+    }
+  },
+  "health": {
+    "parameters": {
+      "cholesterol": "Colesterolo",
+      "bloodPressureSys": "Pressione sistolica",
+      "bloodPressureDia": "Pressione diastolica",
+      "heartRate": "Frequenza cardiaca",
+      "glucose": "Glicemia",
+      "oxygen": "Saturazione O₂"
+    },
+    "normalRange": "Range normale"
   }
 }

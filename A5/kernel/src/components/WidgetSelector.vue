@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
 
 export interface WidgetOption {
@@ -16,6 +17,7 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+const { t } = useI18n()
 
 const emit = defineEmits<{
   close: []
@@ -56,10 +58,13 @@ const categorizedWidgets = computed(() => {
   return categories
 })
 
-const categoryNames = {
-  quick: 'Widget rapidi',
-  'health-metric': 'Parametri vitali',
-  'health-chart': 'Grafici andamento'
+const getCategoryName = (category: string) => {
+  const categoryMap: Record<string, string> = {
+    'quick': t('widgets.categories.quick'),
+    'health-metric': t('widgets.categories.healthMetric'),
+    'health-chart': t('widgets.categories.healthChart')
+  }
+  return categoryMap[category] || category
 }
 </script>
 
@@ -69,13 +74,13 @@ const categoryNames = {
       <div class="modal-container">
         <div class="modal-header">
           <div>
-            <h2 class="modal-title">Personalizza i tuoi widget</h2>
-            <p class="modal-subtitle">Selezionati: {{ localSelection.length }} / {{ availableWidgets.length }}</p>
+            <h2 class="modal-title">{{ $t('widgets.selector.title') }}</h2>
+            <p class="modal-subtitle">{{ $t('widgets.selector.subtitle', { count: localSelection.length, total: availableWidgets.length }) }}</p>
           </div>
           <button 
             class="close-button"
             @click="emit('close')"
-            aria-label="Chiudi"
+            :aria-label="$t('widgets.selector.close')"
           >
             <XMarkIcon class="w-6 h-6" />
           </button>
@@ -87,7 +92,7 @@ const categoryNames = {
             :key="category"
             class="category-section"
           >
-            <h3 class="category-title">{{ categoryNames[category as keyof typeof categoryNames] }}</h3>
+            <h3 class="category-title">{{ getCategoryName(category as string) }}</h3>
             <div class="widget-grid">
               <div
                 v-for="widget in widgets"
@@ -110,7 +115,7 @@ const categoryNames = {
                         <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                       </svg>
                     </div>
-                    <span class="checkbox-label">{{ isSelected(widget.id) ? 'Selezionato' : 'Seleziona' }}</span>
+                    <span class="checkbox-label">{{ isSelected(widget.id) ? $t('widgets.selector.selected') : $t('widgets.selector.select') }}</span>
                   </div>
                 </div>
               </div>
@@ -120,10 +125,10 @@ const categoryNames = {
 
         <div class="modal-footer">
           <button class="button button-secondary" @click="emit('close')">
-            Annulla
+            {{ $t('widgets.selector.cancel') }}
           </button>
           <button class="button button-primary" @click="handleSave">
-            Salva modifiche
+            {{ $t('widgets.selector.save') }}
           </button>
         </div>
       </div>

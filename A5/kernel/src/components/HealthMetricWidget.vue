@@ -45,7 +45,7 @@ const trendColor = computed(() => {
       <span class="text-gray-600 text-sm ml-2">{{ parameter.unit }}</span>
     </div>
     <div class="text-xs text-gray-600">
-      Range normale: {{ parameter.normalRange.min }}-{{ parameter.normalRange.max }}
+      {{ $t('health.normalRange') }}: {{ parameter.normalRange.min }}-{{ parameter.normalRange.max }}
       {{ parameter.unit }}
     </div>
   </div>

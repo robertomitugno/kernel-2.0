@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { 
   CalendarIcon, 
   BellIcon,
@@ -14,37 +15,38 @@ import {
   WIDGET_DATA 
 } from '../constants/mockData'
 
+const { t } = useI18n()
 const isWidgetSelectorOpen = ref(false)
 const selectedWidgetIds = ref<string[]>([])
 
-// Widget disponibili (espansi con più opzioni creative)
-const availableWidgets = ref<WidgetOption[]>([
+// Widget disponibili (configurazione base, testi da i18n)
+const availableWidgets = computed<WidgetOption[]>(() => [
   // Widget rapidi
   {
     id: 'next-visit',
-    name: 'Prossima visita',
-    description: 'Giorni alla prossima visita medica',
+    name: t('widgets.items.nextVisit.name'),
+    description: t('widgets.items.nextVisit.description'),
     icon: '📅',
     category: 'quick',
   },
   {
     id: 'new-docs',
-    name: 'Documenti nuovi',
-    description: 'Numero di documenti aggiunti recentemente',
+    name: t('widgets.items.newDocs.name'),
+    description: t('widgets.items.newDocs.description'),
     icon: '🔔',
     category: 'quick',
   },
   {
     id: 'medication-reminder',
-    name: 'Promemoria farmaci',
-    description: 'Prossimo farmaco da assumere oggi',
+    name: t('widgets.items.medicationReminder.name'),
+    description: t('widgets.items.medicationReminder.description'),
     icon: '💊',
     category: 'quick',
   },
   {
     id: 'next-vaccine',
-    name: 'Prossimo vaccino',
-    description: 'Giorni al prossimo richiamo vaccinale',
+    name: t('widgets.items.nextVaccine.name'),
+    description: t('widgets.items.nextVaccine.description'),
     icon: '💉',
     category: 'quick',
   },
@@ -52,43 +54,43 @@ const availableWidgets = ref<WidgetOption[]>([
   // Parametri vitali
   {
     id: 'heart-rate',
-    name: 'Frequenza cardiaca',
-    description: 'Battiti cardiaci al minuto',
+    name: t('widgets.items.heartRate.name'),
+    description: t('widgets.items.heartRate.description'),
     icon: '❤️',
     category: 'health-metric',
   },
   {
     id: 'blood-pressure-sys',
-    name: 'Pressione sistolica',
-    description: 'Pressione arteriosa massima',
+    name: t('widgets.items.bloodPressureSys.name'),
+    description: t('widgets.items.bloodPressureSys.description'),
     icon: '🩺',
     category: 'health-metric',
   },
   {
     id: 'blood-pressure-dia',
-    name: 'Pressione diastolica',
-    description: 'Pressione arteriosa minima',
+    name: t('widgets.items.bloodPressureDia.name'),
+    description: t('widgets.items.bloodPressureDia.description'),
     icon: '💉',
     category: 'health-metric',
   },
   {
     id: 'glucose',
-    name: 'Glicemia',
-    description: 'Livello di glucosio nel sangue',
+    name: t('widgets.items.glucose.name'),
+    description: t('widgets.items.glucose.description'),
     icon: '🩸',
     category: 'health-metric',
   },
   {
     id: 'oxygen',
-    name: 'Saturazione O₂',
-    description: 'Percentuale ossigeno nel sangue',
+    name: t('widgets.items.oxygen.name'),
+    description: t('widgets.items.oxygen.description'),
     icon: '🫁',
     category: 'health-metric',
   },
   {
     id: 'cholesterol',
-    name: 'Colesterolo',
-    description: 'Livello colesterolo totale',
+    name: t('widgets.items.cholesterol.name'),
+    description: t('widgets.items.cholesterol.description'),
     icon: '🧪',
     category: 'health-metric',
   },
@@ -96,29 +98,29 @@ const availableWidgets = ref<WidgetOption[]>([
   // Grafici
   {
     id: 'heart-rate-chart',
-    name: 'Grafico frequenza cardiaca',
-    description: 'Andamento battito cardiaco ultimi 6 giorni',
+    name: t('widgets.items.heartRateChart.name'),
+    description: t('widgets.items.heartRateChart.description'),
     icon: '📊',
     category: 'health-chart',
   },
   {
     id: 'glucose-chart',
-    name: 'Grafico glicemia',
-    description: 'Andamento livello glucosio',
+    name: t('widgets.items.glucoseChart.name'),
+    description: t('widgets.items.glucoseChart.description'),
     icon: '📈',
     category: 'health-chart',
   },
   {
     id: 'blood-pressure-sys-chart',
-    name: 'Grafico pressione sistolica',
-    description: 'Trend pressione massima',
+    name: t('widgets.items.bloodPressureSysChart.name'),
+    description: t('widgets.items.bloodPressureSysChart.description'),
     icon: '📉',
     category: 'health-chart',
   },
   {
     id: 'cholesterol-chart',
-    name: 'Grafico colesterolo',
-    description: 'Trend colesterolo totale',
+    name: t('widgets.items.cholesterolChart.name'),
+    description: t('widgets.items.cholesterolChart.description'),
     icon: '📈',
     category: 'health-chart',
   },
@@ -173,7 +175,7 @@ onMounted(() => {
       <button 
         class="icon-button" 
         type="button" 
-        aria-label="Aggiungi widget"
+        :aria-label="$t('widgets.emptyState.addButton')"
         @click="isWidgetSelectorOpen = true"
       >
         <PlusIcon class="w-5 h-5" />
@@ -182,14 +184,17 @@ onMounted(() => {
 
     <div v-if="activeWidgets.length === 0" class="empty-state">
       <p class="text-sm text-gray-500 text-center">
-        Nessun widget selezionato
+        {{ $t('widgets.emptyState.title') }}
+      </p>
+      <p class="text-xs text-gray-400 text-center">
+        {{ $t('widgets.emptyState.description') }}
       </p>
       <button 
         class="add-widget-btn"
         @click="isWidgetSelectorOpen = true"
       >
         <PlusIcon class="w-4 h-4" />
-        Aggiungi widget
+        {{ $t('widgets.emptyState.addButton') }}
       </button>
     </div>
 

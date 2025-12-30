@@ -285,12 +285,11 @@ export const WIDGET_DATA = {
     medication: 'Vitamina D',
     time: '20:00',
     daysLeft: 0, // oggi
-
+  },
   nextVaccine: {
     name: 'Antinfluenzale',
     date: '15 Gen 2025',
     daysLeft: 16,
   },
-}
 }
 
