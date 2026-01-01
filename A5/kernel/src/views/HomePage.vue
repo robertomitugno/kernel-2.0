@@ -5,11 +5,13 @@ import QuickActions from '../components/QuickActions.vue'
 import UpcomingAppointments from '../components/UpcomingAppointments.vue'
 import DocumentCard from '../components/DocumentCard.vue'
 import WidgetPanel from '../components/WidgetPanel.vue'
+import AppointmentBooking from '../components/AppointmentBooking.vue'
 import { getRecentDocuments, getUpcomingAppointments } from '../constants/mockData'
 
 const searchQuery = ref('')
 const appointments = computed(() => getUpcomingAppointments(2))
 const recentDocuments = computed(() => getRecentDocuments(2))
+const isBookingOpen = ref(false)
 
 const handleSearch = (query: string) => {
   searchQuery.value = query
@@ -20,10 +22,15 @@ const handleUpload = () => {
 }
 
 const handleNewAppointment = () => {
-  console.log('Create new appointment')
+  isBookingOpen.value = true
 }
+
 const handleAppointmentClick = (id: string) => {
   console.log('Appointment clicked:', id)
+}
+
+const handleBookingConfirm = (appointment: any) => {
+  console.log('Appointment booked:', appointment)
 }
 </script>
 
@@ -71,6 +78,13 @@ const handleAppointmentClick = (id: string) => {
         </div>
       </div>
     </div>
+
+    <!-- Appointment Booking Modal -->
+    <AppointmentBooking
+      :is-open="isBookingOpen"
+      @close="isBookingOpen = false"
+      @confirm="handleBookingConfirm"
+    />
   </div>
 </template>
 

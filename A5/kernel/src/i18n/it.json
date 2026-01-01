@@ -63,6 +63,36 @@
     "searchHint": "Prova: \"esami del sangue di Marco\" o \"quando ho fatto l'ultima visita?\"",
     "quickOverview": "I miei widget"
   },
+  "appointmentBooking": {
+    "title": "Prenota una visita",
+    "searchPlaceholder": "Cerca tipo di visita...",
+    "selectVisit": "Selezionare prima il tipo di visita",
+    "loadingAvailability": "Ricerca disponibilità...",
+    "selectDateTime": "Seleziona data e orario",
+    "selectDate": "Selezionare prima una data",
+    "selectTime": "Seleziona un orario",
+    "customDateLabel": "Cerca disponibilità da una data specifica:",
+    "confirm": "Conferma prenotazione",
+    "cancel": "Annulla",
+    "loadMoreDates": "Visualizza date successive",
+    "loadPreviousDates": "Visualizza date precedenti",
+    "visitTypes": {
+      "cardiology": "Visita cardiologica",
+      "dermatology": "Visita dermatologica",
+      "general": "Visita medica generale",
+      "ophthalmology": "Visita oculistica",
+      "orthopedics": "Visita ortopedica",
+      "pediatrics": "Visita pediatrica",
+      "gynecology": "Visita ginecologica",
+      "neurology": "Visita neurologica",
+      "psychiatry": "Visita psichiatrica",
+      "physiotherapy": "Seduta fisioterapia",
+      "bloodTest": "Prelievo esami del sangue",
+      "ecg": "Elettrocardiogramma",
+      "ultrasound": "Ecografia",
+      "xray": "Radiografia"
+    }
+  },
   "documentModal": {
     "descriptionLabel": "Descrizione contenuto referto:",
     "download": "Scarica",
