@@ -141,6 +141,10 @@
         "title": "Privacy e sicurezza",
         "subtitle": "Face ID, biometria, blocco schermo"
       },
+      "accessibility": {
+        "title": "Accessibilità",
+        "subtitle": "Adattamenti per daltonismo, screen reader, contrasto"
+      },
       "appearance": {
         "title": "Aspetto",
         "subtitle": "Tema, colori e aspetto, dimensione testo"

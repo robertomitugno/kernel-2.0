@@ -8,6 +8,7 @@ import {
   ShieldCheckIcon,
   BellIcon,
   LockClosedIcon,
+  AdjustmentsHorizontalIcon,
   SwatchIcon,
   ArrowDownTrayIcon,
   DocumentTextIcon,
@@ -97,6 +98,12 @@ const handleChangeProfile = () => {
           :title="t('settings.app.privacy.title')"
           :subtitle="t('settings.app.privacy.subtitle')"
           @click="handleItemClick('privacy')"
+        />
+        <SettingsItem
+          :icon="AdjustmentsHorizontalIcon"
+          :title="t('settings.app.accessibility.title')"
+          :subtitle="t('settings.app.accessibility.subtitle')"
+          @click="handleItemClick('accessibility')"
         />
         <SettingsItem
           :icon="SwatchIcon"
