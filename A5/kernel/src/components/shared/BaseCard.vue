@@ -38,7 +38,7 @@ const emit = defineEmits<{
       </div>
 
       <!-- Content -->
-      <div class="flex-1 min-w-0">
+      <div class="flex-1 min-w-0 content-wrapper">
         <!-- Title -->
         <h3 class="text-lg font-semibold mb-2" :style="{ color: COLORS.primary }">
           {{ title }}
@@ -62,7 +62,7 @@ const emit = defineEmits<{
         </div>
 
         <!-- Metadata (date, doctor, location, etc.) -->
-        <div class="flex items-center flex-wrap gap-4 text-sm text-gray-500">
+        <div class="flex items-center flex-wrap gap-4 text-sm text-gray-500 metadata-row">
           <div 
             v-for="(meta, index) in metadata"
             :key="index"
@@ -71,6 +71,11 @@ const emit = defineEmits<{
             <component :is="meta.icon" class="w-4 h-4" />
             <span>{{ meta.label }}</span>
           </div>
+        </div>
+
+        <!-- Actions Slot (bottom right, absolute) -->
+        <div v-if="$slots.actions" class="card-actions">
+          <slot name="actions" />
         </div>
       </div>
     </div>
@@ -109,6 +114,26 @@ const emit = defineEmits<{
   align-items: start;
 }
 
+.content-wrapper {
+  position: relative;
+  padding-right: 0;
+  min-height: 6rem;
+}
+
+.metadata-row {
+  margin-top: 0.5rem;
+  padding-right: 18rem;
+}
+
+.card-actions {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .tags-container {
   display: flex;
   flex-wrap: wrap;
@@ -135,6 +160,16 @@ const emit = defineEmits<{
 @media (max-width: 640px) {
   .base-card {
     padding: 1rem;
+  }
+
+  .content-wrapper {
+    padding-right: 0;
+    padding-bottom: 6rem;
+  }
+
+  .card-actions {
+    position: static;
+    margin-top: 1rem;
   }
 
   .card-content {

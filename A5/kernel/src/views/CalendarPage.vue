@@ -94,6 +94,16 @@ function handleNewAppointment() {
   console.log('Nuovo appuntamento')
 }
 
+function handleEditAppointment(id: string) {
+  console.log('Modifica appuntamento:', id)
+  // Implementare apertura dialog per modifica appuntamento
+}
+
+function handleCancelAppointment(id: string) {
+  console.log('Disdici appuntamento:', id)
+  // Implementare conferma e cancellazione appuntamento
+}
+
 // Helper per convertire la data in formato ISO
 function parseDateToISO(dateString: string): string {
   // Mappa per i mesi italiani abbreviati
@@ -111,11 +121,11 @@ function parseDateToISO(dateString: string): string {
     
     if (!isNaN(day) && month !== undefined && !isNaN(year)) {
       const date = new Date(year, month, day)
-      return date.toISOString().split('T')[0]
+      return (date.toISOString().split('T')[0]) || ''
     }
   }
   
-  return new Date().toISOString().split('T')[0]
+  return new Date().toISOString().split('T')[0] || ''
 }
 </script>
 
@@ -158,6 +168,8 @@ function parseDateToISO(dateString: string): string {
             :appointment="appointment"
             :selected="selectedAppointmentId === appointment.id"
             @click="handleAppointmentClick"
+            @edit="handleEditAppointment"
+            @cancel="handleCancelAppointment"
           />
           
           <div v-if="filteredAppointments.length === 0" class="empty-state">

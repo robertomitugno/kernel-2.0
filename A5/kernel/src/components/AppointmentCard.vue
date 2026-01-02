@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { CalendarIcon, MapPinIcon, UserIcon, ClockIcon } from '@heroicons/vue/24/outline'
+import { CalendarIcon, MapPinIcon, UserIcon, ClockIcon, PencilIcon, XCircleIcon } from '@heroicons/vue/24/outline'
+import { useI18n } from 'vue-i18n'
 import BaseCard, { type CardMetadata } from './shared/BaseCard.vue'
+
+const { t } = useI18n()
 
 export interface Appointment {
   id: string
@@ -23,6 +26,8 @@ const props = defineProps<Props>()
 
 const emit = defineEmits<{
   click: [id: string]
+  edit: [id: string]
+  cancel: [id: string]
 }>()
 
 const metadata = computed<CardMetadata[]>(() => {
@@ -48,6 +53,16 @@ const metadata = computed<CardMetadata[]>(() => {
 const handleClick = () => {
   emit('click', props.appointment.id)
 }
+
+const handleEdit = (event: Event) => {
+  event.stopPropagation()
+  emit('edit', props.appointment.id)
+}
+
+const handleCancel = (event: Event) => {
+  event.stopPropagation()
+  emit('cancel', props.appointment.id)
+}
 </script>
 
 <template>
@@ -59,5 +74,82 @@ const handleClick = () => {
     :metadata="metadata"
     :selected="selected"
     @click="handleClick"
-  />
+  >
+    <template #actions>
+      <button
+        class="action-button edit-button"
+        @click="handleEdit"
+        :title="t('appointments.editAppointment')"
+      >
+        <PencilIcon class="w-4 h-4" />
+        <span>{{ t('appointments.editAppointment') }}</span>
+      </button>
+      <button
+        class="action-button cancel-button"
+        @click="handleCancel"
+        :title="t('appointments.cancelAppointment')"
+      >
+        <XCircleIcon class="w-4 h-4" />
+        <span>{{ t('appointments.cancelAppointment') }}</span>
+      </button>
+    </template>
+  </BaseCard>
 </template>
+
+<style scoped>
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 0.625rem;
+  border: 1px solid;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
+  white-space: nowrap;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.edit-button {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #1a1a1a;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.edit-button:hover {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(255, 255, 255, 0.7);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.cancel-button {
+  background: rgba(255, 255, 255, 0.5);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #dc2626;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.cancel-button:hover {
+  background: rgba(255, 255, 255, 0.7);
+  border-color: rgba(239, 68, 68, 0.6);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+@media (max-width: 768px) {
+  .action-button span {
+    display: none;
+  }
+  
+  .action-button {
+    padding: 0.5rem;
+    justify-content: center;
+    min-width: 2rem;
+  }
+}
+</style>

@@ -133,6 +133,7 @@ const setActiveTab = (tabId: string) => {
   padding: 2px;
   background: linear-gradient(135deg, #0ea5e9 0%, #a855f7 100%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
   mask-composite: exclude;
   opacity: 0.6;
