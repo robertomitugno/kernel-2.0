@@ -53,12 +53,6 @@ const handleShare = () => {
   console.log('Condividi documento:', props.document?.id)
   // Implementare logica di condivisione
 }
-
-const handleBackdropClick = (event: MouseEvent) => {
-  if (event.target === event.currentTarget) {
-    emit('close')
-  }
-}
 </script>
 
 <template>

@@ -4,14 +4,18 @@ import SearchBar from '../components/shared/SearchBar.vue'
 import QuickActions from '../components/QuickActions.vue'
 import UpcomingAppointments from '../components/UpcomingAppointments.vue'
 import DocumentCard from '../components/shared/DocumentCard.vue'
+import DocumentModal from '../components/DocumentModal.vue'
 import WidgetPanel from '../components/WidgetPanel.vue'
 import AppointmentBooking from '../components/AppointmentBooking.vue'
 import { getRecentDocuments, getUpcomingAppointments } from '../constants/mockData'
+import type { Document } from '../components/shared/DocumentCard.vue'
 
 const searchQuery = ref('')
 const appointments = computed(() => getUpcomingAppointments(2))
 const recentDocuments = computed(() => getRecentDocuments(2))
 const isBookingOpen = ref(false)
+const selectedDocument = ref<Document | null>(null)
+const isDocumentModalOpen = ref(false)
 
 const handleSearch = (query: string) => {
   searchQuery.value = query
@@ -31,6 +35,18 @@ const handleAppointmentClick = (id: string) => {
 
 const handleBookingConfirm = (appointment: any) => {
   console.log('Appointment booked:', appointment)
+}
+
+const handleDocumentClick = (document: Document) => {
+  selectedDocument.value = document
+  isDocumentModalOpen.value = true
+}
+
+const handleCloseDocumentModal = () => {
+  isDocumentModalOpen.value = false
+  setTimeout(() => {
+    selectedDocument.value = null
+  }, 300)
 }
 </script>
 
@@ -67,6 +83,7 @@ const handleBookingConfirm = (appointment: any) => {
               v-for="doc in recentDocuments.slice(0, 2)"
               :key="doc.id"
               :document="doc"
+              @click="handleDocumentClick(doc)"
             />
           </div>
         </div>
@@ -85,6 +102,15 @@ const handleBookingConfirm = (appointment: any) => {
       @close="isBookingOpen = false"
       @confirm="handleBookingConfirm"
     />
+
+  <!-- Document Modal (Teleported to body) -->
+  <Teleport to="body">
+    <DocumentModal
+      :document="selectedDocument"
+      :is-open="isDocumentModalOpen"
+      @close="handleCloseDocumentModal"
+    />
+  </Teleport>
   </div>
 </template>
 
