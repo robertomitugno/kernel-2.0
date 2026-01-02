@@ -23,15 +23,55 @@ const tags = ref<Tag[]>([
 const selectedTag = ref('all')
 const selectedAppointmentId = ref<string | null>(null)
 
-// Eventi per FullCalendar
+// Eventi per FullCalendar - visualizzati come pallini
 const calendarEvents = computed(() => {
-  return appointments.value.map(apt => ({
-    id: apt.id,
-    title: apt.title,
-    date: parseDateToISO(apt.date),
-    backgroundColor: selectedAppointmentId.value === apt.id ? '#000' : '#3b82f6',
-    borderColor: selectedAppointmentId.value === apt.id ? '#000' : '#3b82f6'
-  }))
+  // Raggruppa appuntamenti per data
+  const appointmentsByDate = new Map<string, Appointment[]>()
+  
+  appointments.value.forEach(apt => {
+    const dateKey = parseDateToISO(apt.date)
+    if (!appointmentsByDate.has(dateKey)) {
+      appointmentsByDate.set(dateKey, [])
+    }
+    appointmentsByDate.get(dateKey)?.push(apt)
+  })
+  
+  // Crea un evento per ogni giorno con appuntamenti
+  const events: any[] = []
+  appointmentsByDate.forEach((apts, date) => {
+    apts.forEach((apt, index) => {
+      if (index < 3) { // Max 3 pallini visibili
+        events.push({
+          id: apt.id,
+          start: date,
+          allDay: true,
+          display: 'block',
+          title: '●', // Pallino unicode
+          classNames: selectedAppointmentId.value === apt.id ? ['appointment-dot', 'selected'] : ['appointment-dot'],
+          backgroundColor: 'transparent',
+          borderColor: 'transparent',
+          textColor: selectedAppointmentId.value === apt.id ? '#000' : '#3b82f6'
+        })
+      }
+    })
+    
+    // Aggiungi contatore se ci sono più di 3 appuntamenti
+    if (apts.length > 3) {
+      events.push({
+        id: `more-${date}`,
+        start: date,
+        allDay: true,
+        display: 'block',
+        title: `+${apts.length - 3}`,
+        classNames: ['appointment-dot-more'],
+        backgroundColor: 'transparent',
+        borderColor: 'transparent',
+        textColor: '#3b82f6'
+      })
+    }
+  })
+  
+  return events
 })
 
 // Configurazione FullCalendar
@@ -47,11 +87,12 @@ const calendarOptions = ref<CalendarOptions>({
   events: calendarEvents.value,
   selectable: true,
   selectMirror: true,
-  dayMaxEvents: true,
+  dayMaxEvents: false,
   weekends: true,
   eventClick: handleEventClick,
   select: handleDateSelect,
-  height: 'auto'
+  height: 'auto',
+  eventDisplay: 'block'
 })
 
 // Appuntamenti filtrati per tag
@@ -388,6 +429,72 @@ function parseDateToISO(dateString: string): string {
 
 :deep(.fc-scrollgrid-sync-table) {
   position: relative !important;
+}
+
+/* Nascondi gli eventi di default per mostrare solo i pallini */
+:deep(.fc-event.appointment-indicator) {
+  display: none !important;
+}
+
+/* Stili per i pallini degli appuntamenti */
+:deep(.fc-daygrid-day-frame) {
+  position: relative;
+}
+
+:deep(.fc-event.appointment-dot) {
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 2px !important;
+  font-size: 1rem;
+}
+
+:deep(.fc-event.appointment-dot .fc-event-main) {
+  padding: 0 !important;
+}
+
+:deep(.fc-event.appointment-dot .fc-event-title) {
+  font-size: 0.625rem;
+  line-height: 1;
+}
+
+:deep(.fc-event.appointment-dot.selected .fc-event-title) {
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+:deep(.fc-event.appointment-dot-more) {
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  margin: 0 2px !important;
+}
+
+:deep(.fc-event.appointment-dot-more .fc-event-main) {
+  padding: 0 !important;
+}
+
+:deep(.fc-event.appointment-dot-more .fc-event-title) {
+  font-size: 0.625rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Centra gli eventi nella cella */
+:deep(.fc-daygrid-day-events) {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: unset;
+}
+
+:deep(.fc-daygrid-event-harness) {
+  position: relative !important;
+  margin: 0 !important;
 }
 
 @keyframes slideInDown {

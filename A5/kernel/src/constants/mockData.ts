@@ -85,7 +85,17 @@ export const MOCK_APPOINTMENTS: Appointment[] = [
     title: 'Visita cardiologica di controllo',
     description: 'Controllo annuale con ECG e misurazione pressione arteriosa',
     tags: ['Cardiologia', 'Controllo'],
-    date: '13 Gen 2025',
+    date: '13 Gen 2026',
+    time: '15:30',
+    user: 'Nonno Giulio',
+    location: 'Ospedale San Raffaele'
+  },
+    {
+    id: '16',
+    title: 'Visita cardiologica di controllo',
+    description: 'Controllo annuale con ECG e misurazione pressione arteriosa',
+    tags: ['Cardiologia', 'Controllo'],
+    date: '13 Gen 2026',
     time: '15:30',
     user: 'Nonno Giulio',
     location: 'Ospedale San Raffaele'
@@ -95,7 +105,7 @@ export const MOCK_APPOINTMENTS: Appointment[] = [
     title: 'Prelievo esami del sangue',
     description: 'Emocromo completo, glicemia, colesterolo e funzionalità epatica',
     tags: ['Analisi', 'Laboratorio'],
-    date: '20 Gen 2025',
+    date: '20 Gen 2026',
     time: '08:00',
     user: 'Marco',
     location: 'Laboratorio Analisi Medicon'
@@ -105,7 +115,7 @@ export const MOCK_APPOINTMENTS: Appointment[] = [
     title: 'Seduta di fisioterapia',
     description: 'Trattamento riabilitativo ginocchio destro - 5° seduta',
     tags: ['Riabilitazione', 'Fisioterapia'],
-    date: '27 Gen 2025',
+    date: '27 Gen 2026',
     time: '16:30',
     user: 'Marco',
     location: 'Centro Fisioterapia Riabilita'
@@ -115,7 +125,7 @@ export const MOCK_APPOINTMENTS: Appointment[] = [
     title: 'Visita pediatrica',
     description: 'Controllo di crescita e sviluppo con valutazione peso e altezza',
     tags: ['Pediatria', 'Controllo'],
-    date: '1 Feb 2025',
+    date: '1 Feb 2026',
     time: '10:00',
     user: 'Sofia',
     location: 'Ospedale Pediatrico Buzzi'
@@ -125,7 +135,7 @@ export const MOCK_APPOINTMENTS: Appointment[] = [
     title: 'Ecografia addominale',
     description: 'Ecografia addome completo prescritto dal medico curante',
     tags: ['Diagnostica', 'Ecografia'],
-    date: '5 Feb 2025',
+    date: '5 Feb 2026',
     time: '14:00',
     user: 'Laura',
     location: 'Centro Diagnostico San Marco'
@@ -135,7 +145,7 @@ export const MOCK_APPOINTMENTS: Appointment[] = [
     title: 'Visita oculistica - Controllo vista',
     description: 'Esame della vista completo con misurazione della pressione oculare',
     tags: ['Oculistica', 'Visita'],
-    date: '10 Feb 2025',
+    date: '10 Feb 2026',
     time: '11:00',
     user: 'Laura',
     location: 'Centro Oculistico Vista Chiara'
