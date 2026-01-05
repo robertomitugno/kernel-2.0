@@ -44,6 +44,31 @@
     "expiredOn": "Scaduta il {date}",
     "downloadBarcode": "Scarica codice a barre",
     "close": "Chiudi",
+    "selection": {
+      "selectMode": "Seleziona documenti",
+      "cancel": "Annulla selezione",
+      "selectAll": "Seleziona tutti",
+      "deselectAll": "Deseleziona tutti"
+    },
+    "batch": {
+      "documentSelected": "documento selezionato",
+      "documentsSelected": "documenti selezionati",
+      "all": "Tutti",
+      "downloadAll": "Scarica tutti",
+      "deselectAll": "Deseleziona tutti"
+    },
+    "dateRange": {
+      "selectRange": "Filtra per data",
+      "from": "Da",
+      "to": "A",
+      "quickSelect": "Selezione rapida",
+      "customRange": "Intervallo personalizzato",
+      "apply": "Applica",
+      "lastMonth": "Ultimo mese",
+      "last3Months": "Ultimi 3 mesi",
+      "last6Months": "Ultimi 6 mesi",
+      "lastYear": "Ultimo anno"
+    },
     "comparison": {
       "title": "Confronto Documenti",
       "subtitle": "Seleziona due documenti diversi per confrontarli",

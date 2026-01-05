@@ -83,11 +83,18 @@ const DOCUMENT_CATEGORIES: Record<DocumentType, DocumentCategory> = {
 
 interface Props {
   document: Document
+  selectable?: boolean
+  selected?: boolean
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  selectable: false,
+  selected: false
+})
+
 const emit = defineEmits<{
   click: []
+  toggleSelect: []
 }>()
 
 const showBarcodeModal = ref(false)
@@ -213,7 +220,9 @@ function formatItalianDate(date: Date): string {
 
 // Handler per il click sulla card (solo documenti normali)
 const handleCardClick = () => {
-  if (!props.document.isPrescription) {
+  if (props.selectable) {
+    emit('toggleSelect')
+  } else if (!props.document.isPrescription) {
     emit('click')
   }
 }
@@ -237,7 +246,18 @@ const handleDownloadBarcode = () => {
 </script>
 
 <template>
-  <div class="document-card-wrapper" @click="handleCardClick">
+  <div 
+    class="document-card-wrapper" 
+    :class="{ 'selectable': selectable, 'selected': selected }"
+    @click="handleCardClick"
+  >
+    <!-- Selection Checkbox (when in selection mode) -->
+    <div v-if="selectable" class="selection-checkbox" :class="{ 'checked': selected }">
+      <svg v-if="selected" class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+        <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+      </svg>
+    </div>
+
     <BaseCard
       :title="document.title"
       :description="document.description"
@@ -330,6 +350,43 @@ const handleDownloadBarcode = () => {
 .document-card-wrapper {
   position: relative;
   cursor: pointer;
+  transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
+}
+
+.document-card-wrapper.selectable {
+  padding-left: 3rem;
+}
+
+.document-card-wrapper.selectable:hover {
+  transform: translateX(4px);
+}
+
+.document-card-wrapper.selected {
+  opacity: 0.95;
+}
+
+.selection-checkbox {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
+  z-index: 10;
+}
+
+.selection-checkbox.checked {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
 }
 
 /* Document Type Badge (inline under title) */

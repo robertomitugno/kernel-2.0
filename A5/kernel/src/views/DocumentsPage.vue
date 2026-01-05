@@ -1,27 +1,41 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { ArrowsRightLeftIcon } from '@heroicons/vue/24/outline'
+import { ArrowsRightLeftIcon, CheckCircleIcon } from '@heroicons/vue/24/outline'
 import SearchBar from '../components/shared/SearchBar.vue'
 import TagBar from '../components/shared/TagBar.vue'
 import DocumentCard from '../components/shared/DocumentCard.vue'
 import DocumentModal from '../components/documents/DocumentModal.vue'
 import DocumentComparisonModal from '../components/documents/comparison/DocumentComparisonModal.vue'
+import DateRangeFilter, { type DateRange } from '../components/documents/DateRangeFilter.vue'
+import BatchActionsBar from '../components/documents/BatchActionsBar.vue'
 import type { Tag } from '../components/shared/TagBar.vue'
 import type { Document } from '../components/shared/DocumentCard.vue'
 import { MOCK_DOCUMENTS } from '../constants/mockData'
 
 const searchQuery = ref('')
-const selectedTag = ref('tutti')
+const selectedTags = ref<string[]>([]) // Changed to array for multiple selection
 const selectedDocument = ref<Document | null>(null)
 const isModalOpen = ref(false)
 const isComparisonModalOpen = ref(false)
+
+// Selection mode
+const selectionMode = ref(false)
+const selectedDocumentIds = ref<Set<string>>(new Set())
+
+// Date range filter
+const dateRange = ref<DateRange>({
+  from: null,
+  to: null
+})
 
 const tags = computed<Tag[]>(() => [
   { id: 'tutti', label: 'Tutti', count: MOCK_DOCUMENTS.length },
   { id: 'prescrizione', label: 'Prescrizione', count: MOCK_DOCUMENTS.filter(d => d.tags.includes('Prescrizione')).length },
   { id: 'cardiologia', label: 'Cardiologia', count: MOCK_DOCUMENTS.filter(d => d.tags.includes('Cardiologia')).length },
   { id: 'analisi', label: 'Analisi', count: MOCK_DOCUMENTS.filter(d => d.tags.includes('Analisi')).length },
-  { id: 'diagnostica', label: 'Diagnostica', count: MOCK_DOCUMENTS.filter(d => d.tags.includes('Diagnostica')).length }
+  { id: 'diagnostica', label: 'Diagnostica', count: MOCK_DOCUMENTS.filter(d => d.tags.includes('Diagnostica')).length },
+  { id: 'oculistica', label: 'Oculistica', count: MOCK_DOCUMENTS.filter(d => d.tags.includes('Oculistica')).length },
+  { id: 'ortopedia', label: 'Ortopedia', count: MOCK_DOCUMENTS.filter(d => d.tags.includes('Ortopedia')).length },
 ])
 
 const documents = ref<Document[]>(MOCK_DOCUMENTS)
@@ -39,11 +53,33 @@ const filteredDocuments = computed(() => {
     )
   }
 
-  // Filter by tag
-  if (selectedTag.value !== 'tutti') {
+  // Filter by multiple tags
+  if (selectedTags.value.length > 0 && !selectedTags.value.includes('tutti')) {
     filtered = filtered.filter(doc => 
-      doc.tags.some(tag => tag.toLowerCase() === selectedTag.value.toLowerCase())
+      selectedTags.value.some(selectedTag =>
+        doc.tags.some(tag => tag.toLowerCase() === selectedTag.toLowerCase())
+      )
     )
+  }
+
+  // Filter by date range
+  if (dateRange.value.from || dateRange.value.to) {
+    filtered = filtered.filter(doc => {
+      const docDate = parseItalianDate(doc.date)
+      if (!docDate) return false
+
+      const from = dateRange.value.from
+      const to = dateRange.value.to
+
+      if (from && to) {
+        return docDate >= from && docDate <= to
+      } else if (from) {
+        return docDate >= from
+      } else if (to) {
+        return docDate <= to
+      }
+      return true
+    })
   }
 
   // Always sort by newest first
@@ -57,6 +93,10 @@ const filteredDocuments = computed(() => {
   })
 
   return filtered
+})
+
+const selectedDocuments = computed(() => {
+  return filteredDocuments.value.filter(doc => selectedDocumentIds.value.has(doc.id))
 })
 
 // Parse Italian date format "GG Mese AAAA"
@@ -84,12 +124,59 @@ const handleSearch = (query: string) => {
 }
 
 const handleTagSelected = (tagId: string) => {
-  selectedTag.value = tagId
+  if (tagId === 'tutti') {
+    selectedTags.value = []
+  } else {
+    const index = selectedTags.value.indexOf(tagId)
+    if (index > -1) {
+      selectedTags.value.splice(index, 1)
+    } else {
+      selectedTags.value.push(tagId)
+    }
+  }
+}
+
+const toggleSelectionMode = () => {
+  selectionMode.value = !selectionMode.value
+  if (!selectionMode.value) {
+    selectedDocumentIds.value.clear()
+  }
+}
+
+const toggleDocumentSelection = (docId: string) => {
+  if (selectedDocumentIds.value.has(docId)) {
+    selectedDocumentIds.value.delete(docId)
+  } else {
+    selectedDocumentIds.value.add(docId)
+  }
+}
+
+const selectAll = () => {
+  filteredDocuments.value.forEach(doc => {
+    selectedDocumentIds.value.add(doc.id)
+  })
+}
+
+const deselectAll = () => {
+  selectedDocumentIds.value.clear()
+}
+
+const handleDownloadAll = () => {
+  console.log('Scaricamento di', selectedDocuments.value.length, 'documenti')
+  // TODO: Implementare download batch
+  alert(`Scaricamento di ${selectedDocuments.value.length} documenti...`)
+}
+
+const handleCancelSelection = () => {
+  selectionMode.value = false
+  selectedDocumentIds.value.clear()
 }
 
 const handleDocumentClick = (document: Document) => {
-  selectedDocument.value = document
-  isModalOpen.value = true
+  if (!selectionMode.value) {
+    selectedDocument.value = document
+    isModalOpen.value = true
+  }
 }
 
 const handleCloseModal = () => {
@@ -114,27 +201,53 @@ const handleCloseComparison = () => {
       <div class="header-content">
         <div>
           <h1 class="page-title">{{ $t('documents.title') }}</h1>
-          <p class="page-subtitle">{{ $t('documents.subtitle') }}</p>
+          <p class="page-subtitle">
+            {{ filteredDocuments.length }} {{ filteredDocuments.length === 1 ? 'documento' : 'documenti' }}
+          </p>
         </div>
-        <button class="comparison-btn" @click="handleOpenComparison">
-          <ArrowsRightLeftIcon class="w-5 h-5" />
-          {{ $t('documents.documentComparison') }}
-        </button>
+        <div class="header-actions">
+          <button 
+            class="action-btn selection-btn"
+            :class="{ 'active': selectionMode }"
+            @click="toggleSelectionMode"
+          >
+            <CheckCircleIcon class="w-5 h-5" />
+            {{ selectionMode ? $t('documents.selection.cancel') : $t('documents.selection.selectMode') }}
+          </button>
+          <button class="action-btn comparison-btn" @click="handleOpenComparison">
+            <ArrowsRightLeftIcon class="w-5 h-5" />
+            {{ $t('documents.documentComparison') }}
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Search Bar -->
+    <!-- Search Bar & Date Range Filter -->
     <div class="section-spacing">
-      <SearchBar @search="handleSearch" />
+      <div class="filters-row">
+        <SearchBar @search="handleSearch" />
+        <DateRangeFilter v-model="dateRange" />
+      </div>
     </div>
 
-    <!-- Tag Bar -->
+    <!-- Tag Bar with Select All (in selection mode) -->
     <div class="section-spacing">
-      <TagBar
-        :tags="tags"
-        :selected-tag="selectedTag"
-        @tag-selected="handleTagSelected"
-      />
+      <div class="tags-and-actions">
+        <TagBar
+          :tags="tags"
+          :selected-tag="selectedTags.length === 0 ? 'tutti' : selectedTags[0] || 'tutti'"
+          :multiple="true"
+          :active-tags="selectedTags"
+          @tag-selected="handleTagSelected"
+        />
+        <button 
+          v-if="selectionMode && filteredDocuments.length > 0" 
+          class="select-all-btn"
+          @click="selectAll"
+        >
+          {{ $t('documents.selection.selectAll') }}
+        </button>
+      </div>
     </div>
 
     <!-- Documents List -->
@@ -143,7 +256,10 @@ const handleCloseComparison = () => {
         v-for="doc in filteredDocuments"
         :key="doc.id"
         :document="doc"
+        :selectable="selectionMode"
+        :selected="selectedDocumentIds.has(doc.id)"
         @click="() => handleDocumentClick(doc)"
+        @toggle-select="() => toggleDocumentSelection(doc.id)"
       />
     </div>
 
@@ -152,6 +268,15 @@ const handleCloseComparison = () => {
       {{ $t('documents.noResults') }}
     </div>
   </div>
+
+  <!-- Batch Actions Bar -->
+  <BatchActionsBar
+    :selected-documents="selectedDocuments"
+    :total-documents="filteredDocuments.length"
+    @download-all="handleDownloadAll"
+    @deselect-all="deselectAll"
+    @cancel="handleCancelSelection"
+  />
 
   <!-- Document Modal (Teleported to body) -->
   <Teleport to="body">
@@ -207,27 +332,95 @@ const handleCloseComparison = () => {
   line-height: 1.5;
 }
 
-.comparison-btn {
+.header-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.action-btn {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(12px);
-  color: white;
-  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 1rem;
+  font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
   white-space: nowrap;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+.selection-btn {
+  background: rgba(255, 255, 255, 0.5);
+  color: #525252;
+  border-color: rgba(0, 0, 0, 0.1);
+}
+
+.selection-btn:hover {
+  background: rgba(255, 255, 255, 0.7);
+  transform: translateY(-2px);
+}
+
+.selection-btn.active {
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.selection-btn.active:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+.comparison-btn {
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
 }
 
 .comparison-btn:hover {
   background: rgba(0, 0, 0, 0.9);
   transform: translateY(-2px);
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+}
+
+.filters-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.filters-row > :first-child {
+  flex: 1;
+}
+
+.tags-and-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.select-all-btn {
+  padding: 0.625rem 1.25rem;
+  background: rgba(59, 130, 246, 0.1);
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 0.75rem;
+  color: #3b82f6;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
+  white-space: nowrap;
+}
+
+.select-all-btn:hover {
+  background: rgba(59, 130, 246, 0.2);
+  border-color: rgba(59, 130, 246, 0.5);
+  transform: translateY(-1px);
 }
 
 .documents-page {
@@ -283,7 +476,7 @@ const handleCloseComparison = () => {
 .section-spacing {
   margin-bottom: 1.5rem;
   position: relative;
-  z-index: 1;
+  z-index: 10;
   animation: fadeIn 0.5s cubic-bezier(0, 0, 0.2, 1);
   animation-delay: 0.1s;
   animation-fill-mode: both;

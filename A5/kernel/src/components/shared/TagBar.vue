@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { COLORS } from '../../constants/constants'
 
 export interface Tag {
@@ -10,18 +10,40 @@ export interface Tag {
 
 interface Props {
   tags: Tag[]
+  selectedTag?: string
+  multiple?: boolean
+  activeTags?: string[]
 }
 
-const props = defineProps<Props>()
+const props = withDefaults(defineProps<Props>(), {
+  selectedTag: '',
+  multiple: false,
+  activeTags: () => []
+})
 
-const selectedTag = ref(props.tags[0]?.id || '')
+const localSelectedTag = ref(props.selectedTag || props.tags[0]?.id || '')
+
+watch(() => props.selectedTag, (newVal) => {
+  if (newVal) {
+    localSelectedTag.value = newVal
+  }
+})
 
 const emit = defineEmits<{
   tagSelected: [tagId: string]
 }>()
 
+const isTagActive = (tagId: string) => {
+  if (props.multiple) {
+    return props.activeTags.includes(tagId)
+  }
+  return localSelectedTag.value === tagId
+}
+
 const selectTag = (tagId: string) => {
-  selectedTag.value = tagId
+  if (!props.multiple) {
+    localSelectedTag.value = tagId
+  }
   emit('tagSelected', tagId)
 }
 </script>
@@ -31,7 +53,7 @@ const selectTag = (tagId: string) => {
     <button
       v-for="tag in tags"
       :key="tag.id"
-      :class="['tag-button', { 'tag-active': selectedTag === tag.id }]"
+      :class="['tag-button', { 'tag-active': isTagActive(tag.id) }]"
       @click="selectTag(tag.id)"
     >
       {{ tag.label }}
