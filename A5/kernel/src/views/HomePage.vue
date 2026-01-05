@@ -3,6 +3,7 @@ import { ref, computed } from 'vue'
 import { DocumentPlusIcon, PlusIcon } from '@heroicons/vue/24/outline'
 import SearchBar from '../components/shared/SearchBar.vue'
 import SearchSuggestionCard from '../components/shared/SearchSuggestionCard.vue'
+import Toast from '../components/shared/Toast.vue'
 import UpcomingAppointments from '../components/bookingAppointment/UpcomingAppointments.vue'
 import DocumentCard from '../components/shared/DocumentCard.vue'
 import DocumentModal from '../components/documents/DocumentModal.vue'
@@ -20,6 +21,7 @@ const isBookingOpen = ref(false)
 const selectedDocument = ref<Document | null>(null)
 const isDocumentModalOpen = ref(false)
 const preselectedVisitType = ref<string | null>(null)
+const showSuccessToast = ref(false)
 
 // Intelligent search suggestions (multiple results)
 const searchSuggestions = computed<SymptomSuggestion[]>(() => {
@@ -59,6 +61,7 @@ const handleAppointmentClick = (id: string) => {
 
 const handleBookingConfirm = (appointment: any) => {
   console.log('Appointment booked:', appointment)
+  showSuccessToast.value = true
 }
 
 const handleDocumentClick = (document: Document) => {
@@ -71,6 +74,10 @@ const handleCloseDocumentModal = () => {
   setTimeout(() => {
     selectedDocument.value = null
   }, 300)
+}
+
+const handleCloseToast = () => {
+  showSuccessToast.value = false
 }
 </script>
 
@@ -158,6 +165,14 @@ const handleCloseDocumentModal = () => {
       @close="handleCloseDocumentModal"
     />
   </Teleport>
+
+  <!-- Success Toast -->
+  <Toast
+    :show="showSuccessToast"
+    message="Prenotazione confermata con successo!"
+    :duration="4000"
+    @close="handleCloseToast"
+  />
   </div>
 </template>
 
