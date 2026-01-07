@@ -86,7 +86,7 @@ const handleClick = () => {
 .settings-item__icon {
   width: 24px;
   height: 24px;
-  color: var(--accent-primary);
+  color: var(--text-heading);
   flex-shrink: 0;
   transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
   filter: drop-shadow(0 2px 4px var(--accent-primary-20));

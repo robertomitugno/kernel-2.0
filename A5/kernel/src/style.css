@@ -57,6 +57,12 @@
   
   --text-secondary-20: rgba(107, 114, 128, 0.2);
   
+  /* Heading and title text */
+  --text-heading: rgb(26, 26, 26);
+  
+  /* White variations */
+  --white-90: rgba(255, 255, 255, 0.9);
+  
   --accent-primary-8: rgba(14, 165, 233, 0.08);
   --accent-primary-5: rgba(14, 165, 233, 0.05);
   --accent-primary-10: rgba(14, 165, 233, 0.1);
@@ -297,6 +303,12 @@
   --text-primary-65: rgba(249, 250, 251, 0.65);
   
   --text-secondary-20: rgba(209, 213, 219, 0.2);
+  
+  /* Heading and title text for dark theme */
+  --text-heading: rgb(249, 250, 251);
+  
+  /* White/Dark variations for dark theme */
+  --white-90: rgba(17, 24, 39, 0.9);
   
   --accent-primary-8: rgba(56, 189, 248, 0.08);
   --accent-primary-25: rgba(56, 189, 248, 0.25);

@@ -168,7 +168,7 @@ const logout = () => {
 }
 
 .topbar-title {
-  color: var(--accent-primary);
+  color: var(--text-heading);
 }
 
 .lang-menu-text,

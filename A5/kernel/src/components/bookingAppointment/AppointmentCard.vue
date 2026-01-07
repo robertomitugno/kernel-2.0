@@ -124,7 +124,7 @@ const handleCancel = (event: Event) => {
   background: var(--white-80);
   border-color: var(--white-70);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px var(--shadow), inset 0 1px 0 var(--bg-secondary-90);
+  box-shadow: 0 4px 12px var(--shadow), inset 0 1px 0 var(--white-90);
 }
 
 .cancel-button {

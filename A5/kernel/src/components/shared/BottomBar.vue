@@ -125,7 +125,7 @@ const setActiveTab = (tabId: string) => {
   color: var(--accent-primary);
   box-shadow: 
     0 4px 16px var(--accent-primary-20),
-    inset 0 1px 0 var(--bg-secondary-90);
+    inset 0 1px 0 var(--white-90);
 }
 
 .tab-button.active::before {
@@ -134,7 +134,7 @@ const setActiveTab = (tabId: string) => {
   inset: -2px;
   border-radius: 1rem;
   padding: 2px;
-  background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;

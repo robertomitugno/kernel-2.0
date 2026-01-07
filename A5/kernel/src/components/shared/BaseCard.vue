@@ -81,7 +81,7 @@ const emit = defineEmits<{
   padding: 1.5rem;
   margin: 0.75rem 0;
   border: 1.5px solid var(--bg-secondary-70);
-  box-shadow: var(--shadow), inset 0 1px 0 var(--bg-secondary-90);
+  box-shadow: var(--shadow), inset 0 1px 0 var(--white-90);
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
 }
@@ -90,7 +90,7 @@ const emit = defineEmits<{
   transform: translateY(-4px);
   box-shadow: 0 12px 40px var(--text-primary-15), inset 0 1px 0 var(--bg-secondary);
   background: var(--bg-secondary-35);
-  border-color: var(--bg-secondary-90);
+  border-color: var(--white-90);
 }
 
 .card-selected {
@@ -125,7 +125,7 @@ const emit = defineEmits<{
 }
 
 .card-title {
-  color: var(--accent-primary);
+  color: var(--text-heading);
 }
 
 .card-description {

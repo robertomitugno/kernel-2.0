@@ -262,7 +262,7 @@ const clearRange = () => {
   border: 1px solid var(--text-primary-10);
   border-radius: 1rem;
   padding: 1rem;
-  box-shadow: 0 12px 40px var(--black-20), inset 0 1px 0 var(--bg-secondary-90);
+  box-shadow: 0 12px 40px var(--black-20), inset 0 1px 0 var(--white-90);
   z-index: 210;
   pointer-events: auto;
   isolation: isolate;
