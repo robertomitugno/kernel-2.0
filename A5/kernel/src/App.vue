@@ -2,6 +2,7 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import TopBar from './components/shared/TopBar.vue'
+import Breadcrumbs from './components/shared/Breadcrumbs.vue'
 import BottomBar from './components/shared/BottomBar.vue'
 import LegalFooter from './components/shared/LegalFooter.vue'
 
@@ -16,6 +17,7 @@ const hideNavigation = computed(() => route.meta.hideNavigation === true)
     <a href="#main-content" class="skip-link">Salta al contenuto principale</a>
     
     <TopBar v-if="!hideNavigation" />
+    <Breadcrumbs v-if="!hideNavigation" />
     <main 
       id="main-content"
       :class="hideNavigation ? 'h-screen' : 'main-content'"
