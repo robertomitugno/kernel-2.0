@@ -31,6 +31,7 @@ const dateRange = ref<DateRange>({
 const tags = computed<Tag[]>(() => [
   { id: 'tutti', label: 'Tutti', count: MOCK_DOCUMENTS.length },
   { id: 'prescrizione', label: 'Prescrizione', count: MOCK_DOCUMENTS.filter(d => d.tags.includes('Prescrizione')).length },
+  { id: 'diabete', label: 'Diabete', count: MOCK_DOCUMENTS.filter(d => d.tags.includes('Diabete')).length },
   { id: 'cardiologia', label: 'Cardiologia', count: MOCK_DOCUMENTS.filter(d => d.tags.includes('Cardiologia')).length },
   { id: 'analisi', label: 'Analisi', count: MOCK_DOCUMENTS.filter(d => d.tags.includes('Analisi')).length },
   { id: 'diagnostica', label: 'Diagnostica', count: MOCK_DOCUMENTS.filter(d => d.tags.includes('Diagnostica')).length },
@@ -97,6 +98,14 @@ const filteredDocuments = computed(() => {
 
 const selectedDocuments = computed(() => {
   return filteredDocuments.value.filter(doc => selectedDocumentIds.value.has(doc.id))
+})
+
+// Active tags for TagBar - include 'tutti' when no tags are selected
+const activeTags = computed(() => {
+  if (selectedTags.value.length === 0) {
+    return ['tutti']
+  }
+  return selectedTags.value
 })
 
 // Parse Italian date format "GG Mese AAAA"
@@ -237,7 +246,7 @@ const handleCloseComparison = () => {
           :tags="tags"
           :selected-tag="selectedTags.length === 0 ? 'tutti' : selectedTags[0] || 'tutti'"
           :multiple="true"
-          :active-tags="selectedTags"
+          :active-tags="activeTags"
           @tag-selected="handleTagSelected"
         />
         <button 

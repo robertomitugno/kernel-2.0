@@ -30,56 +30,6 @@ export interface DocumentCategory {
   borderColor: string
 }
 
-const DOCUMENT_CATEGORIES: Record<DocumentType, DocumentCategory> = {
-  prescription: {
-    type: 'prescription',
-    label: 'Prescrizione',
-    icon: '💊',
-    color: 'var(--doc-prescription)',
-    bgColor: 'var(--doc-prescription-bg)',
-    borderColor: 'var(--doc-prescription-border)'
-  },
-  report: {
-    type: 'report',
-    label: 'Referto',
-    icon: '📋',
-    color: 'var(--doc-report)',
-    bgColor: 'var(--doc-report-bg)',
-    borderColor: 'var(--doc-report-border)'
-  },
-  analysis: {
-    type: 'analysis',
-    label: 'Analisi',
-    icon: '🧪',
-    color: 'var(--doc-analysis)',
-    bgColor: 'var(--doc-analysis-bg)',
-    borderColor: 'var(--doc-analysis-border)'
-  },
-  visit: {
-    type: 'visit',
-    label: 'Visita',
-    icon: '👨‍⚕️',
-    color: 'var(--doc-visit)',
-    bgColor: 'var(--doc-visit-bg)',
-    borderColor: 'var(--doc-visit-border)'
-  },
-  diagnostic: {
-    type: 'diagnostic',
-    label: 'Diagnostica',
-    icon: '🔬',
-    color: 'var(--doc-diagnostic)',
-    bgColor: 'var(--doc-diagnostic-bg)',
-    borderColor: 'var(--doc-diagnostic-border)'
-  },
-  other: {
-    type: 'other',
-    label: 'Altro',
-    icon: '📄',
-    color: 'var(--doc-other)',
-    bgColor: 'var(--doc-other-bg)',
-    borderColor: 'var(--doc-other-border)'
-  }
-}
 
 interface Props {
   document: Document
@@ -99,36 +49,93 @@ const emit = defineEmits<{
 
 const showBarcodeModal = ref(false)
 
-// Detect document category based on tags and content
-const documentCategory = computed<DocumentCategory>(() => {
-  if (props.document.isPrescription) {
-    return DOCUMENT_CATEGORIES.prescription
+// Funzione per ottenere i colori del badge in base al tag
+const getBadgeColors = (tag: string) => {
+  const normalizedTag = tag.toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // Rimuove accenti
+  
+  // Mappa dei tag ai nomi delle variabili CSS
+  const tagColorMap: Record<string, string> = {
+    'cardiologia': 'cardiologia',
+    'diabete': 'diabete',
+    'endocrinologia': 'endocrinologia',
+    'farmaci': 'farmaci',
+    'esami': 'esami',
+    'analisi': 'analisi',
+    'laboratorio': 'laboratorio',
+    'oculistica': 'oculistica',
+    'ortopedia': 'ortopedia',
+    'dermatologia': 'dermatologia',
+    'radiologia': 'radiologia',
+    'ecografia': 'ecografia',
+    'nefrologia': 'nefrologia',
+    'vascolare': 'vascolare',
+    'riabilitazione': 'riabilitazione',
+    'fisioterapia': 'fisioterapia',
+    'pediatria': 'pediatria',
+    'controllo': 'controllo',
+    'neurologia': 'neurologia',
+    'pneumologia': 'pneumologia',
+    'gastroenterologia': 'gastroenterologia',
+    'prescrizione': 'farmaci',
+    'visita': 'controllo',
+    'diagnostica': 'esami'
   }
   
-  const tags = props.document.tags.map(t => t.toLowerCase())
-  const title = props.document.title.toLowerCase()
+  const colorKey = tagColorMap[normalizedTag]
   
-  if (tags.some(t => t.includes('analisi') || t.includes('laboratorio')) || 
-      title.includes('esami del sangue') || title.includes('emocromo')) {
-    return DOCUMENT_CATEGORIES.analysis
+  if (colorKey) {
+    return {
+      color: `var(--badge-${colorKey})`,
+      bgColor: `var(--badge-${colorKey}-bg)`,
+      borderColor: `var(--badge-${colorKey}-border)`
+    }
   }
   
-  if (tags.some(t => t.includes('visita')) || title.includes('visita')) {
-    return DOCUMENT_CATEGORIES.visit
+  // Colori di default se il tag non è mappato
+  return {
+    color: 'var(--text-primary)',
+    bgColor: 'var(--bg-secondary-30)',
+    borderColor: 'var(--border-color)'
+  }
+}
+
+// Funzione per ottenere l'icona del badge in base al tag
+const getBadgeIcon = (tag: string): string => {
+  const normalizedTag = tag.toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '') // Rimuove accenti
+  
+  const tagIconMap: Record<string, string> = {
+    'cardiologia': '❤️',
+    'diabete': '🩸',
+    'endocrinologia': '🧬',
+    'farmaci': '💊',
+    'esami': '🔬',
+    'analisi': '🧪',
+    'laboratorio': '🧬',
+    'oculistica': '👁️',
+    'ortopedia': '🦴',
+    'dermatologia': '🔬',
+    'radiologia': '📷',
+    'ecografia': '📡',
+    'nefrologia': '🫘',
+    'vascolare': '🩸',
+    'riabilitazione': '💪',
+    'fisioterapia': '🏃',
+    'pediatria': '👶',
+    'controllo': '✅',
+    'neurologia': '🧠',
+    'pneumologia': '🫁',
+    'gastroenterologia': '🩺',
+    'prescrizione': '💊',
+    'visita': '👨‍⚕️',
+    'diagnostica': '🔬'
   }
   
-  if (tags.some(t => t.includes('diagnostica') || t.includes('ecografia') || 
-                      t.includes('radiologia') || t.includes('radiografia'))) {
-    return DOCUMENT_CATEGORIES.diagnostic
-  }
-  
-  if (tags.some(t => t.includes('referto') || t.includes('esami')) || 
-      title.includes('referto') || title.includes('controllo')) {
-    return DOCUMENT_CATEGORIES.report
-  }
-  
-  return DOCUMENT_CATEGORIES.other
-})
+  return tagIconMap[normalizedTag] || '📄'
+}
 
 // Metadata per BaseCard
 const metadata = computed<CardMetadata[]>(() => {
@@ -277,13 +284,20 @@ const handleDownloadBarcode = () => {
 
       <!-- Document Type Badge (after title) -->
       <template #after-title>
-        <div class="document-type-badge" :style="{
-          backgroundColor: documentCategory.bgColor,
-          borderColor: documentCategory.borderColor,
-          color: documentCategory.color
-        }">
-          <span class="badge-icon">{{ documentCategory.icon }}</span>
-          <span class="badge-label">{{ documentCategory.label }}</span>
+        <div class="badges-row">
+          <div 
+            v-for="tag in document.tags.slice(0, 2)" 
+            :key="tag" 
+            class="document-badge"
+            :style="{
+              color: getBadgeColors(tag).color,
+              backgroundColor: getBadgeColors(tag).bgColor,
+              borderColor: getBadgeColors(tag).borderColor
+            }"
+          >
+            <span class="badge-icon">{{ getBadgeIcon(tag) }}</span>
+            <span class="badge-label">{{ tag }}</span>
+          </div>
         </div>
       </template>
     </BaseCard>
@@ -389,6 +403,14 @@ const handleDownloadBarcode = () => {
   box-shadow: 0 4px 12px var(--accent-primary-40);
 }
 
+/* Badges Row Container */
+.badges-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
 /* Document Type Badge (inline under title) */
 .document-type-badge {
   display: inline-flex;
@@ -402,7 +424,6 @@ const handleDownloadBarcode = () => {
   font-weight: 700;
   font-size: 0.8125rem;
   box-shadow: 0 2px 8px var(--badge-shadow), inset 0 1px 0 var(--white-40);
-  margin-bottom: 0.75rem;
   width: fit-content;
   animation: fadeInScale 0.4s cubic-bezier(0, 0, 0.2, 1);
 }
@@ -417,6 +438,35 @@ const handleDownloadBarcode = () => {
   letter-spacing: 0.01em;
   text-transform: uppercase;
   font-size: 0.75rem;
+}
+
+/* Additional Document Badges */
+.document-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.875rem;
+  border: 1.5px solid;
+  border-radius: 0.75rem;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-weight: 600;
+  font-size: 0.8125rem;
+  box-shadow: 0 2px 8px var(--badge-shadow), inset 0 1px 0 var(--white-40);
+  width: fit-content;
+  animation: fadeInScale 0.4s cubic-bezier(0, 0, 0.2, 1);
+  transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
+}
+
+.document-badge .badge-icon {
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+.document-badge .badge-label {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  font-size: 0.8125rem;
 }
 
 /* Barcode Action Button (inline with title) */

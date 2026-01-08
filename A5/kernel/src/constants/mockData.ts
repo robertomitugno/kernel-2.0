@@ -126,7 +126,7 @@ export const MOCK_DOCUMENTS: Document[] = [
   },
   {
     id: 'prescription-1',
-    title: 'Prescrizione farmaci - Antibiotico',
+    title: 'Prescrizione farmaci - Pressione sanguigna',
     description: 'Prescrizione medica per terapia antibiotica. Amoxicillina 1g, 3 volte al giorno per 7 giorni. Ritirare in farmacia.',
     tags: ['Prescrizione', 'Farmaci'],
     date: '27 Dic 2025',
@@ -214,6 +214,81 @@ export const MOCK_DOCUMENTS: Document[] = [
     date: '1 Ott 2025',
     doctor: 'Dr. Luca Moretti',
     hospital: 'Poliambulatorio Salute'
+  },
+  {
+    id: '9',
+    title: 'Emoglobina glicata (HbA1c) - Controllo diabete',
+    description: 'Dosaggio emoglobina glicata per monitoraggio diabete mellito tipo 2. Valore HbA1c 6.8%. Controllo glicemico accettabile, mantenere terapia in atto.',
+    tags: ['Diabete', 'Analisi', 'Endocrinologia'],
+    date: '15 Dic 2025',
+    doctor: 'Dr.ssa Laura Bianchi',
+    hospital: 'Laboratorio Analisi Medicon'
+  },
+  {
+    id: '10',
+    title: 'Visita diabetologica - Controllo trimestrale',
+    description: 'Controllo diabete mellito tipo 2. Glicemia a digiuno 128 mg/dL. Pressione arteriosa 135/85 mmHg. Peso 78 kg. Confermata terapia con metformina 1000mg x2/die.',
+    tags: ['Diabete', 'Endocrinologia', 'Visita'],
+    date: '10 Dic 2025',
+    doctor: 'Dr. Paolo Santini',
+    hospital: 'Centro Diabetologico Milano'
+  },
+  {
+    id: '11',
+    title: 'Profilo glicemico - Curva da carico',
+    description: 'Test da carico orale di glucosio (OGTT). Glicemia basale 115 mg/dL, dopo 60min 185 mg/dL, dopo 120min 162 mg/dL. Intolleranza glucidica confermata.',
+    tags: ['Diabete', 'Analisi'],
+    date: '5 Dic 2025',
+    doctor: 'Dr.ssa Laura Bianchi',
+    hospital: 'Laboratorio Analisi Medicon'
+  },
+  {
+    id: '12',
+    title: 'Fundus oculi - Screening retinopatia diabetica',
+    description: 'Esame del fondo oculare per screening complicanze diabetiche. Non evidenza di retinopatia diabetica. Vasi retinici nella norma. Controllo consigliato tra 12 mesi.',
+    tags: ['Diabete', 'Oculistica', 'Diagnostica'],
+    date: '28 Nov 2025',
+    doctor: 'Dr. Giuseppe Verdi',
+    hospital: 'Centro Oculistico Vista Chiara'
+  },
+  {
+    id: '13',
+    title: 'Esame urine completo - Microalbuminuria',
+    description: 'Analisi delle urine con ricerca microalbuminuria. Microalbuminuria 45 mg/24h (lievemente elevata). Funzionalità renale da monitorare. Creatinina 1.1 mg/dL.',
+    tags: ['Diabete', 'Analisi', 'Nefrologia'],
+    date: '20 Nov 2025',
+    doctor: 'Dr.ssa Laura Bianchi',
+    hospital: 'Laboratorio Analisi Medicon'
+  },
+  {
+    id: '14',
+    title: 'ECG + Visita cardiologica - Screening cardiovascolare',
+    description: 'Elettrocardiogramma e visita cardiologica per paziente diabetico. ECG nella norma. Lieve ipertrofia ventricolare sinistra. Consigliato controllo annuale.',
+    tags: ['Diabete', 'Cardiologia', 'Esami'],
+    date: '8 Nov 2025',
+    doctor: 'Dr. Mario Rossi',
+    hospital: 'Ospedale San Raffaele'
+  },
+  {
+    id: 'prescription-4',
+    title: 'Prescrizione farmaci - Terapia diabete',
+    description: 'Prescrizione terapia antidiabetica. Metformina 1000mg x2/die ai pasti. Validità 6 mesi con possibilità di ripetizione.',
+    tags: ['Prescrizione', 'Diabete', 'Farmaci'],
+    date: '10 Set 2025',
+    doctor: 'Dr. Paolo Santini',
+    hospital: 'Centro Diabetologico Milano',
+    isPrescription: true,
+    prescriptionCode: '8234567890456',
+    expirationDays: 180
+  },
+  {
+    id: '15',
+    title: 'Ecocolordoppler arti inferiori - Screening vascolare',
+    description: 'Esame ecocolordoppler degli arti inferiori per screening complicanze vascolari diabete. Flusso arterioso conservato bilateralmente. Nessuna stenosi significativa.',
+    tags: ['Diabete', 'Diagnostica', 'Vascolare'],
+    date: '25 Ago 2025',
+    doctor: 'Dr. Antonio Ferrari',
+    hospital: 'Centro Diagnostico San Marco'
   }
 ]
 
@@ -226,7 +301,7 @@ export const MOCK_APPOINTMENTS: Appointment[] = [
     tags: ['Cardiologia', 'Controllo'],
     date: '13 Gen 2026',
     time: '15:30',
-    user: 'Nonno Giulio',
+    user: 'Sofia',
     location: 'Ospedale San Raffaele'
   },
     {
