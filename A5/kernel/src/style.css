@@ -75,6 +75,17 @@
   /* White variations */
   --white-90: rgba(255, 255, 255, 0.9);
   
+  /* Topbar icons and text */
+  --topbar-icon-color: #1f2937;
+  --topbar-text-color: #1f2937;
+  --topbar-text-secondary: #6b7280;
+  
+  /* Widget and section text - adaptive */
+  --widget-label-color: #6b7280;
+  --widget-value-color: #1f2937;
+  --section-title-color: #1f2937;
+  --hint-text-color: #6b7280;
+  
   --accent-primary-8: rgba(14, 165, 233, 0.08);
   --accent-primary-5: rgba(14, 165, 233, 0.05);
   --accent-primary-10: rgba(14, 165, 233, 0.1);
@@ -344,6 +355,26 @@
   --glass-menu-hover-bg: rgba(14, 165, 233, 0.08);
   --glass-menu-text-primary: #111827;
   --glass-menu-text-secondary: #4b5563;
+  
+  /* Accessibilità: colori testo con contrasto WCAG AA (min 4.5:1) */
+  --text-default: #1f2937;
+  --text-muted: #4b5563;
+  --text-subtle: #6b7280;
+  --text-on-light-bg: #374151;
+  --text-metadata: #374151;
+  --text-interactive: #0369a1;
+  --text-interactive-hover: #075985;
+  --text-on-tag: #1f2937;
+  
+  /* Bottoni secondari - si invertono tra tema chiaro e scuro */
+  --btn-secondary-bg: #1f2937;
+  --btn-secondary-text: #ffffff;
+  --btn-secondary-border: rgba(255, 255, 255, 0.2);
+  --btn-secondary-shadow: rgba(31, 41, 55, 0.3);
+  
+  /* Warning accessibile - contrasto minimo 4.5:1 su sfondo chiaro */
+  --warning-text-accessible: #92400e;
+  --warning-bg-accessible: #fef3c7;
 }
 
 /* Tema scuro */
@@ -398,6 +429,17 @@
   
   /* White/Dark variations for dark theme */
   --white-90: rgba(17, 24, 39, 0.9);
+  
+  /* Topbar icons and text - dark theme (white for visibility) */
+  --topbar-icon-color: #ffffff;
+  --topbar-text-color: #ffffff;
+  --topbar-text-secondary: rgba(255, 255, 255, 0.7);
+  
+  /* Widget and section text - dark theme */
+  --widget-label-color: rgba(255, 255, 255, 0.75);
+  --widget-value-color: #ffffff;
+  --section-title-color: #ffffff;
+  --hint-text-color: rgba(255, 255, 255, 0.75);
   
   --accent-primary-8: rgba(255, 255, 255, 0.08);
   --accent-primary-25: rgba(255, 255, 255, 0.25);
@@ -515,6 +557,26 @@
   --glass-menu-hover-bg: rgba(56, 189, 248, 0.15);
   --glass-menu-text-primary: #f9fafb;
   --glass-menu-text-secondary: #d1d5db;
+  
+  /* Accessibilità tema scuro: colori testo con contrasto WCAG AA (min 4.5:1) */
+  --text-default: #f9fafb;
+  --text-muted: #d1d5db;
+  --text-subtle: #e5e7eb;
+  --text-on-light-bg: #e5e7eb;
+  --text-metadata: #e5e7eb;
+  --text-interactive: #7dd3fc;
+  --text-interactive-hover: #a5f3fc;
+  --text-on-tag: #1f2937;
+  
+  /* Bottoni secondari - invertiti in tema scuro */
+  --btn-secondary-bg: rgba(255, 255, 255, 0.9);
+  --btn-secondary-text: #1f2937;
+  --btn-secondary-border: rgba(255, 255, 255, 0.3);
+  --btn-secondary-shadow: rgba(255, 255, 255, 0.2);
+  
+  /* Warning accessibile tema scuro - contrasto minimo 4.5:1 */
+  --warning-text-accessible: #fcd34d;
+  --warning-bg-accessible: rgba(120, 53, 15, 0.3);
   
   --bg-gradient-mid-40: rgba(91, 33, 182, 0.4);
   --bg-gradient-mid-50: rgba(91, 33, 182, 0.5);

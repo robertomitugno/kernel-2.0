@@ -213,7 +213,7 @@ const clearRange = () => {
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--white-40);
   border-radius: 0.75rem;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
@@ -277,7 +277,7 @@ const clearRange = () => {
 .section-title {
   font-size: 0.8125rem;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -294,7 +294,7 @@ const clearRange = () => {
   background: var(--accent-primary-8);
   border: 1px solid var(--accent-primary-20);
   border-radius: 0.5rem;
-  color: var(--accent-primary);
+  color: var(--text-interactive);
   font-size: 0.8125rem;
   font-weight: 500;
   cursor: pointer;
@@ -329,7 +329,7 @@ const clearRange = () => {
 .input-label {
   font-size: 0.75rem;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -340,7 +340,7 @@ const clearRange = () => {
   border: 1px solid var(--border-color);
   border-radius: 0.5rem;
   font-size: 0.875rem;
-  color: var(--text-primary);
+  color: var(--text-default);
   transition: all 0.2s;
 }
 

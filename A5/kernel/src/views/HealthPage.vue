@@ -104,10 +104,10 @@ const glucoseHistory = ref(GLUCOSE_HISTORY)
           </svg>
         </div>
         <div class="ml-3">
-          <h3 class="text-sm font-semibold text-gray-800 mb-1">
+          <h3 class="info-title">
             {{ $t('health.info.title') }}
           </h3>
-          <p class="text-sm text-gray-700">
+          <p class="info-description">
             {{ $t('health.info.description') }}
           </p>
         </div>
@@ -197,6 +197,18 @@ const glucoseHistory = ref(GLUCOSE_HISTORY)
   animation: fadeIn 0.5s cubic-bezier(0, 0, 0.2, 1);
   animation-delay: 0.3s;
   animation-fill-mode: both;
+}
+
+.info-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-on-light-bg);
+  margin-bottom: 0.25rem;
+}
+
+.info-description {
+  font-size: 0.875rem;
+  color: var(--text-muted);
 }
 
 @keyframes slideInDown {

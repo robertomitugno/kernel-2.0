@@ -32,9 +32,9 @@ const titleClasses = computed(() => {
 
 const textClasses = computed(() => {
   if (props.alert.severity === 'danger') {
-    return 'text-red-700';
+    return 'alert-text-danger';
   }
-  return 'text-yellow-700';
+  return 'alert-text-warning';
 });
 </script>
 
@@ -105,7 +105,7 @@ const textClasses = computed(() => {
 }
 
 .bg-yellow-50 {
-  background: var(--warning-10-on-bg);
+  background: var(--warning-bg-accessible);
   backdrop-filter: blur(12px);
   border: 1px solid var(--warning-30);
   box-shadow: 0 4px 16px var(--shadow), inset 0 1px 0 var(--white-50);
@@ -133,15 +133,23 @@ const textClasses = computed(() => {
   color: var(--error);
 }
 
+.alert-text-warning {
+  color: var(--warning-text-accessible);
+}
+
+.alert-text-danger {
+  color: #991b1b;
+}
+
 .text-yellow-600 {
   color: var(--warning);
 }
 
 .text-yellow-700 {
-  color: var(--warning);
+  color: var(--warning-text-accessible);
 }
 
 .text-yellow-800 {
-  color: var(--warning);
+  color: var(--warning-text-accessible);
 }
 </style>

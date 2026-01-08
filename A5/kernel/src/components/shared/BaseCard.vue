@@ -124,19 +124,63 @@ const emit = defineEmits<{
 .title-row h3 {
   flex: 1;
   min-width: 0;
+  max-width: calc(100% - 10rem);
+}
+
+@media (max-width: 1024px) {
+  .title-row h3 {
+    max-width: calc(100% - 8rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .title-row h3 {
+    max-width: 100%;
+  }
 }
 
 .card-title {
   color: var(--text-heading);
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .card-description {
-  color: var(--text-primary);
+  color: var(--text-default);
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: calc(100% - 12rem);
+}
+
+@media (max-width: 1024px) {
+  .card-description {
+    max-width: calc(100% - 10rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .card-description {
+    max-width: calc(100% - 8rem);
+  }
 }
 
 .metadata-row {
   margin-top: 0.5rem;
   flex-wrap: wrap;
+  color: var(--text-metadata);
+  max-width: calc(100% - 12rem);
+}
+
+@media (max-width: 1024px) {
+  .metadata-row {
+    max-width: calc(100% - 10rem);
+  }
+}
+
+@media (max-width: 768px) {
+  .metadata-row {
+    max-width: calc(100% - 8rem);
+  }
 }
 
 .card-actions {
@@ -146,13 +190,7 @@ const emit = defineEmits<{
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-}
-
-@media (max-width: 768px) {
-  .card-actions {
-    flex-direction: row;
-    gap: 0.5rem;
-  }
+  align-items: flex-end;
 }
 
 @media (max-width: 640px) {
@@ -160,20 +198,23 @@ const emit = defineEmits<{
     padding: 1rem;
   }
 
-  .content-wrapper {
-    padding-right: 0;
-  }
-
   .card-actions {
     position: static;
     margin-top: 1rem;
     flex-direction: row;
     gap: 0.5rem;
+    align-items: center;
   }
 
   .card-content {
     flex-direction: column;
     gap: 0.75rem;
+  }
+
+  .title-row h3,
+  .card-description,
+  .metadata-row {
+    max-width: 100%;
   }
 }
 </style>

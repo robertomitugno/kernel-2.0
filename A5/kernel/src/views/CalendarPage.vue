@@ -294,22 +294,22 @@ function parseDateToISO(dateString: string): string {
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 1.5rem;
-  background: var(--black-80);
+  background: var(--btn-secondary-bg);
   backdrop-filter: blur(12px);
-  color: white;
-  border: 1px solid var(--white-15);
+  color: var(--btn-secondary-text);
+  border: 1px solid var(--btn-secondary-border);
   border-radius: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
   white-space: nowrap;
-  box-shadow: 0 4px 16px var(--black-15);
+  box-shadow: 0 4px 16px var(--btn-secondary-shadow);
 }
 
 .new-appointment-btn:hover {
-  background: var(--black-90);
   transform: translateY(-2px);
-  box-shadow: 0 6px 24px var(--black-20);
+  box-shadow: 0 6px 24px var(--btn-secondary-shadow);
+  filter: brightness(1.05);
 }
 
 .tag-bar-container {

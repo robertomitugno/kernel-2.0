@@ -46,11 +46,11 @@ const changeUser = () => {
     </div>
     <div class="flex items-center gap-6 topbar-actions">
       <button 
-        class="glass-button relative flex items-center justify-center w-[clamp(2rem,5vw,2.25rem)] h-[clamp(2rem,5vw,2.25rem)] rounded-md"
+        class="glass-button topbar-icon-button relative flex items-center justify-center w-[clamp(2rem,5vw,2.25rem)] h-[clamp(2rem,5vw,2.25rem)] rounded-md"
         :title="t('topbar.notifications')"
         :aria-label="`${t('topbar.notifications')} - 1 non letta`"
       >
-        <svg class="w-[clamp(1rem,3vw,1.25rem)] h-[clamp(1rem,3vw,1.25rem)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <svg class="topbar-icon w-[clamp(1rem,3vw,1.25rem)] h-[clamp(1rem,3vw,1.25rem)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
           <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
         </svg>
@@ -62,13 +62,13 @@ const changeUser = () => {
       <!-- Language Selector -->
       <div class="relative">
         <button 
-          class="glass-button flex items-center gap-1.5 px-2.5 py-1.5 rounded-md"
+          class="glass-button topbar-icon-button flex items-center gap-1.5 px-2.5 py-1.5 rounded-md"
           :aria-label="`Lingua corrente: ${currentLanguage}. Clicca per cambiare lingua`"
           :aria-expanded="showLanguageMenu"
           @click="toggleLanguageMenu"
         >
-          <span class="text-[clamp(0.75rem,2vw,0.875rem)] font-semibold text-gray-900">{{ currentLanguage }}</span>
-          <svg class="text-gray-600 w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <span class="topbar-text text-[clamp(0.75rem,2vw,0.875rem)] font-semibold">{{ currentLanguage }}</span>
+          <svg class="topbar-icon-secondary w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <polyline points="6 9 12 15 18 9"/>
           </svg>
         </button>
@@ -99,18 +99,18 @@ const changeUser = () => {
       
       <div class="relative">
         <button 
-          class="glass-button flex items-center gap-2 px-3 py-1.5 rounded-md"
+          class="glass-button topbar-icon-button flex items-center gap-2 px-3 py-1.5 rounded-md"
           :aria-label="`Menu utente ${currentUser?.name || 'User'}`"
           :aria-expanded="showUserMenu"
           @click="toggleUserMenu"
         >
-          <div class="w-[clamp(1.25rem,4vw,1.5rem)] h-[clamp(1.25rem,4vw,1.5rem)] rounded-full bg-gray-200 flex items-center justify-center text-gray-600">
-            <svg class="w-[clamp(0.875rem,3vw,1.125rem)] h-[clamp(0.875rem,3vw,1.125rem)]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <div class="w-[clamp(1.25rem,4vw,1.5rem)] h-[clamp(1.25rem,4vw,1.5rem)] rounded-full bg-gray-200 flex items-center justify-center topbar-user-icon">
+            <svg class="topbar-icon w-[clamp(0.875rem,3vw,1.125rem)] h-[clamp(0.875rem,3vw,1.125rem)]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
             </svg>
           </div>
-          <span class="user-name-text text-[clamp(0.75rem,2vw,0.875rem)] font-medium text-gray-900">{{ currentUser?.name || 'User' }}</span>
-          <svg class="text-gray-600 w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <span class="user-name-text topbar-text text-[clamp(0.75rem,2vw,0.875rem)] font-medium">{{ currentUser?.name || 'User' }}</span>
+          <svg class="topbar-icon-secondary w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <polyline points="6 9 12 15 18 9"/>
           </svg>
         </button>
@@ -178,6 +178,23 @@ const changeUser = () => {
 
 .topbar-title {
   color: var(--text-heading);
+}
+
+/* Topbar icons and text */
+.topbar-icon {
+  color: var(--topbar-icon-color);
+}
+
+.topbar-icon-secondary {
+  color: var(--topbar-text-secondary);
+}
+
+.topbar-text {
+  color: var(--topbar-text-color);
+}
+
+.topbar-user-icon {
+  color: var(--topbar-text-secondary);
 }
 
 .lang-menu-text,

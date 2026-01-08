@@ -148,7 +148,7 @@ const colorBlindOptions: { value: ColorBlindMode; label: string }[] = [
 .theme-button span {
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-default);
 }
 
 .theme-button.active span {
@@ -192,7 +192,7 @@ const colorBlindOptions: { value: ColorBlindMode; label: string }[] = [
   flex: 1;
   font-size: 0.9375rem;
   font-weight: 500;
-  color: var(--text-primary);
+  color: var(--text-default);
   text-align: left;
 }
 
@@ -221,6 +221,6 @@ const colorBlindOptions: { value: ColorBlindMode; label: string }[] = [
 :root.dark .theme-button.active,
 :root.dark .radio-option.active {
   background: var(--accent-primary-20);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2), 0 2px 4px var(--black-10);
+  box-shadow: 0 4px 12px var(--white-20), 0 2px 4px var(--black-10);
 }
 </style>

@@ -131,7 +131,7 @@ const handleClick = () => {
 }
 
 .settings-item:hover .settings-item__title {
-  color: var(--accent-primary);
+  color: var(--text-interactive-hover);
 }
 
 .settings-item--danger .settings-item__title {
@@ -151,7 +151,7 @@ const handleClick = () => {
 }
 
 .settings-item:hover .settings-item__subtitle {
-  color: var(--text-primary);
+  color: var(--text-default);
 }
 
 .settings-item__chevron {

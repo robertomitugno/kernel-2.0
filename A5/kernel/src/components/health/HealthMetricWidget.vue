@@ -44,10 +44,10 @@ const toggleDetails = () => {
 <template>
   <div :class="compact ? 'compact-metric' : 'metric-widget'">
     <div class="flex justify-between items-start" :class="compact ? 'mb-1' : 'mb-2'">
-      <h3 class="text-gray-800 font-semibold" :class="compact ? 'text-md' : 'text-lg'">{{ parameter.name }}</h3>
+      <h3 class="metric-title" :class="compact ? 'metric-title-compact' : 'metric-title-large'">{{ parameter.name }}</h3>
       <span :class="[trendColor, compact ? 'text-lg' : 'text-2xl']" class="font-bold">{{ trendIcon }}</span>
     </div>
-    <div class="text-xs text-gray-600" :class="compact ? 'mb-2' : 'mb-3'">
+    <div class="metric-range" :class="compact ? 'mb-2' : 'mb-3'">
       {{ $t('health.normalRange') }} {{ parameter.normalRange.min }}-{{ parameter.normalRange.max }}
       {{ parameter.unit }}
     </div>
@@ -65,30 +65,30 @@ const toggleDetails = () => {
           stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
-        <span class="ml-1.5 text-xs font-medium">
+        <span class="metric-details-text">
           {{ showDetails ? $t('health.sourceDocuments.hideDetails') : $t('health.sourceDocuments.showDetails') }}
         </span>
       </button>
 
       <transition name="expand">
         <div v-if="showDetails" class="details-content">
-          <p class="text-xs text-gray-600 mb-2">{{ $t('health.sourceDocuments.description') }}</p>
+          <p class="details-description">{{ $t('health.sourceDocuments.description') }}</p>
           <div v-if="parameter.sourceDocuments && parameter.sourceDocuments.length > 0" class="space-y-1.5">
             <div v-for="doc in parameter.sourceDocuments" :key="doc.id" class="document-item">
               <div class="flex items-start">
-                <svg class="w-3.5 h-3.5 text-sky-600 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <svg class="document-icon" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd"
                     d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z"
                     clip-rule="evenodd" />
                 </svg>
                 <div class="ml-1.5 flex-1">
-                  <p class="text-xs font-medium text-gray-800 leading-tight">{{ doc.title }}</p>
-                  <p class="text-xs text-gray-500">{{ doc.date }}</p>
+                  <p class="document-title">{{ doc.title }}</p>
+                  <p class="document-date">{{ doc.date }}</p>
                 </div>
               </div>
             </div>
           </div>
-          <p v-else class="text-xs text-gray-500 italic">{{ $t('health.sourceDocuments.noDocuments') }}</p>
+          <p v-else class="no-documents">{{ $t('health.sourceDocuments.noDocuments') }}</p>
         </div>
       </transition>
     </div>
@@ -96,6 +96,31 @@ const toggleDetails = () => {
 </template>
 
 <style scoped>
+.metric-title {
+  color: var(--text-default);
+  font-weight: 600;
+}
+
+.metric-title-large {
+  font-size: 1.125rem;
+}
+
+.metric-title-compact {
+  font-size: 1rem;
+}
+
+.metric-range {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.metric-details-text {
+  margin-left: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-interactive);
+}
+
 .compact-metric {
   width: 100%;
   padding: 0.875rem 1rem;
@@ -145,15 +170,19 @@ const toggleDetails = () => {
   padding: 0.375rem;
   background: transparent;
   border: none;
-  color: var(--accent-primary);
+  color: var(--text-interactive);
   cursor: pointer;
   transition: color 0.2s;
   border-radius: 0.5rem;
 }
 
 .details-toggle:hover {
-  color: var(--accent-primary-85-black);
+  color: var(--text-interactive-hover);
   background: var(--accent-primary-5);
+}
+
+.details-toggle:hover .metric-details-text {
+  color: var(--text-interactive-hover);
 }
 
 .details-content {
@@ -162,6 +191,38 @@ const toggleDetails = () => {
   background: var(--accent-primary-8-on-bg);
   border-radius: 0.5rem;
   border: 1px solid var(--accent-primary-15);
+}
+
+.details-description {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.document-icon {
+  width: 0.875rem;
+  height: 0.875rem;
+  color: var(--text-interactive);
+  margin-top: 0.125rem;
+  flex-shrink: 0;
+}
+
+.document-title {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-default);
+  line-height: 1.25;
+}
+
+.document-date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.no-documents {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-style: italic;
 }
 
 .document-item {

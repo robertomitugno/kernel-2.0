@@ -129,7 +129,7 @@ const allSelected = computed(() => {
 .selection-count {
   font-size: 0.9375rem;
   font-weight: 600;
-  color: var(--text-primary);
+  color: var(--text-default);
   white-space: nowrap;
 }
 
@@ -156,7 +156,7 @@ const allSelected = computed(() => {
   background: var(--accent-primary-8);
   border: 1px solid var(--accent-primary-20);
   border-radius: 0.5rem;
-  color: var(--accent-primary);
+  color: var(--text-interactive);
   font-size: 0.75rem;
   font-weight: 500;
   white-space: nowrap;
@@ -196,7 +196,7 @@ const allSelected = computed(() => {
 .deselect-btn {
   background: var(--black-5);
   border: 1px solid var(--text-primary-10);
-  color: var(--text-secondary);
+  color: var(--text-muted);
 }
 
 .deselect-btn:hover {

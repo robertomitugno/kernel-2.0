@@ -78,7 +78,7 @@ const selectTag = (tagId: string) => {
   backdrop-filter: blur(12px);
   border: 1px solid var(--white-60);
   border-radius: 0.75rem;
-  color: var(--text-primary);
+  color: var(--text-on-tag);
   font-size: 0.875rem;
   font-weight: 600;
   cursor: pointer;

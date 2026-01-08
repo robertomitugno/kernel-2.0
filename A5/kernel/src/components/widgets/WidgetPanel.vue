@@ -191,7 +191,7 @@ onMounted(() => {
 <template>
   <div class="widget-panel">
     <div class="panel-header">
-      <h3 class="text-xl font-hand font-semibold">{{ $t('home.quickOverview') }}</h3>
+      <h3 class="widget-panel-title">{{ $t('home.quickOverview') }}</h3>
       <button 
         class="icon-button" 
         type="button" 
@@ -242,8 +242,8 @@ onMounted(() => {
               <CalendarIcon class="w-5 h-5" />
             </div>
             <div class="flex-1 min-w-0">
-              <div class="text-sm text-gray-600">Prossima visita</div>
-              <div class="text-lg font-semibold text-gray-900">3 giorni</div>
+              <div class="widget-label">Prossima visita</div>
+              <div class="widget-value">3 giorni</div>
             </div>
           </div>
         </div>
@@ -254,8 +254,8 @@ onMounted(() => {
               <BellIcon class="w-5 h-5" />
             </div>
             <div class="flex-1 min-w-0">
-              <div class="text-sm text-gray-600">Documenti nuovi</div>
-              <div class="text-lg font-semibold text-gray-900">2</div>
+              <div class="widget-label">Documenti nuovi</div>
+              <div class="widget-value">2</div>
             </div>
           </div>
         </div>
@@ -264,8 +264,8 @@ onMounted(() => {
           <div class="flex items-center gap-3">
             <div class="icon-pill text-xl">💊</div>
             <div class="flex-1 min-w-0">
-              <div class="text-sm text-gray-600">{{ WIDGET_DATA.nextMedicationReminder.medication }}</div>
-              <div class="text-lg font-semibold text-gray-900">{{ WIDGET_DATA.nextMedicationReminder.time }}</div>
+              <div class="widget-label">{{ WIDGET_DATA.nextMedicationReminder.medication }}</div>
+              <div class="widget-value">{{ WIDGET_DATA.nextMedicationReminder.time }}</div>
             </div>
           </div>
         </div>
@@ -323,6 +323,12 @@ onMounted(() => {
   margin-bottom: 0.25rem;
 }
 
+.widget-panel-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--section-title-color);
+}
+
 .icon-button {
   display: inline-flex;
   align-items: center;
@@ -332,7 +338,7 @@ onMounted(() => {
   border-radius: 0.65rem;
   cursor: pointer;
   border: 1px solid var(--white-60);
-  color: var(--gray-525252);
+  color: var(--text-muted);
   transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
   position: relative;
   background: var(--white-50);
@@ -383,6 +389,22 @@ onMounted(() => {
   justify-content: center;
   flex-shrink: 0;
   box-shadow: 0 2px 8px var(--black-5);
+}
+
+.widget-label {
+  font-size: 0.875rem;
+  color: var(--widget-label-color);
+}
+
+.widget-value {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--widget-value-color);
+}
+
+.empty-state {
+  font-weight: 600;
+  color: var(--white);
 }
 
 .empty-state {

@@ -408,14 +408,16 @@ const handleCloseComparison = () => {
 }
 
 .comparison-btn {
-  background: var(--black-80);
-  color: white;
+  background: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+  border: 1px solid var(--btn-secondary-border);
+  box-shadow: 0 4px 16px var(--btn-secondary-shadow);
 }
 
 .comparison-btn:hover {
-  background: var(--black-90);
   transform: translateY(-2px);
-  box-shadow: 0 6px 24px var(--black-20);
+  box-shadow: 0 6px 24px var(--btn-secondary-shadow);
+  filter: brightness(1.05);
 }
 
 .filters-row {

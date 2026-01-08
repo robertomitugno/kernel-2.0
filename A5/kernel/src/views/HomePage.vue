@@ -87,7 +87,7 @@ const handleCloseToast = () => {
       <div class="main-column">
         <div class="section-card space-y-3">
           <SearchBar @search="handleSearch" />
-          <p class="search-hint text-xs text-gray-500 font-hand text-center">
+          <p class="search-hint">
             {{ $t('home.searchHint') }}
           </p>
         </div>
@@ -122,7 +122,7 @@ const handleCloseToast = () => {
         </div>
 
         <div class="section-card">
-          <h3 class="font-hand font-semibold text-2xl">{{ $t('home.upcomingAppointments') }}</h3>
+          <h3 class="section-title">{{ $t('home.upcomingAppointments') }}</h3>
           <UpcomingAppointments 
             :appointments="appointments"
             @appointment-click="handleAppointmentClick"
@@ -215,6 +215,9 @@ const handleCloseToast = () => {
 
 .search-hint {
   margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: var(--hint-text-color);
+  text-align: center;
 }
 
 .search-suggestions-wrapper {
@@ -372,5 +375,11 @@ const handleCloseToast = () => {
   transform: translateY(-2px);
   background: var(--white-80);
   box-shadow: 0 8px 24px var(--black-12), inset 0 1px 0 var(--white-90);
+}
+
+.section-title {
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: var(--section-title-color);
 }
 </style>

@@ -91,6 +91,7 @@ const chartOptions = computed<ChartOptions<'line'>>(() => ({
         display: false,
       },
       ticks: {
+        color: getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim(),
         font: {
           size: props.compact ? 9 : 11,
         },
@@ -102,6 +103,7 @@ const chartOptions = computed<ChartOptions<'line'>>(() => ({
         color: getComputedStyle(document.documentElement).getPropertyValue('--chart-grid').trim() || getComputedStyle(document.documentElement).getPropertyValue('--black-5').trim(),
       },
       ticks: {
+        color: getComputedStyle(document.documentElement).getPropertyValue('--text-muted').trim(),
         font: {
           size: props.compact ? 9 : 11,
         },
@@ -121,10 +123,10 @@ const toggleDetails = () => {
 <template>
   <div :class="compact ? 'compact-chart' : 'chart-widget'">
     <div :class="compact ? 'mb-2' : 'mb-4'">
-      <h3 :class="compact ? 'text-md font-semibold text-gray-800' : 'text-lg font-semibold text-gray-800'">
+      <h3 :class="compact ? 'chart-title-compact' : 'chart-title'">
         {{ title }}
       </h3>
-      <p v-if="normalRange" :class="compact ? 'text-xs text-gray-600' : 'text-sm text-gray-600'">
+      <p v-if="normalRange" :class="compact ? 'chart-subtitle-compact' : 'chart-subtitle'">
         {{$t('health.normalRange')}} {{ normalRange.min }}-{{ normalRange.max }} {{ unit }}
       </p>
     </div>
@@ -147,14 +149,14 @@ const toggleDetails = () => {
         >
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
-        <span class="ml-2 text-sm font-medium">
+        <span class="details-toggle-text">
           {{ showDetails ? $t('health.sourceDocuments.hideDetails') : $t('health.sourceDocuments.showDetails') }}
         </span>
       </button>
       
       <transition name="expand">
         <div v-if="showDetails" class="details-content">
-          <p class="text-xs text-gray-600 mb-3">{{ $t('health.sourceDocuments.description') }}</p>
+          <p class="details-description">{{ $t('health.sourceDocuments.description') }}</p>
           <div v-if="data.sourceDocuments && data.sourceDocuments.length > 0" class="space-y-2">
             <div 
               v-for="doc in data.sourceDocuments" 
@@ -162,17 +164,17 @@ const toggleDetails = () => {
               class="document-item"
             >
               <div class="flex items-start">
-                <svg class="w-4 h-4 text-sky-600 mt-0.5 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <svg class="document-icon" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" clip-rule="evenodd" />
                 </svg>
                 <div class="ml-2 flex-1">
-                  <p class="text-xs font-medium text-gray-800">{{ doc.title }}</p>
-                  <p class="text-xs text-gray-500">{{ doc.date }}</p>
+                  <p class="document-title">{{ doc.title }}</p>
+                  <p class="document-date">{{ doc.date }}</p>
                 </div>
               </div>
             </div>
           </div>
-          <p v-else class="text-xs text-gray-500 italic">{{ $t('health.sourceDocuments.noDocuments') }}</p>
+          <p v-else class="no-documents">{{ $t('health.sourceDocuments.noDocuments') }}</p>
         </div>
       </transition>
     </div>
@@ -221,6 +223,28 @@ const toggleDetails = () => {
   border-top: 1px solid var(--border-color);
 }
 
+.chart-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--text-default);
+}
+
+.chart-title-compact {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-default);
+}
+
+.chart-subtitle {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.chart-subtitle-compact {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
 .details-toggle {
   display: flex;
   align-items: center;
@@ -228,15 +252,26 @@ const toggleDetails = () => {
   padding: 0.5rem;
   background: transparent;
   border: none;
-  color: var(--accent-primary);
+  color: var(--text-interactive);
   cursor: pointer;
   transition: color 0.2s;
   border-radius: 0.5rem;
 }
 
+.details-toggle-text {
+  margin-left: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-interactive);
+}
+
 .details-toggle:hover {
-  color: var(--accent-primary-85-black);
+  color: var(--text-interactive-hover);
   background: var(--accent-primary-5);
+}
+
+.details-toggle:hover .details-toggle-text {
+  color: var(--text-interactive-hover);
 }
 
 .details-content {
@@ -245,6 +280,37 @@ const toggleDetails = () => {
   background: var(--accent-primary-8-on-bg);
   border-radius: 0.75rem;
   border: 1px solid var(--accent-primary-15);
+}
+
+.details-description {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-bottom: 0.75rem;
+}
+
+.document-icon {
+  width: 1rem;
+  height: 1rem;
+  color: var(--text-interactive);
+  margin-top: 0.125rem;
+  flex-shrink: 0;
+}
+
+.document-title {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-default);
+}
+
+.document-date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.no-documents {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-style: italic;
 }
 
 .document-item {
