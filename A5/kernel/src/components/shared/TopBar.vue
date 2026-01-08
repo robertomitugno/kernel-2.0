@@ -42,7 +42,7 @@ const changeUser = () => {
 <template>
   <div class="topbar-container">
     <div class="flex items-center">
-      <h1 class="topbar-title text-[clamp(1rem,2.5vw,1.25rem)] font-semibold m-0">{{ t('app.title') }}</h1>
+      <h1 class="topbar-title text-[clamp(1rem,2.5vw,1.25rem)] font-semibold m-0 cursor-pointer hover:opacity-80 transition-opacity" @click="router.push('/home')">{{ t('app.title') }}</h1>
     </div>
     <div class="flex items-center gap-6">
       <button 
