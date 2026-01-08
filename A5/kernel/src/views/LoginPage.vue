@@ -19,7 +19,8 @@ const profiles = ref<Profile[]>([
   { id: '1', name: 'Marco', role: 'Tu' },
   { id: '2', name: 'Laura', role: 'Moglie' },
   { id: '3', name: 'Sofia', role: 'Figlia' },
-  { id: '4', name: 'Nonno Giulio', role: 'Padre' }
+  { id: '4', name: 'Nonno Giulio', role: 'Padre' },
+  { id: '5', name: 'Nonna Maria', role: 'Madre' }
 ])
 
 const selectProfile = (profile: Profile) => {
