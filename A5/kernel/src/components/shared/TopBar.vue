@@ -44,7 +44,7 @@ const changeUser = () => {
     <div class="flex items-center">
       <h1 class="topbar-title text-[clamp(1rem,2.5vw,1.25rem)] font-semibold m-0 cursor-pointer hover:opacity-80 transition-opacity" @click="router.push('/home')">{{ t('app.title') }}</h1>
     </div>
-    <div class="flex items-center gap-6">
+    <div class="flex items-center gap-6 topbar-actions">
       <button 
         class="glass-button relative flex items-center justify-center w-[clamp(2rem,5vw,2.25rem)] h-[clamp(2rem,5vw,2.25rem)] rounded-md"
         :title="t('topbar.notifications')"
@@ -109,7 +109,7 @@ const changeUser = () => {
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
             </svg>
           </div>
-          <span class="text-[clamp(0.75rem,2vw,0.875rem)] font-medium text-gray-900">{{ currentUser?.name || 'User' }}</span>
+          <span class="user-name-text text-[clamp(0.75rem,2vw,0.875rem)] font-medium text-gray-900">{{ currentUser?.name || 'User' }}</span>
           <svg class="text-gray-600 w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <polyline points="6 9 12 15 18 9"/>
           </svg>
@@ -218,5 +218,41 @@ const changeUser = () => {
 
 .glass-menu .text-gray-600 {
   color: var(--glass-menu-text-secondary) !important;
+}
+
+/* Responsive Design - Mobile */
+@media (max-width: 480px) {
+  .topbar-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .topbar-actions {
+    gap: 0.5rem !important;
+  }
+  
+  .user-name-text {
+    display: none;
+  }
+  
+  .glass-button {
+    padding: 0.375rem 0.5rem !important;
+  }
+  
+  .glass-menu {
+    right: -0.5rem;
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .topbar-container {
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+  }
+  
+  .topbar-actions {
+    gap: 0.75rem !important;
+  }
 }
 </style>

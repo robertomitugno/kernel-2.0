@@ -119,7 +119,9 @@ const glucoseHistory = ref(GLUCOSE_HISTORY)
 <style scoped>
 .health-page {
   width: 100%;
+  max-width: 100vw;
   min-height: 100vh;
+  overflow-x: hidden;
   padding: 2rem;
   background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 50%, var(--bg-gradient-end) 100%);
   position: relative;
@@ -236,6 +238,36 @@ const glucoseHistory = ref(GLUCOSE_HISTORY)
 
   .section-title {
     font-size: 1.125rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .health-page {
+    padding: 0.75rem;
+  }
+  
+  .page-header {
+    padding: 1rem 1.25rem;
+  }
+  
+  .page-header h1 {
+    font-size: 1.375rem;
+  }
+  
+  .page-header p {
+    font-size: 0.8125rem;
+  }
+  
+  .section-title {
+    font-size: 1rem;
+  }
+  
+  .section-spacing {
+    margin-bottom: 1rem;
+  }
+  
+  .info-card {
+    padding: 1rem;
   }
 }
 </style>

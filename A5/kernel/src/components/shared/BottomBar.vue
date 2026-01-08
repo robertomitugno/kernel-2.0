@@ -184,4 +184,30 @@ const setActiveTab = (tabId: string) => {
     font-size: 0.625rem;
   }
 }
+
+@media (max-width: 480px) {
+  .bottombar-wrapper {
+    padding-bottom: 0.5rem;
+  }
+  
+  .bottombar-container {
+    padding: 0.5rem 0.75rem;
+    gap: 0.125rem;
+  }
+
+  .tab-button {
+    padding: 0.625rem 0.5rem;
+    min-width: 3rem;
+    gap: 0.125rem;
+  }
+
+  .tab-icon {
+    width: 1.375rem;
+    height: 1.375rem;
+  }
+
+  .tab-label {
+    display: none;
+  }
+}
 </style>

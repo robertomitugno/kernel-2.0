@@ -105,4 +105,45 @@ const selectTag = (tagId: string) => {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px var(--blue-3b82f6-40), inset 0 1px 0 var(--white-30);
 }
+
+@media (max-width: 768px) {
+  .tag-bar {
+    gap: 0.5rem;
+  }
+  
+  .tag-button {
+    font-size: 0.8125rem;
+    padding: 0.5rem 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .tag-bar {
+    gap: 0.5rem;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .tag-bar::-webkit-scrollbar {
+    height: 4px;
+  }
+  
+  .tag-bar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .tag-bar::-webkit-scrollbar-thumb {
+    background: var(--white-60);
+    border-radius: 2px;
+  }
+  
+  .tag-button {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.875rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+}
 </style>

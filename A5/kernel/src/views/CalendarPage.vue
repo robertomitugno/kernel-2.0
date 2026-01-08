@@ -233,6 +233,8 @@ function parseDateToISO(dateString: string): string {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  max-width: 100vw;
+  overflow-x: hidden;
   padding: 2rem;
   background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 50%, var(--bg-gradient-end) 100%);
   position: relative;
@@ -532,6 +534,7 @@ function parseDateToISO(dateString: string): string {
   .header-content {
     flex-direction: column;
     align-items: stretch;
+    padding: 1.25rem 1.5rem;
   }
 
   .page-title {
@@ -540,6 +543,7 @@ function parseDateToISO(dateString: string): string {
 
   .new-appointment-btn {
     justify-content: center;
+    width: 100%;
   }
 
   .content-section {
@@ -563,6 +567,10 @@ function parseDateToISO(dateString: string): string {
     padding: 0.75rem;
   }
 
+  .header-content {
+    padding: 1rem 1.25rem;
+  }
+
   .page-title {
     font-size: 1.25rem;
   }
@@ -582,6 +590,55 @@ function parseDateToISO(dateString: string): string {
 
   .appointments-title {
     font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .calendar-page {
+    padding: 0.5rem;
+  }
+  
+  .header-content {
+    padding: 1rem;
+  }
+  
+  .page-title {
+    font-size: 1.125rem;
+  }
+  
+  .page-subtitle {
+    font-size: 0.8125rem;
+  }
+  
+  .calendar-container {
+    padding: 0.75rem;
+  }
+  
+  .appointments-container {
+    padding: 1rem;
+  }
+  
+  .appointments-title {
+    font-size: 1.125rem;
+  }
+  
+  /* Ottimizza FullCalendar per mobile */
+  :deep(.fc-toolbar-title) {
+    font-size: 1rem !important;
+  }
+  
+  :deep(.fc-button) {
+    padding: 0.375rem 0.625rem !important;
+    font-size: 0.8125rem !important;
+  }
+  
+  :deep(.fc-col-header-cell-cushion) {
+    font-size: 0.625rem !important;
+    padding: 0.25rem !important;
+  }
+  
+  :deep(.fc-daygrid-day-number) {
+    font-size: 0.75rem !important;
   }
 }
 </style>

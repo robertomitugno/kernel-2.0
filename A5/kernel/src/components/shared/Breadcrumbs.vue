@@ -119,7 +119,7 @@ const navigateTo = (path: string) => {
   border: none;
   padding: 0;
   cursor: pointer;
-  font-size: clamp(0.75rem, 2vw, 0.875rem);
+  font-size: 0.9375rem;
   color: var(--text-secondary);
   text-decoration: none;
   transition: color 0.2s ease;
@@ -138,7 +138,7 @@ const navigateTo = (path: string) => {
 }
 
 .breadcrumb-current {
-  font-size: clamp(0.75rem, 2vw, 0.875rem);
+  font-size: 0.9375rem;
   color: var(--text-primary);
   font-weight: 600;
 }

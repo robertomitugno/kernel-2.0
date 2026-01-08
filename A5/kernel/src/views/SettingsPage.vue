@@ -190,7 +190,9 @@ const handleChangeProfile = () => {
 <style scoped>
 .settings-page {
   width: 100%;
+  max-width: 100vw;
   min-height: 100vh;
+  overflow-x: hidden;
   padding: 2rem;
   background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 50%, var(--bg-gradient-end) 100%);
   position: relative;
@@ -406,6 +408,46 @@ const handleChangeProfile = () => {
   
   .settings-subtitle {
     font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .settings-page {
+    padding: 0.75rem;
+  }
+  
+  .settings-header {
+    padding: 1rem 1.25rem;
+  }
+  
+  .settings-title {
+    font-size: 1.375rem;
+  }
+  
+  .settings-subtitle {
+    font-size: 0.8125rem;
+  }
+  
+  .settings-account {
+    padding: 1rem;
+  }
+  
+  .settings-account-avatar {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .settings-account-avatar span {
+    font-size: 1.25rem;
+  }
+  
+  .settings-account-name {
+    font-size: 1rem;
+  }
+  
+  .settings-account-button {
+    font-size: 0.8125rem;
+    padding: 0.5rem 0.875rem;
   }
 }
 </style>

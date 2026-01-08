@@ -182,6 +182,8 @@ const handleCloseToast = () => {
   flex-direction: column;
   gap: 1rem;
   min-height: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
   padding: 1.5rem;
   background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 50%, var(--bg-gradient-end) 100%);
   position: relative;
@@ -310,6 +312,41 @@ const handleCloseToast = () => {
   .section-card {
     padding: 1rem;
   }
+  
+  .search-suggestions-wrapper {
+    margin: 0.5rem;
+  }
+  
+  .quick-actions {
+    margin: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-page {
+    padding: 0.75rem;
+  }
+  
+  .section-card {
+    padding: 0.875rem;
+  }
+  
+  .section-card h3 {
+    font-size: 1.5rem;
+  }
+  
+  .quick-actions {
+    margin: 0.5rem 0;
+  }
+  
+  .quick-actions .flex {
+    flex-direction: column;
+  }
+  
+  .quick-action-btn {
+    width: 100%;
+    padding: 0.875rem 1rem;
+  }
 }
 
 .quick-action-btn {
@@ -317,9 +354,10 @@ const handleCloseToast = () => {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 1rem 1.5rem;
+  padding: 0.875rem 1.25rem;
   border-radius: 0.75rem;
   color: var(--text-primary);
+  font-size: 0.875rem;
   font-weight: 600;
   background: var(--white-60);
   backdrop-filter: blur(12px);

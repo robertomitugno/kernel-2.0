@@ -108,7 +108,9 @@ const emit = defineEmits<{
 .content-wrapper {
   position: relative;
   padding-right: 0;
-  min-height: 6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .title-row {
@@ -134,7 +136,7 @@ const emit = defineEmits<{
 
 .metadata-row {
   margin-top: 0.5rem;
-  padding-right: 18rem;
+  flex-wrap: wrap;
 }
 
 .card-actions {
@@ -146,6 +148,13 @@ const emit = defineEmits<{
   gap: 0.5rem;
 }
 
+@media (max-width: 768px) {
+  .card-actions {
+    flex-direction: row;
+    gap: 0.5rem;
+  }
+}
+
 @media (max-width: 640px) {
   .base-card {
     padding: 1rem;
@@ -153,12 +162,13 @@ const emit = defineEmits<{
 
   .content-wrapper {
     padding-right: 0;
-    padding-bottom: 6rem;
   }
 
   .card-actions {
     position: static;
     margin-top: 1rem;
+    flex-direction: row;
+    gap: 0.5rem;
   }
 
   .card-content {

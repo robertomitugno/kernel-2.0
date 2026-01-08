@@ -68,6 +68,8 @@ const addProfile = () => {
 <style scoped>
 .login-page {
   min-height: 100vh;
+  max-width: 100vw;
+  overflow-x: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -176,6 +178,21 @@ const addProfile = () => {
   
   .profiles-container {
     gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-page {
+    padding: 0.75rem;
+  }
+  
+  .login-title {
+    font-size: 2.5rem;
+  }
+  
+  .profiles-container {
+    gap: 0.75rem;
+    max-width: 100%;
   }
 }
 </style>

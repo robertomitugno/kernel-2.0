@@ -326,6 +326,13 @@ const handleCloseComparison = () => {
   animation: slideInDown 0.5s cubic-bezier(0, 0, 0.2, 1);
 }
 
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    padding: 1.25rem 1.5rem;
+  }
+}
+
 .page-title {
   font-size: 1.875rem;
   font-weight: 700;
@@ -347,6 +354,13 @@ const handleCloseComparison = () => {
   flex-wrap: wrap;
 }
 
+@media (max-width: 768px) {
+  .header-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+}
+
 .action-btn {
   display: flex;
   align-items: center;
@@ -361,6 +375,14 @@ const handleCloseComparison = () => {
   border: 1px solid var(--white-15);
   backdrop-filter: blur(12px);
   box-shadow: 0 4px 16px var(--black-15);
+}
+
+@media (max-width: 768px) {
+  .action-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.875rem 1rem;
+  }
 }
 
 .selection-btn {
@@ -402,8 +424,14 @@ const handleCloseComparison = () => {
   align-items: flex-start;
 }
 
-.filters-row > :first-child {
-  flex: 1;
+@media (max-width: 768px) {
+  .filters-row {
+    flex-direction: column;
+  }
+  
+  .filters-row > * {
+    width: 100%;
+  }
 }
 
 .tags-and-actions {
@@ -411,6 +439,13 @@ const handleCloseComparison = () => {
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .tags-and-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }
 
 .select-all-btn {
@@ -426,6 +461,12 @@ const handleCloseComparison = () => {
   white-space: nowrap;
 }
 
+@media (max-width: 768px) {
+  .select-all-btn {
+    width: 100%;
+  }
+}
+
 .select-all-btn:hover {
   background: var(--blue-3b82f6-20);
   border-color: var(--blue-3b82f6-50);
@@ -434,7 +475,9 @@ const handleCloseComparison = () => {
 
 .documents-page {
   width: 100%;
+  max-width: 100vw;
   min-height: 100vh;
+  overflow-x: hidden;
   padding: 2rem;
   background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 50%, var(--bg-gradient-end) 100%);
   position: relative;
@@ -532,6 +575,30 @@ const handleCloseComparison = () => {
   }
   to {
     opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .documents-page {
+    padding: 1rem;
+  }
+  
+  .page-title {
+    font-size: 1.5rem;
+  }
+  
+  .page-subtitle {
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .documents-page {
+    padding: 0.75rem;
+  }
+  
+  .page-title {
+    font-size: 1.375rem;
   }
 }
 </style>

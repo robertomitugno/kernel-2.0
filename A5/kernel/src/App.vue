@@ -56,7 +56,6 @@ const hideNavigation = computed(() => route.meta.hideNavigation === true)
 .main-content {
   flex: 1;
   overflow-y: auto;
-  padding: 1.25rem 1.5rem;
   position: relative;
   z-index: 1;
 }
