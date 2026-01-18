@@ -138,7 +138,7 @@ const textClasses = computed(() => {
 }
 
 .alert-text-danger {
-  color: #991b1b;
+  color: var(--error);
 }
 
 .text-yellow-600 {

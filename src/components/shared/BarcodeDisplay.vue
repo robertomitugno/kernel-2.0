@@ -69,10 +69,10 @@ defineProps<Props>()
 }
 
 .barcode-bar {
-  fill: var(--gray-171717, #171717);
+  fill: var(--gray-171717, --black);
 }
 
 .barcode-text {
-  fill: var(--gray-171717, #171717);
+  fill: var(--gray-171717, --black);
 }
 </style>
