@@ -10,21 +10,10 @@ import { getAppointmentDetails } from '../../constants/mockData'
 interface Props {
   isOpen: boolean
   preselectedVisit?: string | null
-  tutorialMode?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  tutorialMode: false
 })
-
-const emit = defineEmits<{
-  close: []
-  confirm: [appointment: any]
-  'tutorial:visit-selected': []
-  'tutorial:date-selected': []
-  'tutorial:time-selected': []
-  'tutorial:confirmed': []
-}>()
 
 // Stati del componente
 const selectedVisit = ref<string | null>(props.preselectedVisit || null)
@@ -58,18 +47,12 @@ const resetFields = () => {
 
 const handleClose = () => {
   resetFields()
-  emit('close')
 }
 
 const handleVisitSelect = () => {
   selectedDate.value = null
   selectedTime.value = null
   isLoadingDates.value = true
-  
-  // Emit tutorial event
-  if (props.tutorialMode) {
-    emit('tutorial:visit-selected')
-  }
   
   setTimeout(() => {
     isLoadingDates.value = false
@@ -80,40 +63,15 @@ const handleDateSelect = () => {
   selectedTime.value = null
   isLoadingTimes.value = true
   
-  // Emit tutorial event
-  if (props.tutorialMode) {
-    emit('tutorial:date-selected')
-  }
-  
   setTimeout(() => {
     isLoadingTimes.value = false
   }, 1000)
 }
 
-const handleTimeSelect = () => {
-  // Emit tutorial event
-  if (props.tutorialMode) {
-    emit('tutorial:time-selected')
-  }
-}
-
 const handleConfirm = () => {
   if (!selectedVisit.value || !selectedDate.value || !selectedTime.value) return
   
-  const appointment = {
-    visitType: selectedVisit.value,
-    date: selectedDate.value,
-    time: selectedTime.value,
-  }
-  
-  // Emit tutorial event BEFORE confirm
-  if (props.tutorialMode) {
-    emit('tutorial:confirmed')
-  }
-  
-  emit('confirm', appointment)
   resetFields()
-  emit('close')
 }
 
 const canConfirm = computed(() => {
@@ -141,12 +99,6 @@ watch(appointmentDetails, (newDetails) => {
   }
 })
 
-// Watch per emettere evento quando seleziona orario
-watch(selectedTime, (newTime) => {
-  if (newTime && props.tutorialMode) {
-    handleTimeSelect()
-  }
-})
 </script>
 
 <template>
@@ -154,8 +106,6 @@ watch(selectedTime, (newTime) => {
     :is-open="isOpen"
     :title="$t('appointmentBooking.title')"
     max-width="lg"
-    :custom-z-index="tutorialMode ? 800 : undefined"
-    :disable-backdrop-blur="tutorialMode"
     @close="handleClose"
   >
     <!-- Body -->
