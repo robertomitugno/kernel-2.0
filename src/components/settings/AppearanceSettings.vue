@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useTheme, type ThemeMode, type ColorBlindMode } from '../../composables/useTheme'
+import { useTheme, type ColorBlindMode } from '../../composables/useTheme'
 import { SunIcon, MoonIcon, CheckCircleIcon } from '@heroicons/vue/24/solid'
 
 const { t } = useI18n()
@@ -16,7 +16,7 @@ const colorBlindOptions: { value: ColorBlindMode; label: string }[] = [
 
 <template>
   <div class="appearance-settings">
-    <!-- Tema chiaro/scuro -->
+    <!-- Theme light/dark -->
     <div class="setting-group">
       <h3 class="setting-label">{{ t('settings.app.appearance.theme.title') }}</h3>
       <div class="theme-selector">
@@ -45,7 +45,7 @@ const colorBlindOptions: { value: ColorBlindMode; label: string }[] = [
       </div>
     </div>
 
-    <!-- Modalità daltonici -->
+    <!-- Color Blind Mode -->
     <div class="setting-group">
       <h3 class="setting-label">{{ t('settings.app.appearance.colorBlind.title') }}</h3>
       <p class="setting-description">{{ t('settings.app.appearance.colorBlind.subtitle') }}</p>

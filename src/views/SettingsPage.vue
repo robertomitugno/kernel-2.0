@@ -62,7 +62,7 @@ const handleChangeProfile = () => {
       </div>
     </div>
 
-    <!-- Profilo e famiglia -->
+    <!-- Profile and Family -->
     <div class="settings-section">
       <div class="settings-section-header">
         {{ t('settings.profileFamily.title') }}
@@ -122,7 +122,7 @@ const handleChangeProfile = () => {
       </div>
     </div>
 
-    <!-- Dati e privacy -->
+    <!-- Data and Privacy -->
     <div class="settings-section">
       <div class="settings-section-header">
         {{ t('settings.dataPrivacy.title') }}
@@ -143,7 +143,7 @@ const handleChangeProfile = () => {
       </div>
     </div>
 
-    <!-- Centro assistenza -->
+    <!-- Support Center -->
     <div class="settings-section">
       <div class="settings-section-header">
         {{ t('settings.support.title') }}
@@ -158,7 +158,7 @@ const handleChangeProfile = () => {
       </div>
     </div>
 
-    <!-- Esci dall'account -->
+    <!-- Logout -->
     <div class="settings-section">
       <div class="settings-list">
         <SettingsItem
@@ -176,7 +176,7 @@ const handleChangeProfile = () => {
       {{ t('settings.footer.version') }}
     </div>
 
-    <!-- Modal Aspetto -->
+    <!-- Modal Aspect -->
     <BaseModal 
       :is-open="showAppearanceModal" 
       :title="t('settings.app.appearance.title')" 

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ChevronRightIcon } from '@heroicons/vue/24/outline'
 import type { Component } from 'vue'
-import { COLORS } from '../constants/constants'
 
 interface Props {
   icon?: Component
