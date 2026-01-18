@@ -20,23 +20,23 @@ const routes: RouteRecordRaw[] = [
     component: () => import('../views/HomePage.vue')
   },
   {
-    path: '/documenti',
-    name: 'documenti',
+    path: '/documents',
+    name: 'documents',
     component: () => import('../views/DocumentsPage.vue')
   },
   {
-    path: '/salute',
-    name: 'salute',
+    path: '/health',
+    name: 'health',
     component: () => import('../views/HealthPage.vue')
   },
   {
-    path: '/calendario',
-    name: 'calendario',
+    path: '/calendar',
+    name: 'calendar',
     component: () => import('../views/CalendarPage.vue')
   },
   {
-    path: '/impostazioni',
-    name: 'impostazioni',
+    path: '/settings',
+    name: 'settings',
     component: () => import('../views/SettingsPage.vue')
   }
 ]

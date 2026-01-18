@@ -2,20 +2,19 @@
 import { computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { TABS } from '../../constants/constants'
-import { 
-  HomeIcon, 
-  DocumentTextIcon, 
-  HeartIcon, 
-  CalendarIcon, 
-  Cog6ToothIcon 
+import {
+  HomeIcon,
+  DocumentTextIcon,
+  HeartIcon,
+  CalendarIcon,
+  Cog6ToothIcon
 } from '@heroicons/vue/24/outline'
-import { 
-  HomeIcon as HomeIconSolid, 
-  DocumentTextIcon as DocumentTextIconSolid, 
-  HeartIcon as HeartIconSolid, 
-  CalendarIcon as CalendarIconSolid, 
-  Cog6ToothIcon as Cog6ToothIconSolid 
+import {
+  HomeIcon as HomeIconSolid,
+  DocumentTextIcon as DocumentTextIconSolid,
+  HeartIcon as HeartIconSolid,
+  CalendarIcon as CalendarIconSolid,
+  Cog6ToothIcon as Cog6ToothIconSolid
 } from '@heroicons/vue/24/solid'
 
 const { t } = useI18n()
@@ -24,19 +23,19 @@ const route = useRoute()
 
 const tabIcons = {
   home: { outline: HomeIcon, solid: HomeIconSolid },
-  documenti: { outline: DocumentTextIcon, solid: DocumentTextIconSolid },
-  salute: { outline: HeartIcon, solid: HeartIconSolid },
-  calendario: { outline: CalendarIcon, solid: CalendarIconSolid },
-  impostazioni: { outline: Cog6ToothIcon, solid: Cog6ToothIconSolid }
+  documents: { outline: DocumentTextIcon, solid: DocumentTextIconSolid },
+  health: { outline: HeartIcon, solid: HeartIconSolid },
+  calendar: { outline: CalendarIcon, solid: CalendarIconSolid },
+  settings: { outline: Cog6ToothIcon, solid: Cog6ToothIconSolid }
 }
 
-const tabsData = computed(() => 
-  TABS.map(tab => ({ 
-    ...tab, 
-    label: t(tab.key),
-    icon: tabIcons[tab.id as keyof typeof tabIcons]
-  }))
-)
+const tabsData = computed(() => [
+  { id: 'home', label: t('tabs.home'), icon: tabIcons.home },
+  { id: 'documents', label: t('tabs.documents'), icon: tabIcons.documents },
+  { id: 'health', label: t('tabs.health'), icon: tabIcons.health },
+  { id: 'calendar', label: t('tabs.calendar'), icon: tabIcons.calendar },
+  { id: 'settings', label: t('tabs.settings'), icon: tabIcons.settings }
+])
 
 const activeTab = computed(() => route.name as string)
 
@@ -48,19 +47,10 @@ const setActiveTab = (tabId: string) => {
 <template>
   <div class="bottombar-wrapper">
     <div class="bottombar-container">
-      <button
-        v-for="tab in tabsData"
-        :key="tab.id"
-        :class="['tab-button', { active: activeTab === tab.id }]"
-        :aria-label="`Vai alla sezione ${tab.label}`"
-        :aria-current="activeTab === tab.id ? 'page' : undefined"
-        @click="setActiveTab(tab.id)"
-      >
-        <component 
-          :is="activeTab === tab.id ? tab.icon.solid : tab.icon.outline" 
-          class="tab-icon"
-          aria-hidden="true"
-        />
+      <button v-for="tab in tabsData" :key="tab.id" :class="['tab-button', { active: activeTab === tab.id }]"
+        :aria-label="`Vai alla sezione ${tab.label}`" :aria-current="activeTab === tab.id ? 'page' : undefined"
+        @click="setActiveTab(tab.id)">
+        <component :is="activeTab === tab.id ? tab.icon.solid : tab.icon.outline" class="tab-icon" aria-hidden="true" />
         <span class="tab-label">{{ tab.label }}</span>
       </button>
     </div>
@@ -91,8 +81,8 @@ const setActiveTab = (tabId: string) => {
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--bg-secondary-60);
   border-radius: 2rem;
-  box-shadow: 
-    var(--shadow), 
+  box-shadow:
+    var(--shadow),
     inset 0 1px 0 var(--bg-secondary-80),
     0 0 0 1px var(--bg-secondary-10);
   transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
@@ -123,7 +113,7 @@ const setActiveTab = (tabId: string) => {
 .tab-button.active {
   background: var(--bg-secondary-80);
   color: var(--accent-primary);
-  box-shadow: 
+  box-shadow:
     0 4px 16px var(--accent-primary-20),
     inset 0 1px 0 var(--white-90);
 }
@@ -189,7 +179,7 @@ const setActiveTab = (tabId: string) => {
   .bottombar-wrapper {
     padding-bottom: 0.5rem;
   }
-  
+
   .bottombar-container {
     padding: 0.5rem 0.75rem;
     gap: 0.125rem;

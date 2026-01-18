@@ -4,10 +4,10 @@
   },
   "breadcrumbs": {
     "home": "Home",
-    "documenti": "Documenti",
-    "salute": "Salute",
-    "calendario": "Calendario",
-    "impostazioni": "Impostazioni"
+    "documents": "Documenti",
+    "health": "Salute",
+    "calendar": "Calendario",
+    "settings": "Impostazioni"
   },
   "login": {
     "subtitle": "Chi sta usando l'app?",
