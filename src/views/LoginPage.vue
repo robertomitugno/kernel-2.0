@@ -4,16 +4,11 @@ import { useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import ProfileCard from '../components/shared/ProfileCard.vue'
 import { useAuth } from '../authentication/useAuth'
+import type { Profile } from '../types/login'
 
 const { t } = useI18n()
 const router = useRouter()
 const { login } = useAuth()
-
-interface Profile {
-  id: string
-  name: string
-  role: string
-}
 
 const profiles = ref<Profile[]>([
   { id: '1', name: 'Marco', role: 'Tu' },
@@ -36,18 +31,13 @@ const addProfile = () => {
 <template>
   <div class="login-page">
     <h1 class="login-title">
-      Nucleo
-      <div 
-        class="absolute -bottom-5 left-0 w-full h-1 bg-gray-900"
-      ></div>
+      {{ t('app.title') }}
+      <div class="title-underline"></div>
     </h1>
-    
-    <p class="text-gray-600 text-xl font-medium">
+    <p class="login-subtitle">
       {{ t('login.subtitle') }}
     </p>
-
-    
-    <div class="flex flex-wrap justify-center gap-6 max-w-4xl">
+    <div class="profiles-container">
       <ProfileCard
         v-for="profile in profiles"
         :key="profile.id"
@@ -55,7 +45,6 @@ const addProfile = () => {
         :role="profile.role"
         @click="selectProfile(profile)"
       />
-      
       <ProfileCard
         :name="t('login.addProfile')"
         :is-add-card="true"
@@ -74,7 +63,7 @@ const addProfile = () => {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 1.5rem;
+  gap: 2rem;
   padding: 2rem;
   background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-mid) 50%, var(--bg-gradient-end) 100%);
   position: relative;
@@ -123,6 +112,8 @@ const addProfile = () => {
   animation: fadeIn 0.6s cubic-bezier(0, 0, 0.2, 1);
   animation-delay: 0.2s;
   animation-fill-mode: both;
+  margin-bottom: 1.5rem;
+  text-align: center;
 }
 
 .profiles-container {
@@ -171,11 +162,12 @@ const addProfile = () => {
   .login-page {
     padding: 1rem;
   }
-  
+  .login-title {
+    font-size: 2.5rem;
+  }
   .login-subtitle {
     font-size: 1rem;
   }
-  
   .profiles-container {
     gap: 1rem;
   }
@@ -185,11 +177,9 @@ const addProfile = () => {
   .login-page {
     padding: 0.75rem;
   }
-  
   .login-title {
-    font-size: 2.5rem;
+    font-size: 2rem;
   }
-  
   .profiles-container {
     gap: 0.75rem;
     max-width: 100%;
