@@ -1,125 +1,39 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, onUnmounted, computed } from 'vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
+import type { BaseModalProps } from '../../types/BaseModal'
 
-interface Props {
-  isOpen: boolean
-  title?: string
-  subtitle?: string
-  maxWidth?: 'sm' | 'md' | 'lg' | 'xl'
-  showFooter?: boolean
-  closeOnBackdrop?: boolean
-  customZIndex?: number
-  disableBackdropBlur?: boolean
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<BaseModalProps>(), {
   maxWidth: 'md',
   showFooter: true,
-  closeOnBackdrop: true,
-  disableBackdropBlur: false
+  closeOnBackdrop: true
 })
 
 const emit = defineEmits<{
   close: []
 }>()
 
-const modalRef = ref<HTMLElement | null>(null)
-const previousActiveElement = ref<HTMLElement | null>(null)
-
 const maxWidthClasses = {
-  sm: 'max-w-md',
-  md: 'max-w-2xl',
-  lg: 'max-w-4xl',
-  xl: 'max-w-6xl'
+  sm: 'modal-sm',
+  md: 'modal-md',
+  lg: 'modal-lg',
+  xl: 'modal-xl'
 }
 
-const overlayClasses = computed(() => {
-  return [
-    'modal-overlay',
-    props.disableBackdropBlur ? 'no-blur' : ''
-  ]
-})
-
+// Handle close if clicking outside the modal content
 const handleBackdropClick = () => {
   if (props.closeOnBackdrop) {
     emit('close')
   }
 }
 
-// Focus trap implementation per WCAG 2.1.2
-const trapFocus = (e: KeyboardEvent) => {
-  if (e.key !== 'Tab' || !modalRef.value) return
-
-  const focusableElements = modalRef.value.querySelectorAll<HTMLElement>(
-    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-  )
-  
-  const firstElement = focusableElements[0]
-  const lastElement = focusableElements[focusableElements.length - 1]
-
-  if (e.shiftKey) {
-    if (document.activeElement === firstElement) {
-      e.preventDefault()
-      lastElement?.focus()
-    }
-  } else {
-    if (document.activeElement === lastElement) {
-      e.preventDefault()
-      firstElement?.focus()
-    }
-  }
-}
-
-// Gestione apertura/chiusura modal
-watch(() => props.isOpen, (newValue) => {
-  if (newValue) {
-    // Salva elemento attivo prima di aprire modal
-    previousActiveElement.value = document.activeElement as HTMLElement
-    
-    // Aggiungi focus trap
-    document.addEventListener('keydown', trapFocus)
-    
-    // Focus sul modal dopo apertura
-    setTimeout(() => {
-      const firstFocusable = modalRef.value?.querySelector<HTMLElement>(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-      )
-      firstFocusable?.focus()
-    }, 100)
-  } else {
-    // Rimuovi focus trap
-    document.removeEventListener('keydown', trapFocus)
-    
-    // Ripristina focus precedente
-    previousActiveElement.value?.focus()
-  }
-})
-
-// Gestione tasto ESC
-const handleEscape = (e: KeyboardEvent) => {
-  if (e.key === 'Escape' && props.isOpen) {
-    emit('close')
-  }
-}
-
-onMounted(() => {
-  document.addEventListener('keydown', handleEscape)
-})
-
-onUnmounted(() => {
-  document.removeEventListener('keydown', handleEscape)
-  document.removeEventListener('keydown', trapFocus)
-})
 </script>
 
 <template>
   <Teleport to="body">
     <Transition name="modal">
       <div 
-        v-if="isOpen" 
-        :class="overlayClasses"
-        :style="customZIndex ? { zIndex: customZIndex } : {}"
+        v-if="props.isOpen" 
+        class="modal-overlay" 
         role="dialog"
         aria-modal="true"
         :aria-labelledby="title ? 'modal-title' : undefined"
@@ -143,9 +57,9 @@ onUnmounted(() => {
             <button 
               class="close-button"
               @click="emit('close')"
-              aria-label="Chiudi finestra modale"
+              aria-label="$t('documents.close')"
             >
-              <XMarkIcon class="w-6 h-6" />
+              <XMarkIcon class="close-icon" />
             </button>
           </div>
 
@@ -211,14 +125,17 @@ onUnmounted(() => {
   z-index: 1;
 }
 
-.modal-overlay.no-blur {
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  background: linear-gradient(135deg, var(--bg-gradient-start-10) 0%, var(--bg-gradient-mid-10) 50%, var(--bg-gradient-end-10) 100%);
+.modal-sm {
+  max-width: 28rem;
 }
-
-.modal-overlay.no-blur::before {
-  opacity: 0.5;
+.modal-md {
+  max-width: 42rem;
+}
+.modal-lg {
+  max-width: 64rem;
+}
+.modal-xl {
+  max-width: 80rem;
 }
 
 .modal-header {
@@ -265,6 +182,13 @@ onUnmounted(() => {
   transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
   box-shadow: 0 2px 8px var(--black-6), inset 0 1px 0 var(--white-50);
   flex-shrink: 0;
+}
+
+.close-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--gray-525252);
+  display: block;
 }
 
 .close-button:hover {

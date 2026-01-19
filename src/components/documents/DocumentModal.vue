@@ -104,18 +104,18 @@ const handleShare = () => {
 }
 
 .download-button {
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  color: var(--bg-primary);
-  border: 1px solid var(--white-30);
-  box-shadow: 0 4px 16px var(--accent-primary-40), inset 0 1px 0 var(--white-30);
+  background: linear-gradient(135deg, var(--blue-3b82f6) 0%, var(--blue-8b5cf6) 100%);
+  backdrop-filter: blur(16px);
+  border-color: var(--white-30);
+  color: var(--white);
+  box-shadow: 0 4px 16px var(--blue-3b82f6-30), inset 0 1px 0 var(--white-20);
 }
 
+
 .download-button:hover {
-  background: linear-gradient(135deg, var(--accent-primary-95-black) 0%, var(--accent-primary) 100%);
+  background: linear-gradient(135deg, var(--blue-2563eb) 0%, var(--blue-7c3aed) 100%);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px var(--accent-primary-40), inset 0 1px 0 var(--white-30);
+  box-shadow: 0 6px 20px var(--blue-3b82f6-40), inset 0 1px 0 var(--white-30);
 }
 
 .share-button {

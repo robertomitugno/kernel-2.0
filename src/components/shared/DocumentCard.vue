@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { DocumentIcon, MapPinIcon, UserIcon, CalendarIcon, Bars4Icon, ArrowDownTrayIcon } from '@heroicons/vue/24/outline'
-import BaseCard, { type CardMetadata } from './BaseCard.vue'
+import BaseCard from './BaseCard.vue'
 import BaseModal from './BaseModal.vue'
 import BarcodeDisplay from './BarcodeDisplay.vue'
+import type { CardMetadata } from '../../types/BaseCard'
 
 export interface Document {
   id: string
