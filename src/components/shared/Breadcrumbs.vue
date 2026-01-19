@@ -2,37 +2,33 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import type { BreadcrumbItem } from '../../types/Breadcrumbs'
 
 const route = useRoute()
 const router = useRouter()
 const { t } = useI18n()
 
-interface BreadcrumbItem {
-  name: string
-  path?: string
-}
-
 const breadcrumbs = computed<BreadcrumbItem[]>(() => {
   const items: BreadcrumbItem[] = []
   
-  // Aggiungi sempre home come primo elemento se non siamo nella home
+  // Always add 'home' as the first item if not on home page
   if (route.path !== '/home' && route.name !== 'home') {
     items.push({
       name: t('breadcrumbs.home'),
       path: '/home'
     })
   }
-  
-  // Aggiungi la pagina corrente
+
+  // Add current page
   if (route.name && route.name !== 'login') {
-    const currentPageKey = `breadcrumbs.${route.name}`
+    const currentPageKey = `breadcrumbs.${String(route.name)}`
     items.push({
       name: t(currentPageKey)
     })
   }
-  
+
   return items
-})
+  })
 
 const navigateTo = (path: string) => {
   router.push(path)
@@ -51,17 +47,17 @@ const navigateTo = (path: string) => {
         :key="index"
         class="breadcrumb-item"
       >
-        <!-- Link per elementi non finali -->
+        <!-- Link for non-final items -->
         <button
           v-if="item.path"
           class="breadcrumb-link"
           @click="navigateTo(item.path)"
-          :aria-label="`Vai a ${item.name}`"
+          :aria-label="t('breadcrumbs.goTo', { name: item.name })"
         >
           {{ item.name }}
         </button>
         
-        <!-- Testo per elemento finale -->
+        <!-- Text for final item -->
         <span 
           v-else
           class="breadcrumb-current"
@@ -70,7 +66,7 @@ const navigateTo = (path: string) => {
           {{ item.name }}
         </span>
         
-        <!-- Separatore (non dopo l'ultimo elemento) -->
+        <!-- Separator (not after last item) -->
         <svg 
           v-if="index < breadcrumbs.length - 1"
           class="breadcrumb-separator"
@@ -155,15 +151,12 @@ const navigateTo = (path: string) => {
   .breadcrumbs-container {
     padding: 0.5rem 1rem;
   }
-  
   .breadcrumbs-list {
     gap: 0.375rem;
   }
-  
   .breadcrumb-item {
     gap: 0.375rem;
   }
-  
   .breadcrumb-separator {
     width: 0.875rem;
     height: 0.875rem;

@@ -7,7 +7,8 @@
     "documents": "Documenti",
     "health": "Salute",
     "calendar": "Calendario",
-    "settings": "Impostazioni"
+    "settings": "Impostazioni",
+    "goTo": "Vai a"
   },
   "login": {
     "subtitle": "Chi sta usando l'app?",
