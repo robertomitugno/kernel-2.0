@@ -36,6 +36,12 @@ export interface DocumentComparisonModal {
   documents: Document[];
 }
 
+export interface DocumentSelector {
+  selectedDocId: string | null;
+  availableDocuments: Document[];
+  placeholder?: string;
+}
+
 // Tag to color key mapping
 export const TAG_COLOR_MAP: Record<string, string> = {
   'cardiologia': 'cardiologia',
