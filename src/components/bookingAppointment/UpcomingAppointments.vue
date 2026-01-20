@@ -1,11 +1,8 @@
 <script setup lang="ts">
-import AppointmentCard, { type Appointment } from './AppointmentCard.vue'
+import AppointmentCard from './AppointmentCard.vue'
+import type { UpcomingAppointments } from '../../types/Appointment'
 
-interface Props {
-  appointments: Appointment[]
-}
-
-defineProps<Props>()
+const props = defineProps<UpcomingAppointments>()
 
 const emit = defineEmits<{
   appointmentClick: [id: string]
@@ -13,13 +10,13 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="space-y-3">
-    <div v-if="appointments.length === 0" class="text-gray-500 text-center py-8">
+  <div class="upcoming-appointments-list">
+    <div v-if="props.appointments.length === 0" class="no-appointments-message">
       {{ $t('home.noAppointments') }}
     </div>
-    <div v-else class="space-y-3">
+    <div v-else class="appointments-list">
       <AppointmentCard
-        v-for="appointment in appointments"
+        v-for="appointment in props.appointments"
         :key="appointment.id"
         :appointment="appointment"
         @click="emit('appointmentClick', $event)"
@@ -27,3 +24,37 @@ const emit = defineEmits<{
     </div>
   </div>
 </template>
+
+<style scoped>
+.upcoming-appointments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.no-appointments-message {
+  color: var(--text-secondary);
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 1rem;
+  background: var(--bg-secondary-40);
+  border-radius: 12px;
+  border: 1px dashed var(--border-color);
+}
+
+.appointments-list {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .upcoming-appointments-list,
+  .appointments-list {
+    gap: 0.75rem;
+  }
+  .no-appointments-message {
+    font-size: 0.95rem;
+    padding: 1.25rem 0;
+  }
+}
+</style>

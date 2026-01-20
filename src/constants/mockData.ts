@@ -1,6 +1,6 @@
 import type { WidgetOption } from '../types/Widgets'
 import type { Document } from '../types/Documents'
-import type { Appointment } from '../components/bookingAppointment/AppointmentCard.vue'
+import type { Appointment } from '../types/Appointment'
 import type { HealthParameter, HealthAlert, HealthMetricHistory } from '../types/health'
 import type { SymptomSuggestion } from '../types/SymptomSuggestion'
 

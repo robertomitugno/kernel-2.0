@@ -4,26 +4,11 @@ import { CalendarIcon, MapPinIcon, UserIcon, ClockIcon, PencilIcon, XCircleIcon 
 import { useI18n } from 'vue-i18n'
 import BaseCard from '../shared/BaseCard.vue'
 import type { CardMetadata } from '../../types/BaseCard'
+import type { AppointmentCard } from '../../types/Appointment'
 
 const { t } = useI18n()
 
-export interface Appointment {
-  id: string
-  title: string
-  description: string
-  tags?: string[]
-  date: string
-  time?: string
-  user?: string
-  location?: string
-}
-
-interface Props {
-  appointment: Appointment
-  selected?: boolean
-}
-
-const props = defineProps<Props>()
+const props = defineProps<AppointmentCard>()
 
 const emit = defineEmits<{
   click: [id: string]
@@ -82,7 +67,7 @@ const handleCancel = (event: Event) => {
         @click="handleEdit"
         :title="t('appointments.editAppointment')"
       >
-        <PencilIcon class="w-4 h-4" />
+        <PencilIcon class="icon-md" />
         <span>{{ t('appointments.editAppointment') }}</span>
       </button>
       <button
@@ -90,7 +75,7 @@ const handleCancel = (event: Event) => {
         @click="handleCancel"
         :title="t('appointments.cancelAppointment')"
       >
-        <XCircleIcon class="w-4 h-4" />
+        <XCircleIcon class="icon-md" />
         <span>{{ t('appointments.cancelAppointment') }}</span>
       </button>
     </template>
@@ -154,5 +139,10 @@ const handleCancel = (event: Event) => {
     justify-content: center;
     min-width: 2rem;
   }
+}
+.icon-md {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: inline-block;
 }
 </style>

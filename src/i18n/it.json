@@ -137,6 +137,9 @@
     "cancel": "Annulla",
     "loadMoreDates": "Visualizza date successive",
     "loadPreviousDates": "Visualizza date precedenti",
+    "detailsTitle": "Dettagli appuntamento",
+    "doctor": "Medico",
+    "location": "Luogo",
     "visitTypes": {
       "cardiology": "Visita cardiologica",
       "dermatology": "Visita dermatologica",

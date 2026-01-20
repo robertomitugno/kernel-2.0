@@ -6,21 +6,16 @@ import VisitTypeSelector from './VisitTypeSelector.vue'
 import DateSelector from './DateSelector.vue'
 import TimeSlotSelector from './TimeSlotSelector.vue'
 import { getAppointmentDetails } from '../../constants/mockData'
+import type { AppointmentBooking } from '../../types/Appointment'
 
-interface Props {
-  isOpen: boolean
-  preselectedVisit?: string | null
-}
-
-const props = withDefaults(defineProps<Props>(), {
-})
+const props = withDefaults(defineProps<AppointmentBooking>(), {})
 
 const emit = defineEmits<{
   close: []
   confirm: [appointment: any]
 }>()
 
-// Stati del componente
+// Component state
 const selectedVisit = ref<string | null>(props.preselectedVisit || null)
 const selectedDate = ref<string | null>(null)
 const selectedTime = ref<string | null>(null)
@@ -35,7 +30,6 @@ watch(() => props.preselectedVisit, (newValue) => {
     selectedDate.value = null
     selectedTime.value = null
     isLoadingDates.value = true
-    
     setTimeout(() => {
       isLoadingDates.value = false
     }, 1500)
@@ -52,13 +46,13 @@ const resetFields = () => {
 
 const handleClose = () => {
   resetFields()
+  emit('close')
 }
 
 const handleVisitSelect = () => {
   selectedDate.value = null
   selectedTime.value = null
   isLoadingDates.value = true
-  
   setTimeout(() => {
     isLoadingDates.value = false
   }, 1500)
@@ -67,7 +61,6 @@ const handleVisitSelect = () => {
 const handleDateSelect = () => {
   selectedTime.value = null
   isLoadingTimes.value = true
-  
   setTimeout(() => {
     isLoadingTimes.value = false
   }, 1000)
@@ -75,13 +68,11 @@ const handleDateSelect = () => {
 
 const handleConfirm = () => {
   if (!selectedVisit.value || !selectedDate.value || !selectedTime.value) return
-
   const appointment = {
     visitType: selectedVisit.value,
     date: selectedDate.value,
     time: selectedTime.value,
   }
-
   emit('confirm', appointment)
   resetFields()
   emit('close')
@@ -115,52 +106,36 @@ watch(appointmentDetails, (newDetails) => {
 </script>
 
 <template>
-  <BaseModal
-    :is-open="isOpen"
-    :title="$t('appointmentBooking.title')"
-    max-width="lg"
-    @close="handleClose"
-  >
+  <BaseModal :is-open="isOpen" :title="$t('appointmentBooking.title')" max-width="lg" @close="handleClose">
     <!-- Body -->
-    <VisitTypeSelector
-      v-model="selectedVisit"
-      @select="handleVisitSelect"
-    />
+    <VisitTypeSelector v-model="selectedVisit" @select="handleVisitSelect" />
 
-    <DateSelector
-      v-model="selectedDate"
-      :disabled="!selectedVisit"
-      :loading="isLoadingDates"
-      @select="handleDateSelect"
-    />
+    <DateSelector v-model="selectedDate" :disabled="!selectedVisit" :loading="isLoadingDates"
+      @select="handleDateSelect" />
 
-    <TimeSlotSelector
-      v-model="selectedTime"
-      :selected-date="selectedDate"
-      :disabled="!selectedDate"
-      :loading="isLoadingTimes"
-    />
+    <TimeSlotSelector v-model="selectedTime" :selected-date="selectedDate" :disabled="!selectedDate"
+      :loading="isLoadingTimes" />
 
     <!-- Appointment Details -->
     <Transition name="slide-fade">
       <div v-if="appointmentDetails" ref="appointmentDetailsRef" class="appointment-details">
-        <h3 class="details-title">Dettagli appuntamento</h3>
+        <h3 class="details-title">{{ $t('appointmentBooking.detailsTitle') }}</h3>
         <div class="details-content">
           <div class="detail-item">
             <div class="detail-icon">
-              <UserIcon class="w-5 h-5" />
+              <UserIcon class="icon-md" />
             </div>
             <div class="detail-text">
-              <p class="detail-label">Medico</p>
+              <p class="detail-label">{{ $t('appointmentBooking.doctor') }}</p>
               <p class="detail-value">{{ appointmentDetails.doctor }}</p>
             </div>
           </div>
           <div class="detail-item">
             <div class="detail-icon">
-              <MapPinIcon class="w-5 h-5" />
+              <MapPinIcon class="icon-md" />
             </div>
             <div class="detail-text">
-              <p class="detail-label">Luogo</p>
+              <p class="detail-label">{{ $t('appointmentBooking.location') }}</p>
               <p class="detail-value">{{ appointmentDetails.location }}</p>
             </div>
           </div>
@@ -170,17 +145,10 @@ watch(appointmentDetails, (newDetails) => {
 
     <!-- Footer -->
     <template #footer>
-      <button 
-        class="button button-secondary" 
-        @click="handleClose"
-      >
+      <button class="button button-secondary" @click="handleClose">
         {{ $t('appointmentBooking.cancel') }}
       </button>
-      <button 
-        class="button button-primary" 
-        :disabled="!canConfirm"
-        @click="handleConfirm"
-      >
+      <button class="button button-primary" :disabled="!canConfirm" @click="handleConfirm">
         {{ $t('appointmentBooking.confirm') }}
       </button>
     </template>
@@ -272,6 +240,12 @@ watch(appointmentDetails, (newDetails) => {
   box-shadow: 0 2px 8px var(--accent-primary-10);
 }
 
+.icon-md {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: inline-block;
+}
+
 .detail-text {
   flex: 1;
   min-width: 0;
@@ -307,6 +281,7 @@ watch(appointmentDetails, (newDetails) => {
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -318,6 +293,7 @@ watch(appointmentDetails, (newDetails) => {
     opacity: 1;
     transform: translateY(0);
   }
+
   to {
     opacity: 0;
     transform: translateY(-10px);

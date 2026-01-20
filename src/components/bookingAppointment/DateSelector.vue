@@ -1,14 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue'
 import LoadingSpinner from '../shared/LoadingSpinner.vue'
+import type { DateSelector } from '../../types/Appointment'
 
-interface Props {
-  modelValue: string | null
-  disabled?: boolean
-  loading?: boolean
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<DateSelector>(), {
   disabled: false,
   loading: false
 })
@@ -21,62 +16,52 @@ const emit = defineEmits<{
 const dateOffset = ref(0)
 const customStartDate = ref<string>(new Date().toISOString().split('T')[0] ?? '')
 
-// Genera date disponibili casuali a partire da domani (o data personalizzata)
+// Generate available dates starting from tomorrow (or a custom date)
 const availableDates = computed(() => {
   const dates: Array<{ value: string; label: string }> = []
   const today = new Date()
   today.setHours(0, 0, 0, 0)
-  
-  // Data di partenza: domani o data personalizzata
+
+  // Start date: tomorrow or custom date
   let startDate: Date
   if (customStartDate.value) {
     startDate = new Date(customStartDate.value)
     startDate.setHours(0, 0, 0, 0)
   } else {
     startDate = new Date(today)
-    startDate.setDate(today.getDate() + 1) // Partenza da domani
+    startDate.setDate(today.getDate() + 1)
   }
-  
+
   let daysAdded = 0
-  let currentOffset = dateOffset.value * 10 // 10 date per pagina
-  
-  // Seed per casualità consistente basato sull'offset
-  let seed = 1000 + currentOffset
-  
+  let currentOffset = dateOffset.value * 10 // 10 dates per page
+  let seed = 1000 + currentOffset // Seed for consistent pseudo-randomness
+
   for (let i = currentOffset; daysAdded < 10 && i < currentOffset + 30; i++) {
     const date = new Date(startDate)
     date.setDate(startDate.getDate() + i)
-    
     const dayOfWeek = date.getDay()
-    
-    // Salta sempre la domenica
+    // Always skip Sunday
     if (dayOfWeek === 0) continue
-    
-    // Genera numero pseudo-casuale per questo giorno
+    // Generate pseudo-random number for this day
     seed = (seed * 9301 + 49297) % 233280
     const random = seed / 233280
-    
-    // Logica di inclusione:
-    // - Sabato: 10% di probabilità
-    // - Giorni feriali: 90% di probabilità (a volte salta)
+    // Inclusion logic:
+    // - Saturday: 10% chance
+    // - Weekdays: 90% chance
     let includeDate = false
-    
     if (dayOfWeek === 6) {
-      // Sabato: raramente disponibile (10%)
       includeDate = random < 0.1
     } else {
-      // Lun-Ven: di solito disponibile (90%)
       includeDate = random < 0.9
     }
-    
     if (includeDate) {
       const isoDate = date.toISOString().split('T')[0]
       if (isoDate) {
         dates.push({
           value: isoDate,
-          label: date.toLocaleDateString('it-IT', { 
-            weekday: 'short', 
-            day: 'numeric', 
+          label: date.toLocaleDateString('it-IT', {
+            weekday: 'short',
+            day: 'numeric',
             month: 'short',
             year: 'numeric'
           })
@@ -85,7 +70,6 @@ const availableDates = computed(() => {
       }
     }
   }
-  
   return dates
 })
 
@@ -111,11 +95,11 @@ const loadPreviousDates = () => {
 }
 
 const handleCustomDateChange = () => {
-  // Reset offset quando cambia la data personalizzata
+  // Reset offset when custom date changes
   dateOffset.value = 0
 }
 
-// Reset offset quando il componente viene disabilitato
+// Reset offset when the component is disabled
 watch(() => props.disabled, (newDisabled) => {
   if (newDisabled) {
     dateOffset.value = 0
@@ -127,18 +111,18 @@ watch(() => props.disabled, (newDisabled) => {
 <template>
   <div class="date-selector" :class="{ 'section-disabled': disabled }">
     <h3 class="section-title">{{ $t('appointmentBooking.selectDate') }}</h3>
-    
+
     <!-- Loading state -->
-    <LoadingSpinner 
-      v-if="loading" 
-      size="small" 
-      :message="$t('appointmentBooking.loadingAvailability')" 
-      inline 
+    <LoadingSpinner
+      v-if="loading"
+      size="small"
+      :message="$t('appointmentBooking.loadingAvailability')"
+      inline
     />
 
     <!-- Date grid -->
     <div v-else-if="!disabled">
-      <!-- Date picker personalizzato -->
+      <!-- Custom date picker -->
       <div class="custom-date-picker">
         <label class="date-picker-label">{{ $t('appointmentBooking.customDateLabel') }}</label>
         <input
@@ -163,17 +147,17 @@ watch(() => props.disabled, (newDisabled) => {
           <span class="date-label">{{ date.label }}</span>
         </button>
       </div>
-      
+
       <div class="date-navigation">
-        <button 
-          v-if="dateOffset > 0" 
-          class="load-more-button" 
+        <button
+          v-if="dateOffset > 0"
+          class="load-more-button"
           @click="loadPreviousDates"
         >
           {{ $t('appointmentBooking.loadPreviousDates') }}
         </button>
-        <button 
-          class="load-more-button" 
+        <button
+          class="load-more-button"
           @click="loadMoreDates"
         >
           {{ $t('appointmentBooking.loadMoreDates') }}
@@ -181,7 +165,7 @@ watch(() => props.disabled, (newDisabled) => {
       </div>
     </div>
 
-    <!-- Placeholder quando è disabilitato -->
+    <!-- Placeholder when disabled -->
     <div v-else class="placeholder-message">
       <p>{{ $t('appointmentBooking.selectVisit') }}</p>
     </div>
@@ -215,7 +199,6 @@ watch(() => props.disabled, (newDisabled) => {
   border: 1px dashed var(--border-color);
 }
 
-/* Custom Date Picker */
 .custom-date-picker {
   margin-bottom: 1.5rem;
   padding: 1rem;

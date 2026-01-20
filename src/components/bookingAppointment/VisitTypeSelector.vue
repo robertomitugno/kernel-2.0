@@ -7,12 +7,8 @@ import LoadingSpinner from '../shared/LoadingSpinner.vue'
 
 const { t } = useI18n()
 
-interface Props {
-  modelValue: string | null
-  loading?: boolean
-}
-
-const props = withDefaults(defineProps<Props>(), {
+import type { VisitTypeSelector } from '../../types/Appointment'
+const props = withDefaults(defineProps<VisitTypeSelector>(), {
   loading: false
 })
 
@@ -45,9 +41,9 @@ watch(() => props.modelValue, () => {
 // Filtra tipi di visite in base alla ricerca
 const filteredVisits = computed(() => {
   if (!searchQuery.value) return VISIT_TYPES
-  
+
   const query = searchQuery.value.toLowerCase()
-  return VISIT_TYPES.filter(visit => 
+  return VISIT_TYPES.filter(visit =>
     t(`appointmentBooking.visitTypes.${visit.key}`).toLowerCase().includes(query)
   )
 })
@@ -74,34 +70,23 @@ const handleInput = () => {
 <template>
   <div class="visit-type-selector">
     <h3 class="section-title">{{ $t('appointmentBooking.selectVisit') }}</h3>
-    
+
     <div v-if="loading">
       <LoadingSpinner size="small" :message="$t('appointmentBooking.loadingAvailability')" inline />
     </div>
-    
+
     <div v-else class="search-container">
       <div class="search-wrapper" @click="handleFocus">
-        <MagnifyingGlassIcon class="search-icon" />
-        <input
-          v-model="searchQuery"
-          type="text"
-          :placeholder="$t('appointmentBooking.searchPlaceholder')"
-          class="search-input"
-          @focus="handleFocus"
-          @input="handleInput"
-        />
+        <MagnifyingGlassIcon class="icon-md search-icon" />
+        <input v-model="searchQuery" type="text" :placeholder="$t('appointmentBooking.searchPlaceholder')"
+          class="search-input" @focus="handleFocus" @input="handleInput" />
       </div>
 
       <!-- Dropdown visite -->
       <Transition name="dropdown">
         <div v-if="showDropdown && filteredVisits.length > 0" class="visits-dropdown">
-          <button
-            v-for="visit in filteredVisits"
-            :key="visit.id"
-            class="visit-option"
-            :class="{ 'visit-option-selected': modelValue === visit.id }"
-            @click="handleVisitSelect(visit.id)"
-          >
+          <button v-for="visit in filteredVisits" :key="visit.id" class="visit-option"
+            :class="{ 'visit-option-selected': modelValue === visit.id }" @click="handleVisitSelect(visit.id)">
             <span class="visit-name">{{ $t(`appointmentBooking.visitTypes.${visit.key}`) }}</span>
           </button>
         </div>

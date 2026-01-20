@@ -2,15 +2,9 @@
 import { computed } from 'vue'
 import { TIME_SLOTS } from '../../constants/mockData'
 import LoadingSpinner from '../shared/LoadingSpinner.vue'
+import type { TimeSlotSelector } from '../../types/Appointment'
 
-interface Props {
-  modelValue: string | null
-  selectedDate: string | null
-  disabled?: boolean
-  loading?: boolean
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TimeSlotSelector>(), {
   disabled: false,
   loading: false
 })
@@ -20,15 +14,12 @@ const emit = defineEmits<{
   'select': [time: string]
 }>()
 
-// Slot orari con disponibilità casuale
 const availableTimeSlots = computed(() => {
   if (!props.selectedDate) return []
   
-  // Genera casualmente slot occupati (circa 30% degli slot)
   const occupiedCount = Math.floor(TIME_SLOTS.length * 0.3)
   const occupiedIndices = new Set<number>()
   
-  // Usa la data come seed per avere risultati consistenti per la stessa data
   const seed = props.selectedDate.split('-').join('')
   let randomValue = parseInt(seed) % 1000
   
@@ -55,7 +46,6 @@ const handleTimeSelect = (time: string, available: boolean) => {
   <div class="time-slot-selector" :class="{ 'section-disabled': disabled }">
     <h3 class="section-title">{{ $t('appointmentBooking.selectTime') }}</h3>
     
-    <!-- Loading state per orari -->
     <LoadingSpinner 
       v-if="loading" 
       size="small" 
@@ -79,7 +69,6 @@ const handleTimeSelect = (time: string, available: boolean) => {
       </button>
     </div>
 
-    <!-- Placeholder quando non c'è data selezionata -->
     <div v-else-if="!selectedDate" class="placeholder-message">
       <p>{{ $t('appointmentBooking.selectDate') }}</p>
     </div>
