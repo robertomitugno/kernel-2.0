@@ -1,20 +1,8 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
+import type { TagBarProps } from '../../types/Tag'
 
-export interface Tag {
-  id: string
-  label: string
-  count?: number
-}
-
-interface Props {
-  tags: Tag[]
-  selectedTag?: string
-  multiple?: boolean
-  activeTags?: string[]
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<TagBarProps>(), {
   selectedTag: '',
   multiple: false,
   activeTags: () => []
@@ -28,9 +16,7 @@ watch(() => props.selectedTag, (newVal) => {
   }
 })
 
-const emit = defineEmits<{
-  tagSelected: [tagId: string]
-}>()
+const emit = defineEmits<{ tagSelected: [tagId: string] }>()
 
 const isTagActive = (tagId: string) => {
   if (props.multiple) {
