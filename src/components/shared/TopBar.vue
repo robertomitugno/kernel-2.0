@@ -42,115 +42,110 @@ const changeUser = () => {
 
 <template>
   <div class="topbar-container">
-    <div class="flex items-center">
-      <h1 class="topbar-title text-[clamp(1rem,2.5vw,1.25rem)] font-semibold m-0 cursor-pointer hover:opacity-80 transition-opacity" @click="router.push('/home')">{{ t('app.title') }}</h1>
+    <div class="topbar-title-container">
+      <h1 class="topbar-title" @click="router.push('/home')">{{ t('app.title') }}</h1>
     </div>
-    <div class="flex items-center gap-6 topbar-actions">
+    <div class="topbar-actions">
       <button 
-        class="glass-button topbar-icon-button relative flex items-center justify-center w-[clamp(2rem,5vw,2.25rem)] h-[clamp(2rem,5vw,2.25rem)] rounded-md"
+        class="topbar-icon-button notification-button"
         :title="t('topbar.notifications')"
-        :aria-label="`${t('topbar.notifications')} - 1 non letta`"
+        :aria-label="`${t('topbar.notifications')} - 1 ${t('topbar.unread')}`"
       >
-        <svg class="topbar-icon w-[clamp(1rem,3vw,1.25rem)] h-[clamp(1rem,3vw,1.25rem)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <svg class="topbar-icon notification-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
           <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
         </svg>
-        <span class="absolute -top-1 -right-1 bg-gray-900 text-white text-[clamp(0.5rem,1.5vw,0.625rem)] font-semibold w-4 h-4 rounded-full flex items-center justify-center" aria-label="1 notifica">
-          1
-        </span>
+        <span class="notification-badge" aria-label="1 {{ t('topbar.notification') }}">1</span>
       </button>
-      
       <!-- Language Selector -->
-      <div class="relative">
+      <div class="language-selector">
         <button 
-          class="glass-button topbar-icon-button flex items-center gap-1.5 px-2.5 py-1.5 rounded-md"
-          :aria-label="`Lingua corrente: ${currentLanguage}. Clicca per cambiare lingua`"
+          class="topbar-icon-button language-button"
+          :aria-label="t('topbar.languageSelectorAria', { lang: currentLanguage })"
           :aria-expanded="showLanguageMenu"
           @click="toggleLanguageMenu"
         >
-          <span class="topbar-text text-[clamp(0.75rem,2vw,0.875rem)] font-semibold">{{ currentLanguage }}</span>
-          <svg class="topbar-icon-secondary w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <span class="topbar-text language-text">{{ currentLanguage }}</span>
+          <svg class="topbar-icon-secondary language-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <polyline points="6 9 12 15 18 9"/>
           </svg>
         </button>
         <div 
           v-if="showLanguageMenu" 
-          class="glass-menu absolute top-[calc(100%+0.5vh)] right-0 rounded-lg min-w-24 z-50 overflow-hidden"
+          class="language-menu"
         >
           <button
-            class="w-full flex items-center justify-center px-4 py-2.5 hover:bg-gray-50 transition-colors cursor-pointer"
-            :class="{ 'bg-blue-50': locale === 'it' }"
-            :aria-label="locale === 'it' ? 'Italiano - selezionato' : 'Seleziona italiano'"
+            class="language-menu-item"
+            :class="{ 'selected': locale === 'it' }"
+            :aria-label="locale === 'it' ? t('topbar.italianSelectedAria') : t('topbar.selectItalianAria')"
             :aria-current="locale === 'it' ? 'true' : undefined"
             @click="changeLanguage('it')"
           >
-            <span class="text-sm font-semibold lang-menu-text">ITA</span>
+            <span class="language-menu-text">ITA</span>
           </button>
           <button
-            class="w-full flex items-center justify-center px-4 py-2.5 hover:bg-gray-50 transition-colors cursor-pointer"
-            :class="{ 'bg-blue-50': locale === 'en' }"
-            :aria-label="locale === 'en' ? 'Inglese - selezionato' : 'Seleziona inglese'"
+            class="language-menu-item"
+            :class="{ 'selected': locale === 'en' }"
+            :aria-label="locale === 'en' ? t('topbar.englishSelectedAria') : t('topbar.selectEnglishAria')"
             :aria-current="locale === 'en' ? 'true' : undefined"
             @click="changeLanguage('en')"
           >
-            <span class="text-sm font-semibold lang-menu-text">ENG</span>
+            <span class="language-menu-text">ENG</span>
           </button>
         </div>
       </div>
-      
-      <div class="relative">
+      <div class="user-menu-container">
         <button 
-          class="glass-button topbar-icon-button flex items-center gap-2 px-3 py-1.5 rounded-md"
-          :aria-label="`Menu utente ${currentUser?.name || 'User'}`"
+          class="topbar-icon-button user-menu-button"
+          :aria-label="t('topbar.userMenuAria', { user: currentUser?.name || t('topbar.user') })"
           :aria-expanded="showUserMenu"
           @click="toggleUserMenu"
         >
-          <div class="w-[clamp(1.25rem,4vw,1.5rem)] h-[clamp(1.25rem,4vw,1.5rem)] rounded-full bg-gray-200 flex items-center justify-center topbar-user-icon">
-            <svg class="topbar-icon w-[clamp(0.875rem,3vw,1.125rem)] h-[clamp(0.875rem,3vw,1.125rem)]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <div class="user-avatar">
+            <svg class="topbar-icon user-avatar-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
             </svg>
           </div>
-          <span class="user-name-text topbar-text text-[clamp(0.75rem,2vw,0.875rem)] font-medium">{{ currentUser?.name || 'User' }}</span>
-          <svg class="topbar-icon-secondary w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <span class="user-name-text topbar-text">{{ currentUser?.name || t('topbar.user') }}</span>
+          <svg class="topbar-icon-secondary user-menu-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <polyline points="6 9 12 15 18 9"/>
           </svg>
         </button>
         <div 
           v-if="showUserMenu" 
-          class="glass-menu absolute top-[calc(100%+0.5vh)] right-0 rounded-lg min-w-50 z-50 overflow-hidden"
+          class="user-menu"
         >
           <button 
-            class="w-full py-3 px-4 border-b border-gray-200 hover:bg-gray-50 transition-colors cursor-pointer"
-            :aria-label="`Profilo utente ${currentUser?.name || 'User'}. Clicca per cambiare utente`"
+            class="user-menu-profile"
+            :aria-label="t('topbar.userProfileAria', { user: currentUser?.name || t('topbar.user') })"
             @click="changeUser"
           >
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-600">
-                <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+            <div class="user-profile-content">
+              <div class="user-profile-avatar">
+                <svg class="user-profile-avatar-icon" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
                 </svg>
               </div>
-              <div class="text-left">
-                <div class="text-sm font-semibold text-gray-900">{{ currentUser?.name }}</div>
-                <div class="text-xs text-gray-600">{{ currentUser?.role }}</div>
+              <div class="user-profile-details">
+                <div class="user-profile-name">{{ currentUser?.name }}</div>
+                <div class="user-profile-role">{{ currentUser?.role }}</div>
               </div>
             </div>
           </button>
-          
           <!-- Logout Button -->
           <button
-            class="w-full flex items-center gap-1 px-4 py-3 hover:bg-gray-50 transition-colors cursor-pointer"
+            class="user-menu-logout"
             :aria-label="t('userMenu.logout')"
             @click="logout"
           >
-            <div class="w-8 h-8 rounded-full flex items-center justify-center text-gray-600 shrink-0">
-              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <div class="user-menu-logout-icon-container">
+              <svg class="user-menu-logout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
                 <polyline points="16 17 21 12 16 7"/>
                 <line x1="21" y1="12" x2="9" y2="12"/>
               </svg>
             </div>
-            <span class="text-sm font-medium user-menu-text">{{ t('userMenu.logout') }}</span>
+            <span class="user-menu-logout-text">{{ t('userMenu.logout') }}</span>
           </button>
         </div>
       </div>
@@ -159,15 +154,16 @@ const changeUser = () => {
 </template>
 
 <style scoped>
+/* TopBar Styles - All classes used in template */
 .topbar-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: var(--white-40) !important;
+  background: var(--white-40);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--white-60) !important;
-  box-shadow: 0 4px 24px var(--black-8), inset 0 1px 0 var(--white-80) !important;
+  border-bottom: 1px solid var(--white-60);
+  box-shadow: 0 4px 24px var(--black-8), inset 0 1px 0 var(--white-80);
   height: 8vh;
   width: 100%;
   padding-left: clamp(2rem, 1.5vw, 3rem);
@@ -177,65 +173,250 @@ const changeUser = () => {
   transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
 }
 
+.topbar-title-container {
+  display: flex;
+  align-items: center;
+}
+
 .topbar-title {
   color: var(--text-heading);
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  font-weight: 600;
+  margin: 0;
+  cursor: pointer;
+  transition: opacity 0.2s cubic-bezier(0, 0, 0.2, 1);
+}
+.topbar-title:hover {
+  opacity: 0.8;
 }
 
-/* Topbar icons and text */
-.topbar-icon {
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.topbar-icon-button {
+  background: var(--white-60);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--white-50);
+  box-shadow: 0 2px 8px var(--black-5), inset 0 1px 0 var(--white-80);
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
+  position: relative;
+  min-width: 2.25rem;
+  min-height: 2.25rem;
+  cursor: pointer;
+}
+.topbar-icon-button:hover {
+  background: var(--white-80);
+  box-shadow: 0 4px 16px var(--black-12), inset 0 1px 0 var(--white-90);
+  transform: translateY(-1px);
+}
+
+.notification-button {
+  width: clamp(2rem, 5vw, 2.25rem);
+  height: clamp(2rem, 5vw, 2.25rem);
+}
+.notification-icon {
   color: var(--topbar-icon-color);
+  width: clamp(1rem, 3vw, 1.25rem);
+  height: clamp(1rem, 3vw, 1.25rem);
+}
+.notification-badge {
+  position: absolute;
+  top: -0.5rem;
+  right: -0.5rem;
+  background: var(--notification-red);
+  color: var(--white);
+  font-size: clamp(0.5rem, 1.5vw, 0.625rem);
+  font-weight: 600;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.topbar-icon-secondary {
-  color: var(--topbar-text-secondary);
+.language-selector {
+  position: relative;
 }
-
-.topbar-text {
+.language-button {
+  gap: 0.5rem;
+  padding: 0.375rem 0.75rem;
+}
+.language-text {
   color: var(--topbar-text-color);
+  font-size: clamp(0.75rem, 2vw, 0.875rem);
+  font-weight: 600;
 }
-
-.topbar-user-icon {
+.language-icon {
   color: var(--topbar-text-secondary);
+  width: 1rem;
+  height: 1rem;
 }
-
-.lang-menu-text,
-.user-menu-text {
+.language-menu {
+  background: var(--glass-menu-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-menu-border);
+  box-shadow: var(--glass-menu-shadow), var(--glass-menu-inset-shadow);
+  position: absolute;
+  top: calc(100% + 0.5vh);
+  right: 0;
+  border-radius: 0.75rem;
+  min-width: 6rem;
+  z-index: 50;
+  overflow: hidden;
+}
+.language-menu-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  background: transparent;
+  color: var(--accent-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s cubic-bezier(0, 0, 0.2, 1);
+}
+.language-menu-item.selected {
+  background: var(--accent-primary-10);
+}
+.language-menu-item:hover {
+  background: var(--glass-menu-hover-bg);
+}
+.language-menu-text {
   color: var(--accent-primary);
 }
 
-.glass-button {
-  background: var(--white-60) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  border: 1px solid var(--white-50) !important;
-  box-shadow: 0 2px 8px var(--black-5), inset 0 1px 0 var(--white-80) !important;
-  transition: all 0.2s cubic-bezier(0, 0, 0.2, 1) !important;
+.user-menu-container {
+  position: relative;
 }
-
-.glass-button:hover {
-  background: var(--white-80) !important;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 16px var(--black-12), inset 0 1px 0 var(--white-90) !important;
+.user-menu-button {
+  gap: 0.5rem;
+  padding: 0.375rem 0.75rem;
 }
-
-.glass-menu {
-  background: var(--glass-menu-bg) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-  border: 1px solid var(--glass-menu-border) !important;
-  box-shadow: var(--glass-menu-shadow), var(--glass-menu-inset-shadow) !important;
+.user-avatar {
+  width: clamp(1.25rem, 4vw, 1.5rem);
+  height: clamp(1.25rem, 4vw, 1.5rem);
+  border-radius: 50%;
+  background: var(--white-80);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
-.glass-menu button:hover {
-  background: var(--glass-menu-hover-bg) !important;
+.user-avatar-icon {
+  color: var(--topbar-text-secondary);
+  width: clamp(0.875rem, 3vw, 1.125rem);
+  height: clamp(0.875rem, 3vw, 1.125rem);
 }
-
-.glass-menu .text-gray-900 {
-  color: var(--glass-menu-text-primary) !important;
+.user-name-text {
+  color: var(--topbar-text-color);
+  font-size: clamp(0.75rem, 2vw, 0.875rem);
+  font-weight: 500;
 }
-
-.glass-menu .text-gray-600 {
-  color: var(--glass-menu-text-secondary) !important;
+.user-menu-icon {
+  color: var(--topbar-text-secondary);
+  width: 1rem;
+  height: 1rem;
+}
+.user-menu {
+  background: var(--glass-menu-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-menu-border);
+  box-shadow: var(--glass-menu-shadow), var(--glass-menu-inset-shadow);
+  position: absolute;
+  top: calc(100% + 0.5vh);
+  right: 0;
+  border-radius: 0.75rem;
+  min-width: 12rem;
+  z-index: 50;
+  overflow: hidden;
+}
+.user-menu-profile {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border-light);
+  background: transparent;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s cubic-bezier(0, 0, 0.2, 1);
+}
+.user-menu-profile:hover {
+  background: var(--glass-menu-hover-bg);
+}
+.user-profile-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.user-profile-avatar {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--white-80);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-gray-600);
+}
+.user-profile-avatar-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+.user-profile-details {
+  text-align: left;
+}
+.user-profile-name {
+  color: var(--glass-menu-text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+}
+.user-profile-role {
+  color: var(--glass-menu-text-secondary);
+  font-size: 0.875rem;
+}
+.user-menu-logout {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  cursor: pointer;
+  border: none;
+  transition: background 0.2s cubic-bezier(0, 0, 0.2, 1);
+}
+.user-menu-logout:hover {
+  background: var(--glass-menu-hover-bg);
+}
+.user-menu-logout-icon-container {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-gray-600);
+}
+.user-menu-logout-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+.user-menu-logout-text {
+  color: var(--accent-primary);
+  font-size: 1rem;
+  font-weight: 500;
 }
 
 /* Responsive Design - Mobile */
@@ -244,33 +425,27 @@ const changeUser = () => {
     padding-left: 1rem;
     padding-right: 1rem;
   }
-  
   .topbar-actions {
-    gap: 0.5rem !important;
+    gap: 0.5rem;
   }
-  
   .user-name-text {
     display: none;
   }
-  
-  .glass-button {
-    padding: 0.375rem 0.5rem !important;
+  .topbar-icon-button {
+    padding: 0.375rem 0.5rem;
   }
-  
-  .glass-menu {
+  .user-menu {
     right: -0.5rem;
     min-width: 200px;
   }
 }
-
 @media (max-width: 768px) {
   .topbar-container {
     padding-left: 1.25rem;
     padding-right: 1.25rem;
   }
-  
   .topbar-actions {
-    gap: 0.75rem !important;
+    gap: 0.75rem;
   }
 }
 </style>
