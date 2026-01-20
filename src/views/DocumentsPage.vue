@@ -397,14 +397,14 @@ const handleCloseComparison = () => {
 }
 
 .selection-btn.active {
-  background: linear-gradient(135deg, var(--blue-3b82f6) 0%, var(--blue-8b5cf6) 100%);
-  color: white;
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  color: var(--white);
   border-color: var(--white-20);
 }
 
 .selection-btn.active:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px var(--blue-3b82f6-40);
+  box-shadow: 0 6px 20px var(--accent-primary-40);
 }
 
 .comparison-btn {

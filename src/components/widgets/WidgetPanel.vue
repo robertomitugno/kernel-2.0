@@ -459,8 +459,8 @@ onMounted(() => {
 .loading-spinner {
   width: 3rem;
   height: 3rem;
-  border: 3px solid var(--blue-3b82f6-20);
-  border-top-color: var(--blue-3b82f6);
+  border: 3px solid var(--accent-primary-20);
+  border-top-color: var(--accent-primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -482,7 +482,7 @@ onMounted(() => {
 .progress-bar {
   width: 100%;
   height: 0.5rem;
-  background: var(--blue-3b82f6-15);
+  background: var(--accent-primary-15);
   border-radius: 0.25rem;
   overflow: hidden;
   box-shadow: inset 0 1px 2px var(--black-10);
@@ -490,7 +490,7 @@ onMounted(() => {
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(135deg, var(--blue-3b82f6) 0%, var(--blue-8b5cf6) 100%);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   border-radius: 0.25rem;
   transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 0 10px var(--accent-primary-50);

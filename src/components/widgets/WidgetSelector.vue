@@ -256,9 +256,9 @@ const getCategoryName = (category: string) => {
 }
 
 .checkbox-checked {
-  background: linear-gradient(135deg, var(--blue-3b82f6) 0%, var(--blue-8b5cf6) 100%);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   border-color: transparent;
-  box-shadow: 0 3px 12px var(--blue-3b82f6-40), inset 0 1px 0 var(--white-30);
+  box-shadow: 0 3px 12px var(--accent-primary-40), inset 0 1px 0 var(--white-30);
 }
 
 .widget-option-content {
@@ -307,9 +307,9 @@ const getCategoryName = (category: string) => {
 }
 
 .button-primary {
-  background: linear-gradient(135deg, var(--blue-3b82f6) 0%, var(--blue-8b5cf6) 100%);
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   color: white;
-  box-shadow: 0 4px 16px var(--blue-3b82f6-30);
+  box-shadow: 0 4px 16px var(--accent-primary-30);
 }
 
 .button-primary:hover {
