@@ -1,16 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ArrowDownTrayIcon, ShareIcon } from '@heroicons/vue/24/outline'
-import type { Document } from '../../types/Documents'
+import type { DocumentModal } from '../../types/Documents'
 import BaseModal from '../shared/BaseModal.vue'
 import DocumentViewer from './DocumentViewer.vue'
 
-interface Props {
-  document: Document | null
-  isOpen: boolean
-}
-
-const props = defineProps<Props>()
+const props = defineProps<DocumentModal>()
 
 const emit = defineEmits<{
   close: []
@@ -53,7 +48,7 @@ const handleShare = () => {
       </div>
     </template>
 
-    <!-- DocumentViewer con stile default -->
+    <!-- DocumentViewer with default style -->
     <DocumentViewer
       :document="document"
       :current-page-index="currentPageIndex"
@@ -64,13 +59,13 @@ const handleShare = () => {
     />
 
     <template #footer>
-      <button class="action-button download-button" @click="handleDownload">
-        <ArrowDownTrayIcon class="w-5 h-5" />
-        {{ $t('documentModal.download') }}
+      <button class="action-button download-button" @click="handleDownload" :aria-label="$t('documentModal.download')">
+        <ArrowDownTrayIcon class="icon-action" />
+        <span class="button-label">{{ $t('documentModal.download') }}</span>
       </button>
-      <button class="action-button share-button" @click="handleShare">
-        <ShareIcon class="w-5 h-5" />
-        {{ $t('documentModal.share') }}
+      <button class="action-button share-button" @click="handleShare" :aria-label="$t('documentModal.share')">
+        <ShareIcon class="icon-action" />
+        <span class="button-label">{{ $t('documentModal.share') }}</span>
       </button>
     </template>
   </BaseModal>
@@ -111,7 +106,6 @@ const handleShare = () => {
   box-shadow: 0 4px 16px var(--accent-primary-30), inset 0 1px 0 var(--white-20);
 }
 
-
 .download-button:hover {
   background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   transform: translateY(-2px);
@@ -131,6 +125,15 @@ const handleShare = () => {
   background: var(--white-60);
   transform: translateY(-2px);
   box-shadow: 0 8px 24px var(--shadow), inset 0 1px 0 var(--white-80);
+}
+
+.icon-action {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.button-label {
+  display: inline;
 }
 
 @media (max-width: 768px) {

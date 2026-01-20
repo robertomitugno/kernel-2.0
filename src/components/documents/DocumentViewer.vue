@@ -2,21 +2,14 @@
 import { computed } from 'vue'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/outline'
 import { useI18n } from 'vue-i18n'
-import type { Document } from '../shared/DocumentCard.vue'
+import type { DocumentViewer } from '../../types/Documents'
 
-// Import delle immagini del referto (per ora uguali per tutti)
+// Import report images (currently the same for all)
 import referto1 from '../../assets/documents/referto_ECG_1.jpg'
 import referto2 from '../../assets/documents/referto_ECG_2.jpg'
 import referto3 from '../../assets/documents/referto_ECG_3.jpg'
 
-interface Props {
-  document: Document | null
-  currentPageIndex: number
-  showPanel?: boolean  // Se false, non mostra il wrapper panel (per uso in modal)
-  previewHeight?: string  // Altezza custom della preview
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<DocumentViewer>(), {
   showPanel: true,
   previewHeight: '22rem',
   showHospital: false
@@ -43,7 +36,7 @@ const canGoNext = computed(() => props.currentPageIndex < totalPages - 1)
 
 <template>
   <div :class="showPanel ? 'document-panel' : 'document-viewer-standalone'">
-    <!-- Placeholder quando non c'è selezione -->
+    <!-- Placeholder when no document is selected -->
     <div v-if="!document" class="placeholder">
       <div class="placeholder-icon">📄</div>
       <p class="placeholder-text">{{ t('documents.comparison.selectPlaceholder') }}</p>
@@ -51,15 +44,16 @@ const canGoNext = computed(() => props.currentPageIndex < totalPages - 1)
 
     <!-- Document Viewer -->
     <div v-else class="document-viewer">
-      <!-- Preview con navigazione -->
+      <!-- Preview with navigation -->
       <div class="document-preview-wrapper">
         <button
           type="button"
           class="nav-button"
           :disabled="!canGoPrev"
           @click="emit('prevPage')"
+          :aria-label="t('documents.comparison.page', { current: currentPageIndex, total: totalPages })"
         >
-          <ChevronLeftIcon class="w-6 h-6" />
+          <ChevronLeftIcon class="icon-nav" />
         </button>
 
         <div class="preview-area" :style="{ height: previewHeight }">
@@ -75,8 +69,9 @@ const canGoNext = computed(() => props.currentPageIndex < totalPages - 1)
           class="nav-button"
           :disabled="!canGoNext"
           @click="emit('nextPage')"
+          :aria-label="t('documents.comparison.page', { current: currentPageIndex + 2, total: totalPages })"
         >
-          <ChevronRightIcon class="w-6 h-6" />
+          <ChevronRightIcon class="icon-nav" />
         </button>
       </div>
 
@@ -87,9 +82,9 @@ const canGoNext = computed(() => props.currentPageIndex < totalPages - 1)
         </span>
       </div>
 
-      <!-- Slot per metadata custom (es. con icone per modal) -->
+      <!-- Slot for custom metadata (e.g., icons for modal) -->
       <slot name="metadata">
-        <!-- Default: Document info semplice (per comparison) -->
+        <!-- Default: Simple document info (for comparison) -->
         <div class="document-info">
           <!-- Description -->
           <div v-if="document.description" class="info-section">
@@ -195,7 +190,6 @@ const canGoNext = computed(() => props.currentPageIndex < totalPages - 1)
   border: 1px solid var(--white-60);
   border-radius: 1rem;
   padding: 0.75rem;
-  /* height rimossa - ora controllata via prop */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -227,6 +221,11 @@ const canGoNext = computed(() => props.currentPageIndex < totalPages - 1)
   color: var(--accent-primary);
   flex-shrink: 0;
   box-shadow: 0 4px 16px var(--accent-primary-20), inset 0 1px 0 var(--white-70);
+}
+
+.icon-nav {
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .nav-button:hover:not(:disabled) {

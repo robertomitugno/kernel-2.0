@@ -14,6 +14,18 @@ export interface Document {
 
 export type DocumentType = 'prescription' | 'report' | 'analysis' | 'visit' | 'diagnostic' | 'other'
 
+export interface DocumentModal {
+  document: Document | null;
+  isOpen: boolean;
+}
+
+export interface DocumentViewer {
+  document: Document | null;
+  currentPageIndex: number;
+  showPanel?: boolean;
+  previewHeight?: string;
+}
+
 export interface DocumentCategory {
   type: DocumentType
   label: string
