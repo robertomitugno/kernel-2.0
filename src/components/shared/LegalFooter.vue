@@ -39,7 +39,7 @@ const currentYear = new Date().getFullYear()
   <!-- Compact Legal Footer -->
   <footer class="legal-footer">
     <div class="footer-left">
-      <span class="footer-brand">Nucleo © {{ currentYear }}</span>
+      <span class="footer-brand">{{ t('app.title') }} © {{ currentYear }}</span>
     </div>
     
     <div class="footer-center">
@@ -51,17 +51,17 @@ const currentYear = new Date().getFullYear()
         <button 
           @click="openPrivacyModal" 
           class="footer-link"
-          aria-label="Apri informativa privacy e cookie policy"
+          :aria-label="t('legalFooter.privacyAria')"
         >
-          Privacy
+          {{ t('legalFooter.privacy') }}
         </button>
         <span class="footer-separator">|</span>
         <button 
           @click="openLegalModal" 
           class="footer-link"
-          aria-label="Apri note legali"
+          :aria-label="t('legalFooter.legalAria')"
         >
-          Note Legali
+          {{ t('legalFooter.legalNotes') }}
         </button>
         <span class="footer-separator">|</span>
         <a 
@@ -69,12 +69,12 @@ const currentYear = new Date().getFullYear()
           target="_blank" 
           rel="noopener noreferrer"
           class="footer-link"
-          aria-label="Vai alla dichiarazione di accessibilità (si apre in una nuova finestra)"
+          :aria-label="t('legalFooter.accessibilityAria')"
         >
-          Accessibilità
+          {{ t('legalFooter.accessibility') }}
         </a>
         <span class="footer-separator">|</span>
-        <span class="footer-license">EUPL-1.2</span>
+        <span class="footer-license">{{ t('legalFooter.license') }}</span>
       </div>
     </div>
   </footer>
@@ -83,32 +83,29 @@ const currentYear = new Date().getFullYear()
   <Transition name="slide-up">
     <div v-if="showCookieBanner" class="cookie-banner" role="dialog" aria-labelledby="cookie-banner-title">
       <div class="cookie-content">
-        <h3 id="cookie-banner-title">Utilizzo dei Cookie</h3>
-        <p>
-          Questo sito utilizza cookie tecnici necessari per il funzionamento e cookie di analisi 
-          per migliorare l'esperienza utente. Proseguendo la navigazione accetti l'uso dei cookie.
-        </p>
+        <h3 id="cookie-banner-title">{{ t('legalFooter.cookieTitle') }}</h3>
+        <p>{{ t('legalFooter.cookieDescription') }}</p>
         <div class="cookie-actions">
           <button 
             @click="acceptNecessaryCookies" 
             class="cookie-btn cookie-btn-secondary"
-            aria-label="Accetta solo cookie necessari"
+            :aria-label="t('legalFooter.acceptNecessaryAria')"
           >
-            Solo necessari
+            {{ t('legalFooter.acceptNecessary') }}
           </button>
           <button 
             @click="openPrivacyModal" 
             class="cookie-btn cookie-btn-link"
-            aria-label="Leggi informativa completa"
+            :aria-label="t('legalFooter.moreInfoAria')"
           >
-            Maggiori informazioni
+            {{ t('legalFooter.moreInfo') }}
           </button>
           <button 
             @click="acceptAllCookies" 
             class="cookie-btn cookie-btn-primary"
-            aria-label="Accetta tutti i cookie"
+            :aria-label="t('legalFooter.acceptAllAria')"
           >
-            Accetta tutti
+            {{ t('legalFooter.acceptAll') }}
           </button>
         </div>
       </div>
@@ -120,7 +117,7 @@ const currentYear = new Date().getFullYear()
     <div v-if="showPrivacyModal" class="modal-overlay" @click.self="showPrivacyModal = false">
       <div class="modal-container" role="dialog" aria-labelledby="privacy-modal-title">
         <div class="modal-header">
-          <h2 id="privacy-modal-title">Informativa Privacy e Cookie Policy</h2>
+          <h2 id="privacy-modal-title">{{ t('legalFooter.privacyModalTitle') }}</h2>
           <button 
             @click="showPrivacyModal = false" 
             class="modal-close"
@@ -230,7 +227,7 @@ const currentYear = new Date().getFullYear()
         
         <div class="modal-footer">
           <button @click="showPrivacyModal = false" class="btn-primary">
-            Ho compreso
+            {{ t('legalFooter.privacyModalClose') }}
           </button>
         </div>
       </div>
@@ -242,7 +239,7 @@ const currentYear = new Date().getFullYear()
     <div v-if="showLegalModal" class="modal-overlay" @click.self="showLegalModal = false">
       <div class="modal-container" role="dialog" aria-labelledby="legal-modal-title">
         <div class="modal-header">
-          <h2 id="legal-modal-title">Note Legali</h2>
+          <h2 id="legal-modal-title">{{ t('legalFooter.legalModalTitle') }}</h2>
           <button 
             @click="showLegalModal = false" 
             class="modal-close"
@@ -332,7 +329,7 @@ const currentYear = new Date().getFullYear()
         
         <div class="modal-footer">
           <button @click="showLegalModal = false" class="btn-primary">
-            Chiudi
+            {{ t('legalFooter.legalModalClose') }}
           </button>
         </div>
       </div>

@@ -2,6 +2,27 @@
   "app": {
     "title": "Nucleo"
   },
+  "legalFooter": {
+    "privacy": "Privacy",
+    "privacyAria": "Apri informativa privacy e cookie policy",
+    "legalNotes": "Note Legali",
+    "legalAria": "Apri note legali",
+    "accessibility": "Accessibilità",
+    "accessibilityAria": "Vai alla dichiarazione di accessibilità (si apre in una nuova finestra)",
+    "cookieTitle": "Utilizzo dei Cookie",
+    "cookieDescription": "Questo sito utilizza cookie tecnici necessari per il funzionamento e cookie di analisi per migliorare l'esperienza utente. Proseguendo la navigazione accetti l'uso dei cookie.",
+    "acceptNecessary": "Solo necessari",
+    "acceptNecessaryAria": "Accetta solo cookie necessari",
+    "moreInfo": "Maggiori informazioni",
+    "moreInfoAria": "Leggi informativa completa",
+    "acceptAll": "Accetta tutti",
+    "acceptAllAria": "Accetta tutti i cookie",
+    "privacyModalTitle": "Informativa Privacy e Cookie Policy",
+    "privacyModalClose": "Ho compreso",
+    "legalModalTitle": "Note Legali",
+    "legalModalClose": "Chiudi",
+    "license": "EUPL-1.2"
+  },
   "breadcrumbs": {
     "home": "Home",
     "documents": "Documenti",
