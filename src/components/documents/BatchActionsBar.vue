@@ -1,18 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { 
-  ArrowDownTrayIcon, 
-  XMarkIcon,
-  CheckIcon
-} from '@heroicons/vue/24/outline'
-import type { Document } from '../shared/DocumentCard.vue'
+import { ArrowDownTrayIcon, XMarkIcon, CheckIcon } from '@heroicons/vue/24/outline'
+import type { BatchActions } from '../../types/Documents'
 
-interface Props {
-  selectedDocuments: Document[]
-  totalDocuments: number
-}
-
-const props = defineProps<Props>()
+const props = defineProps<BatchActions>()
 const emit = defineEmits<{
   downloadAll: []
   deselectAll: []
@@ -22,13 +13,11 @@ const emit = defineEmits<{
 // Group documents by category
 const categoryCounts = computed(() => {
   const counts: Record<string, number> = {}
-  
   props.selectedDocuments.forEach(doc => {
     doc.tags.forEach(tag => {
       counts[tag] = (counts[tag] || 0) + 1
     })
   })
-  
   return Object.entries(counts)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 3) // Show top 3 categories
@@ -45,7 +34,7 @@ const allSelected = computed(() => {
       <div class="bar-content">
         <div class="selection-info">
           <div class="selection-header">
-            <CheckIcon class="w-5 h-5" :style="{ color: 'var(--blue-3b82f6)' }" />
+            <CheckIcon class="icon-check" aria-label="check" />
             <span class="selection-count">
               {{ selectedDocuments.length }} 
               {{ selectedDocuments.length === 1 ? $t('documents.batch.documentSelected') : $t('documents.batch.documentsSelected') }}
@@ -65,17 +54,15 @@ const allSelected = computed(() => {
         </div>
 
         <div class="action-buttons">
-          <button class="action-btn download-btn" @click="emit('downloadAll')">
-            <ArrowDownTrayIcon class="w-5 h-5" />
-            <span>{{ $t('documents.batch.downloadAll') }}</span>
+          <button class="action-btn download-btn" @click="emit('downloadAll')" :aria-label="$t('documents.batch.downloadAll')">
+            <ArrowDownTrayIcon class="icon-action" />
+            <span class="btn-label">{{ $t('documents.batch.downloadAll') }}</span>
           </button>
-          
-          <button class="action-btn deselect-btn" @click="emit('deselectAll')">
-            <span>{{ $t('documents.batch.deselectAll') }}</span>
+          <button class="action-btn deselect-btn" @click="emit('deselectAll')" :aria-label="$t('documents.batch.deselectAll')">
+            <span class="btn-label">{{ $t('documents.batch.deselectAll') }}</span>
           </button>
-          
-          <button class="action-btn cancel-btn" @click="emit('cancel')">
-            <XMarkIcon class="w-5 h-5" />
+          <button class="action-btn cancel-btn" @click="emit('cancel')" :aria-label="$t('documents.selection.cancel')">
+            <XMarkIcon class="icon-action" />
           </button>
         </div>
       </div>
@@ -106,10 +93,7 @@ const allSelected = computed(() => {
   -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--white-60);
   border-radius: 1.25rem;
-  box-shadow: 
-    0 8px 32px var(--shadow), 
-    inset 0 1px 0 var(--white-80),
-    0 0 0 1px var(--text-primary-10);
+  box-shadow: 0 8px 32px var(--shadow), inset 0 1px 0 var(--white-80), 0 0 0 1px var(--text-primary-10);
 }
 
 .selection-info {
@@ -126,10 +110,16 @@ const allSelected = computed(() => {
   gap: 0.5rem;
 }
 
+.icon-check {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--blue-3b82f6);
+}
+
 .selection-count {
   font-size: 0.9375rem;
   font-weight: 600;
-  color: var(--text-default);
+  color: var(--text-primary);
   white-space: nowrap;
 }
 
@@ -156,7 +146,7 @@ const allSelected = computed(() => {
   background: var(--accent-primary-8);
   border: 1px solid var(--accent-primary-20);
   border-radius: 0.5rem;
-  color: var(--text-interactive);
+  color: var(--accent-primary);
   font-size: 0.75rem;
   font-weight: 500;
   white-space: nowrap;
@@ -179,6 +169,8 @@ const allSelected = computed(() => {
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
   white-space: nowrap;
+  border: none;
+  outline: none;
 }
 
 .download-btn {
@@ -196,7 +188,7 @@ const allSelected = computed(() => {
 .deselect-btn {
   background: var(--black-5);
   border: 1px solid var(--text-primary-10);
-  color: var(--text-muted);
+  color: var(--text-secondary);
 }
 
 .deselect-btn:hover {
@@ -216,7 +208,16 @@ const allSelected = computed(() => {
   transform: translateY(-2px);
 }
 
-/* Slide down animation */
+.icon-action {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.btn-label {
+  display: inline;
+}
+
+/* Slide up animation for transition */
 .slide-up-enter-active,
 .slide-up-leave-active {
   transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
@@ -244,23 +245,19 @@ const allSelected = computed(() => {
     width: calc(100% - 2rem);
     top: 5rem;
   }
-  
   .bar-content {
     flex-direction: column;
     align-items: stretch;
     gap: 1rem;
     padding: 1rem;
   }
-  
   .action-buttons {
     justify-content: stretch;
   }
-  
   .action-btn {
     flex: 1;
   }
-  
-  .download-btn span {
+  .btn-label {
     display: none;
   }
 }

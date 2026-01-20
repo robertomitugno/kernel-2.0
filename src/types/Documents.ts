@@ -42,6 +42,11 @@ export interface DocumentSelector {
   placeholder?: string;
 }
 
+export interface BatchActions {
+  selectedDocuments: Document[];
+  totalDocuments: number;
+}
+
 // Tag to color key mapping
 export const TAG_COLOR_MAP: Record<string, string> = {
   'cardiologia': 'cardiologia',
