@@ -4,14 +4,9 @@ import { useI18n } from 'vue-i18n'
 import BaseModal from '../../shared/BaseModal.vue'
 import DocumentSelector from './DocumentSelector.vue'
 import DocumentViewer from '../DocumentViewer.vue'
-import type { Document } from '../../shared/DocumentCard.vue'
+import type { DocumentComparisonModal } from '../../../types/Documents'
 
-interface Props {
-  isOpen: boolean
-  documents: Document[]
-}
-
-const props = defineProps<Props>()
+const props = defineProps<DocumentComparisonModal>()
 
 const emit = defineEmits<{
   close: []
@@ -25,12 +20,12 @@ const selectedRightDoc = ref<string | null>(null)
 const leftPageIndex = ref(0)
 const rightPageIndex = ref(0)
 
-// Filtra documenti per escludere le prescrizioni
+// Filter documents to exclude prescriptions
 const comparableDocuments = computed(() => {
   return props.documents.filter(doc => !doc.tags.includes('Prescrizione'))
 })
 
-// Documenti disponibili per i dropdown (con esclusione mutua)
+// Available documents for dropdowns (mutual exclusion)
 const leftAvailableDocuments = computed(() => {
   return comparableDocuments.value.filter(doc => doc.id !== selectedRightDoc.value)
 })
@@ -39,7 +34,7 @@ const rightAvailableDocuments = computed(() => {
   return comparableDocuments.value.filter(doc => doc.id !== selectedLeftDoc.value)
 })
 
-// Documenti selezionati completi
+// Selected documents
 const leftDocument = computed(() => {
   return comparableDocuments.value.find(doc => doc.id === selectedLeftDoc.value) || null
 })
@@ -48,7 +43,7 @@ const rightDocument = computed(() => {
   return comparableDocuments.value.find(doc => doc.id === selectedRightDoc.value) || null
 })
 
-// Handlers per selezione documenti
+// Handlers for document selection
 const handleSelectLeft = (docId: string) => {
   selectedLeftDoc.value = docId
   leftPageIndex.value = 0
@@ -59,7 +54,7 @@ const handleSelectRight = (docId: string) => {
   rightPageIndex.value = 0
 }
 
-// Handlers per navigazione pagine
+// Handlers for page navigation
 const handleLeftPrevPage = () => {
   if (leftPageIndex.value > 0) {
     leftPageIndex.value--
@@ -80,7 +75,7 @@ const handleRightNextPage = () => {
   rightPageIndex.value++
 }
 
-// Reset e chiusura
+// Reset and close modal
 const handleClose = () => {
   selectedLeftDoc.value = null
   selectedRightDoc.value = null
@@ -89,7 +84,7 @@ const handleClose = () => {
   emit('close')
 }
 
-// Reset quando il modal si chiude
+// Reset when modal closes
 watch(() => props.isOpen, (newVal) => {
   if (!newVal) {
     selectedLeftDoc.value = null

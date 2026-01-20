@@ -31,6 +31,11 @@ export interface BadgeColors {
   borderColor: string
 }
 
+export interface DocumentComparisonModal {
+  isOpen: boolean;
+  documents: Document[];
+}
+
 // Tag to color key mapping
 export const TAG_COLOR_MAP: Record<string, string> = {
   'cardiologia': 'cardiologia',
