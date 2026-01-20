@@ -2,22 +2,10 @@
 import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import BaseModal from '../shared/BaseModal.vue'
+import type { WidgetOption, WidgetSelectorProps } from '../../types/Widgets'
 
-export interface WidgetOption {
-  id: string
-  name: string
-  description: string
-  icon: string
-  category: 'quick' | 'health-metric' | 'health-chart'
-}
+const props = defineProps<WidgetSelectorProps>()
 
-interface Props {
-  isOpen: boolean
-  availableWidgets: WidgetOption[]
-  selectedWidgetIds: string[]
-}
-
-const props = defineProps<Props>()
 const { t } = useI18n()
 
 const emit = defineEmits<{
@@ -27,13 +15,14 @@ const emit = defineEmits<{
 
 const localSelection = ref<string[]>([...props.selectedWidgetIds])
 
-// Sincronizza localSelection quando la modale si apre
+// Sync localSelection when modal opens
 watch(() => props.isOpen, (isOpen) => {
   if (isOpen) {
     localSelection.value = [...props.selectedWidgetIds]
   }
 })
 
+// Toggle widget selection
 const toggleWidget = (widgetId: string) => {
   const index = localSelection.value.indexOf(widgetId)
   if (index > -1) {
@@ -43,26 +32,27 @@ const toggleWidget = (widgetId: string) => {
   }
 }
 
+// Check if widget is selected
 const isSelected = (widgetId: string) => {
   return localSelection.value.includes(widgetId)
 }
 
+// Handle save action
 const handleSave = () => {
   emit('save', localSelection.value)
   emit('close')
 }
 
+// Categorize widgets for display
 const categorizedWidgets = computed(() => {
   const categories = {
     quick: [] as WidgetOption[],
     'health-metric': [] as WidgetOption[],
     'health-chart': [] as WidgetOption[]
   }
-  
   props.availableWidgets.forEach(widget => {
     categories[widget.category].push(widget)
   })
-  
   return categories
 })
 
@@ -108,7 +98,7 @@ const getCategoryName = (category: string) => {
                 <div class="widget-option-footer">
                   <div class="checkbox-wrapper">
                     <div class="checkbox" :class="{ 'checkbox-checked': isSelected(widget.id) }">
-                      <svg v-if="isSelected(widget.id)" class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                      <svg v-if="isSelected(widget.id)" class="checkbox-icon" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
                       </svg>
                     </div>
@@ -142,7 +132,7 @@ const getCategoryName = (category: string) => {
 .category-title {
   font-size: 0.8125rem;
   font-weight: 600;
-  color: var(--gray-404040);
+  color: var(--widget-label-color);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin: 0 0 1rem 0;
@@ -231,7 +221,7 @@ const getCategoryName = (category: string) => {
 .checkbox-label {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--gray-525252);
+  color: var(--widget-label-color);
   transition: color 0.3s;
 }
 
@@ -271,13 +261,13 @@ const getCategoryName = (category: string) => {
 .widget-option-name {
   font-size: 1rem;
   font-weight: 700;
-  color: var(--gray-171717);
+  color: var(--widget-value-color);
   line-height: 1.3;
 }
 
 .widget-option-description {
   font-size: 0.8125rem;
-  color: var(--gray-737373);
+  color: var(--widget-label-color);
   line-height: 1.5;
 }
 
@@ -321,5 +311,32 @@ const getCategoryName = (category: string) => {
   .widget-grid {
     grid-template-columns: 1fr;
   }
+}
+
+/* Responsive: shrink icon and padding for mobile */
+@media (max-width: 600px) {
+  .widget-option-main {
+    padding: 0.75rem;
+    gap: 0.5rem;
+  }
+  .widget-icon-large {
+    font-size: 1.5rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+  }
+  .widget-option-footer {
+    padding: 0.5rem 0.75rem;
+  }
+  .category-title {
+    font-size: 0.7rem;
+  }
+}
+
+/* Checkbox icon size */
+.checkbox-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: white;
 }
 </style>

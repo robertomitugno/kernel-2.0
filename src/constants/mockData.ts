@@ -1,3 +1,4 @@
+import type { WidgetOption } from '../types/Widgets'
 import type { Document } from '../types/Documents'
 import type { Appointment } from '../components/bookingAppointment/AppointmentCard.vue'
 import type { HealthParameter, HealthAlert, HealthMetricHistory } from '../types/health'
@@ -640,3 +641,105 @@ export function getAppointmentDetails(date: string, time: string): AppointmentDe
   }
 }
 
+export function getAvailableWidgets(t: (key: string) => string): WidgetOption[] {
+  return [
+    {
+      id: 'next-visit',
+      name: t('widgets.items.nextVisit.name'),
+      description: t('widgets.items.nextVisit.description'),
+      icon: '📅',
+      category: 'quick',
+    },
+    {
+      id: 'new-docs',
+      name: t('widgets.items.newDocs.name'),
+      description: t('widgets.items.newDocs.description'),
+      icon: '🔔',
+      category: 'quick',
+    },
+    {
+      id: 'medication-reminder',
+      name: t('widgets.items.medicationReminder.name'),
+      description: t('widgets.items.medicationReminder.description'),
+      icon: '💊',
+      category: 'quick',
+    },
+    {
+      id: 'next-vaccine',
+      name: t('widgets.items.nextVaccine.name'),
+      description: t('widgets.items.nextVaccine.description'),
+      icon: '💉',
+      category: 'quick',
+    },
+    {
+      id: 'heart-rate',
+      name: t('widgets.items.heartRate.name'),
+      description: t('widgets.items.heartRate.description'),
+      icon: '❤️',
+      category: 'health-metric',
+    },
+    {
+      id: 'blood-pressure-sys',
+      name: t('widgets.items.bloodPressureSys.name'),
+      description: t('widgets.items.bloodPressureSys.description'),
+      icon: '🩺',
+      category: 'health-metric',
+    },
+    {
+      id: 'blood-pressure-dia',
+      name: t('widgets.items.bloodPressureDia.name'),
+      description: t('widgets.items.bloodPressureDia.description'),
+      icon: '💉',
+      category: 'health-metric',
+    },
+    {
+      id: 'glucose',
+      name: t('widgets.items.glucose.name'),
+      description: t('widgets.items.glucose.description'),
+      icon: '🩸',
+      category: 'health-metric',
+    },
+    {
+      id: 'oxygen',
+      name: t('widgets.items.oxygen.name'),
+      description: t('widgets.items.oxygen.description'),
+      icon: '🫁',
+      category: 'health-metric',
+    },
+    {
+      id: 'cholesterol',
+      name: t('widgets.items.cholesterol.name'),
+      description: t('widgets.items.cholesterol.description'),
+      icon: '🧪',
+      category: 'health-metric',
+    },
+    {
+      id: 'heart-rate-chart',
+      name: t('widgets.items.heartRateChart.name'),
+      description: t('widgets.items.heartRateChart.description'),
+      icon: '📊',
+      category: 'health-chart',
+    },
+    {
+      id: 'glucose-chart',
+      name: t('widgets.items.glucoseChart.name'),
+      description: t('widgets.items.glucoseChart.description'),
+      icon: '📈',
+      category: 'health-chart',
+    },
+    {
+      id: 'blood-pressure-sys-chart',
+      name: t('widgets.items.bloodPressureSysChart.name'),
+      description: t('widgets.items.bloodPressureSysChart.description'),
+      icon: '📉',
+      category: 'health-chart',
+    },
+    {
+      id: 'cholesterol-chart',
+      name: t('widgets.items.cholesterolChart.name'),
+      description: t('widgets.items.cholesterolChart.description'),
+      icon: '📈',
+      category: 'health-chart',
+    },
+  ]
+}
