@@ -2,51 +2,49 @@
 import { computed } from 'vue';
 import type { HealthAlert } from '../../types/health';
 
-interface Props {
-  alert: HealthAlert;
-}
+const props = defineProps<{ alert: HealthAlert }>();
 
-const props = defineProps<Props>();
-
-const alertClasses = computed(() => {
-  const baseClasses = 'p-4 rounded-lg border-l-4 mb-3';
-  if (props.alert.severity === 'danger') {
-    return `${baseClasses} bg-red-50 border-red-500`;
-  }
-  return `${baseClasses} bg-yellow-50 border-yellow-500`;
+const alertClass = computed(() => {
+  return [
+    'health-alert',
+    props.alert.severity === 'danger' ? 'health-alert-danger' : 'health-alert-warning',
+  ];
 });
 
-const iconClasses = computed(() => {
-  if (props.alert.severity === 'danger') {
-    return 'text-red-600';
-  }
-  return 'text-yellow-600';
+// Compute icon color class
+const iconClass = computed(() => {
+  return [
+    'health-alert-icon',
+    props.alert.severity === 'danger' ? 'health-alert-icon-danger' : 'health-alert-icon-warning',
+  ];
 });
 
-const titleClasses = computed(() => {
-  if (props.alert.severity === 'danger') {
-    return 'text-red-800';
-  }
-  return 'text-yellow-800';
+// Compute title color class
+const titleClass = computed(() => {
+  return [
+    'health-alert-title',
+    props.alert.severity === 'danger' ? 'health-alert-title-danger' : 'health-alert-title-warning',
+  ];
 });
 
-const textClasses = computed(() => {
-  if (props.alert.severity === 'danger') {
-    return 'alert-text-danger';
-  }
-  return 'alert-text-warning';
+// Compute text color class
+const textClass = computed(() => {
+  return [
+    'health-alert-text',
+    props.alert.severity === 'danger' ? 'health-alert-text-danger' : 'health-alert-text-warning',
+  ];
 });
 </script>
 
 <template>
-  <div :class="alertClasses">
-    <div class="flex items-start">
-      <div class="shrink-0">
+  <div :class="alertClass">
+    <div class="health-alert-content">
+      <div class="health-alert-icon-wrapper">
         <svg
-          :class="iconClasses"
-          class="w-6 h-6"
-          fill="currentColor"
+          :class="iconClass"
           viewBox="0 0 20 20"
+          aria-hidden="true"
+          fill="currentColor"
         >
           <path
             fill-rule="evenodd"
@@ -55,15 +53,16 @@ const textClasses = computed(() => {
           />
         </svg>
       </div>
-      <div class="ml-3 flex-1">
-        <h3 :class="titleClasses" class="text-sm font-semibold mb-1">
+      <div class="health-alert-body">
+        <h3 :class="titleClass">
           {{ alert.parameterName }}
         </h3>
-        <p :class="textClasses" class="text-sm mb-2">
+        <p :class="textClass">
           {{ alert.message }}
         </p>
-        <p :class="textClasses" class="text-sm font-medium">
-          💡 {{ alert.recommendation }}
+        <p :class="textClass">
+          <span class="health-alert-recommendation-icon" aria-hidden="true">💡</span>
+          {{ alert.recommendation }}
         </p>
       </div>
     </div>
@@ -71,85 +70,110 @@ const textClasses = computed(() => {
 </template>
 
 <style scoped>
-.p-4 {
+.health-alert {
   padding: 1rem;
-}
-
-.rounded-lg {
   border-radius: 1rem;
-}
-
-.border-l-4 {
   border-left-width: 4px;
-}
-
-.mb-3 {
   margin-bottom: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-secondary);
+  box-shadow: 0 4px 16px var(--shadow), inset 0 1px 0 var(--white-50);
+  transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
 }
 
-.bg-red-50 {
+.health-alert-danger {
   background: var(--error-10-on-bg);
-  backdrop-filter: blur(12px);
+  border-left: 4px solid var(--error);
   border: 1px solid var(--error-30);
-  box-shadow: 0 4px 16px var(--shadow), inset 0 1px 0 var(--white-50);
-  transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
 }
 
-.bg-red-50:hover {
-  background: var(--error-15-on-bg);
-  box-shadow: 0 6px 20px var(--shadow), inset 0 1px 0 var(--white-60);
-}
-
-.border-red-500 {
-  border-left-color: var(--error);
-}
-
-.bg-yellow-50 {
+.health-alert-warning {
   background: var(--warning-bg-accessible);
-  backdrop-filter: blur(12px);
+  border-left: 4px solid var(--warning);
   border: 1px solid var(--warning-30);
-  box-shadow: 0 4px 16px var(--shadow), inset 0 1px 0 var(--white-50);
-  transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
 }
 
-.bg-yellow-50:hover {
-  background: var(--warning-15-on-bg);
-  box-shadow: 0 6px 20px var(--shadow), inset 0 1px 0 var(--white-60);
+/* Responsive layout for alert content */
+.health-alert-content {
+  display: flex;
+  align-items: flex-start;
 }
 
-.border-yellow-500 {
-  border-left-color: var(--warning);
+.health-alert-icon-wrapper {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
 }
 
-.text-red-600 {
+.health-alert-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  display: block;
+}
+.health-alert-icon-danger {
   color: var(--error);
 }
-
-.text-red-700 {
-  color: var(--error);
-}
-
-.text-red-800 {
-  color: var(--error);
-}
-
-.alert-text-warning {
-  color: var(--warning-text-accessible);
-}
-
-.alert-text-danger {
-  color: var(--error);
-}
-
-.text-yellow-600 {
+.health-alert-icon-warning {
   color: var(--warning);
 }
 
-.text-yellow-700 {
+.health-alert-body {
+  margin-left: 0.75rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.health-alert-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  line-height: 1.2;
+}
+.health-alert-title-danger {
+  color: var(--error);
+}
+.health-alert-title-warning {
   color: var(--warning-text-accessible);
 }
 
-.text-yellow-800 {
+.health-alert-text {
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+  line-height: 1.4;
+}
+.health-alert-text-danger {
+  color: var(--error);
+}
+.health-alert-text-warning {
   color: var(--warning-text-accessible);
+}
+
+.health-alert-recommendation-icon {
+  margin-right: 0.3em;
+}
+
+@media (max-width: 600px) {
+  .health-alert {
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  .health-alert-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .health-alert-icon-wrapper {
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: 0.5rem;
+  }
+  .health-alert-body {
+    margin-left: 0;
+  }
 }
 </style>
