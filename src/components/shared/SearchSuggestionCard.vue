@@ -1,18 +1,16 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { SparklesIcon, CalendarIcon } from '@heroicons/vue/24/outline'
-import type { SymptomSuggestion } from '../../constants/mockData'
+import { useI18n } from 'vue-i18n'
+import type { SymptomSuggestion } from '../../types/SymptomSuggestion'
 
-interface Props {
-  suggestion: SymptomSuggestion
-}
+const props = defineProps<{ suggestion: SymptomSuggestion }>()
 
-const props = defineProps<Props>()
+const emit = defineEmits<{ bookAppointment: [suggestion: SymptomSuggestion] }>()
 
-const emit = defineEmits<{
-  bookAppointment: [suggestion: SymptomSuggestion]
-}>()
+const { t } = useI18n()
 
+// Compute urgency color based on suggestion urgency
 const urgencyColor = computed(() => {
   switch (props.suggestion.urgency) {
     case 'high':
@@ -42,16 +40,17 @@ const urgencyBorderColor = computed(() => {
 const urgencyLabel = computed(() => {
   switch (props.suggestion.urgency) {
     case 'high':
-      return 'Urgente'
+      return t('searchSuggestionCard.urgencyHigh')
     case 'medium':
-      return 'Medio'
+      return t('searchSuggestionCard.urgencyMedium')
     case 'low':
-      return 'Non urgente'
+      return t('searchSuggestionCard.urgencyLow')
     default:
       return ''
   }
 })
 
+// Emit book appointment event
 const handleBookAppointment = () => {
   emit('bookAppointment', props.suggestion)
 }
@@ -61,26 +60,23 @@ const handleBookAppointment = () => {
   <div class="suggestion-card">
     <div class="suggestion-header">
       <div class="suggestion-icon-badge">
-        <SparklesIcon class="w-4 h-4 text-blue-600" />
+        <SparklesIcon class="suggestion-icon" />
       </div>
       <div class="suggestion-title-section">
-        <h3 class="suggestion-title">Suggerimento intelligente</h3>
-        <p class="suggestion-subtitle">Basato sulla tua ricerca: "{{ suggestion.symptom }}"</p>
+        <h3 class="suggestion-title">{{ t('searchSuggestionCard.smartSuggestion') }}</h3>
+        <p class="suggestion-subtitle">{{ t('searchSuggestionCard.basedOnSearch', { symptom: props.suggestion.symptom }) }}</p>
       </div>
     </div>
 
     <div class="suggestion-content">
       <div class="visit-info">
-        <div class="visit-icon">{{ suggestion.icon }}</div>
+        <div class="visit-icon">{{ props.suggestion.icon }}</div>
         <div class="visit-details">
-          <h4 class="visit-title">{{ suggestion.suggestedVisit }}</h4>
-          <p class="visit-description">{{ suggestion.description }}</p>
+          <h4 class="visit-title">{{ props.suggestion.suggestedVisit }}</h4>
+          <p class="visit-description">{{ props.suggestion.description }}</p>
           <div class="visit-meta">
-            <span class="visit-type-badge">{{ suggestion.visitType }}</span>
-            <span class="urgency-badge" :style="{ 
-              backgroundColor: urgencyColor, 
-              borderColor: urgencyBorderColor 
-            }">
+            <span class="visit-type-badge">{{ props.suggestion.visitType }}</span>
+            <span class="urgency-badge" :style="{ backgroundColor: urgencyColor, borderColor: urgencyBorderColor }">
               {{ urgencyLabel }}
             </span>
           </div>
@@ -88,8 +84,8 @@ const handleBookAppointment = () => {
       </div>
 
       <button class="book-button" @click="handleBookAppointment">
-        <CalendarIcon class="w-5 h-5" />
-        <span>Prenota visita</span>
+        <CalendarIcon class="book-button-icon" />
+        <span>{{ t('searchSuggestionCard.bookVisit') }}</span>
       </button>
     </div>
   </div>
@@ -98,13 +94,13 @@ const handleBookAppointment = () => {
 <style scoped>
 .suggestion-card {
   padding: 1.25rem;
-  background: linear-gradient(135deg, var(--accent-primary-08) 0%, var(--accent-secondary-08) 100%);
+  background: linear-gradient(135deg, var(--accent-primary-8) 0%, var(--accent-secondary-8) 100%);
   backdrop-filter: blur(16px);
   border: 1px solid var(--accent-primary-20);
   border-radius: 1.25rem;
   box-shadow: 0 8px 32px var(--accent-primary-12), inset 0 1px 0 var(--white-50);
   animation: slideInUp 0.4s cubic-bezier(0, 0, 0.2, 1);
-  transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
+  transition: box-shadow 0.3s cubic-bezier(0, 0, 0.2, 1), transform 0.3s cubic-bezier(0, 0, 0.2, 1), background 0.3s cubic-bezier(0, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
 }
@@ -142,6 +138,12 @@ const handleBookAppointment = () => {
   border: 1px solid var(--accent-primary-30);
   border-radius: 0.75rem;
   flex-shrink: 0;
+}
+
+.suggestion-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--accent-primary);
 }
 
 .suggestion-title-section {
@@ -245,8 +247,13 @@ const handleBookAppointment = () => {
   font-weight: 700;
   font-size: 0.9375rem;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0, 0, 0.2, 1);
+  transition: box-shadow 0.3s cubic-bezier(0, 0, 0.2, 1), transform 0.3s cubic-bezier(0, 0, 0.2, 1), background 0.3s cubic-bezier(0, 0, 0.2, 1);
   box-shadow: 0 4px 16px var(--accent-primary-30);
+}
+
+.book-button-icon {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 .book-button:hover {
@@ -274,13 +281,11 @@ const handleBookAppointment = () => {
   .suggestion-card {
     padding: 1rem;
   }
-
   .visit-info {
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
-
   .visit-icon {
     font-size: 2rem;
   }

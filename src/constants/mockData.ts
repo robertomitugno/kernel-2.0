@@ -1,18 +1,7 @@
 import type { Document } from '../types/Documents'
 import type { Appointment } from '../components/bookingAppointment/AppointmentCard.vue'
 import type { HealthParameter, HealthAlert, HealthMetricHistory } from '../types/health'
-
-export interface SymptomSuggestion {
-  id: string
-  symptom: string
-  keywords: string[]
-  suggestedVisit: string
-  visitType: string
-  visitTypeId: string // ID matching VISIT_TYPES
-  description: string
-  urgency: 'low' | 'medium' | 'high'
-  icon: string
-}
+import type { SymptomSuggestion } from '../types/SymptomSuggestion'
 
 // Intelligent search: symptom to visit mapping
 export const SYMPTOM_SUGGESTIONS: SymptomSuggestion[] = [
