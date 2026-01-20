@@ -2,17 +2,13 @@
 import { ref, computed, watch } from 'vue'
 import { CalendarIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { useI18n } from 'vue-i18n'
+import type { DateRange } from '../../types/DataRange'
 
-export interface DateRange {
-  from: Date | null
-  to: Date | null
-}
-
-interface Props {
+interface DateRangeFilter {
   modelValue: DateRange
 }
 
-const props = defineProps<Props>()
+const props = defineProps<DateRangeFilter>()
 const emit = defineEmits<{
   'update:modelValue': [value: DateRange]
 }>()
@@ -140,13 +136,15 @@ const clearRange = () => {
       class="range-button"
       :class="{ 'range-button-active': isActive }"
       @click="showPicker = !showPicker"
+      :aria-label="$t('documents.dateRange.selectRange')"
     >
-      <CalendarIcon class="w-5 h-5" />
-      <span>{{ formattedRange }}</span>
+      <CalendarIcon class="icon-calendar" />
+      <span class="range-label">{{ formattedRange }}</span>
       <XMarkIcon 
         v-if="isActive" 
-        class="w-4 h-4 clear-icon"
+        class="icon-clear clear-icon"
         @click.stop="clearRange"
+        :aria-label="$t('documents.dateRange.clearRange')"
       />
     </button>
 
@@ -160,6 +158,7 @@ const clearRange = () => {
               :key="preset.id"
               class="preset-button"
               @click="applyPreset(preset)"
+              :aria-label="preset.label"
             >
               {{ preset.label }}
             </button>
@@ -177,6 +176,7 @@ const clearRange = () => {
                 v-model="fromDate"
                 type="date"
                 class="date-input"
+                :aria-label="$t('documents.dateRange.from')"
               />
             </div>
             <div class="date-input-group">
@@ -185,10 +185,11 @@ const clearRange = () => {
                 v-model="toDate"
                 type="date"
                 class="date-input"
+                :aria-label="$t('documents.dateRange.to')"
               />
             </div>
           </div>
-          <button class="apply-button" @click="applyCustomRange">
+          <button class="apply-button" @click="applyCustomRange" :aria-label="$t('documents.dateRange.apply')">
             {{ $t('documents.dateRange.apply') }}
           </button>
         </div>
@@ -225,8 +226,7 @@ const clearRange = () => {
 }
 
 .range-button:hover {
-  background: var(--white-70);
-  transform: translateY(-2px);
+  transform: translateY(-4px);
   box-shadow: 0 4px 12px var(--shadow), inset 0 1px 0 var(--white-80);
 }
 
@@ -238,17 +238,28 @@ const clearRange = () => {
 }
 
 .range-button-active:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
   box-shadow: 0 6px 20px var(--accent-primary-40);
 }
 
-.clear-icon {
+.icon-calendar {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.icon-clear {
+  width: 1rem;
+  height: 1rem;
   opacity: 0.8;
   transition: opacity 0.2s;
 }
 
-.clear-icon:hover {
+.icon-clear:hover {
   opacity: 1;
+}
+
+.range-label {
+  display: inline;
 }
 
 .date-picker-dropdown {
