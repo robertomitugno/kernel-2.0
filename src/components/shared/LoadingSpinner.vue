@@ -1,11 +1,8 @@
 <script setup lang="ts">
-interface Props {
-  size?: 'small' | 'medium' | 'large'
-  message?: string
-  inline?: boolean
-}
+import type { LoadingSpinnerProps } from '../../types/LoadingSpinner'
 
-const props = withDefaults(defineProps<Props>(), {
+// Props definition
+const props = withDefaults(defineProps<LoadingSpinnerProps>(), {
   size: 'medium',
   inline: false
 })
