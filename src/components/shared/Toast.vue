@@ -1,17 +1,14 @@
 <script setup lang="ts">
 import { CheckCircleIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { useI18n } from 'vue-i18n'
+import type { Toast } from '../../types/Toast'
 
-interface Props {
-  message: string
-  show: boolean
-  duration?: number
-  type?: 'success' | 'error' | 'info' | 'warning'
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<Toast>(), {
   duration: 3000,
   type: 'success'
 })
+
+const { t } = useI18n()
 
 const emit = defineEmits<{
   close: []
@@ -40,15 +37,15 @@ const ariaLive = props.type === 'error' ? 'assertive' : 'polite'
       >
         <div class="toast-content">
           <div class="toast-icon" :class="`toast-icon-${type}`">
-            <CheckCircleIcon class="w-6 h-6" aria-hidden="true" />
+            <CheckCircleIcon class="toast-check-icon" aria-hidden="true" />
           </div>
           <p class="toast-message">{{ message }}</p>
           <button 
             class="toast-close" 
             @click="emit('close')"
-            aria-label="Chiudi notifica"
+            :aria-label="t('toast.closeNotification')"
           >
-            <XMarkIcon class="w-5 h-5" aria-hidden="true" />
+            <XMarkIcon class="toast-close-icon" aria-hidden="true" />
           </button>
         </div>
       </div>
@@ -90,6 +87,16 @@ const ariaLive = props.type === 'error' ? 'assertive' : 'polite'
   flex-shrink: 0;
   border: 1px solid;
   box-shadow: 0 2px 8px;
+}
+
+.toast-check-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.toast-close-icon {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 .toast-icon-success {

@@ -387,5 +387,8 @@
     "urgencyMedium": "Medio",
     "urgencyLow": "Non urgente",
     "bookVisit": "Prenota visita"
+  },
+  "toast": {
+    "closeNotification": "Chiudi notifica"
   }
 }

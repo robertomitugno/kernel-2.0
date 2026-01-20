@@ -15,6 +15,11 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
 })
 
+const emit = defineEmits<{
+  close: []
+  confirm: [appointment: any]
+}>()
+
 // Stati del componente
 const selectedVisit = ref<string | null>(props.preselectedVisit || null)
 const selectedDate = ref<string | null>(null)
@@ -70,8 +75,16 @@ const handleDateSelect = () => {
 
 const handleConfirm = () => {
   if (!selectedVisit.value || !selectedDate.value || !selectedTime.value) return
-  
+
+  const appointment = {
+    visitType: selectedVisit.value,
+    date: selectedDate.value,
+    time: selectedTime.value,
+  }
+
+  emit('confirm', appointment)
   resetFields()
+  emit('close')
 }
 
 const canConfirm = computed(() => {

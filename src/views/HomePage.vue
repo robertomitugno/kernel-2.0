@@ -10,9 +10,8 @@ import DocumentModal from '../components/documents/DocumentModal.vue'
 import WidgetPanel from '../components/widgets/WidgetPanel.vue'
 import AppointmentBooking from '../components/bookingAppointment/AppointmentBooking.vue'
 import { MOCK_DOCUMENTS, MOCK_APPOINTMENTS, SYMPTOM_SUGGESTIONS } from '../constants/mockData'
-import { COLORS } from '../constants/constants'
-import type { Document } from '../components/shared/DocumentCard.vue'
-import type { SymptomSuggestion } from '../constants/mockData'
+import type { Document } from '../types/Documents'
+import type { SymptomSuggestion } from '../types/SymptomSuggestion'
 
 const searchQuery = ref('')
 const appointments = computed(() => MOCK_APPOINTMENTS.slice(0, 2))
