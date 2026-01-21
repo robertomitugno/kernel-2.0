@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useAuth } from '../authentication/useAuth'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import SettingsItem from '../components/settings/SettingsItem.vue'
@@ -22,6 +23,7 @@ import {
 const { t } = useI18n()
 const router = useRouter()
 const showAppearanceModal = ref(false)
+const { currentUser } = useAuth()
 
 const handleItemClick = (item: string) => {
   if (item === 'appearance') {
@@ -50,11 +52,11 @@ const handleChangeProfile = () => {
       </div>
       <div class="settings-account">
         <div class="settings-account-avatar">
-          <span>M</span>
+          <span>{{ currentUser?.name ? currentUser.name.charAt(0).toUpperCase() : '?' }}</span>
         </div>
         <div class="settings-account-info">
-          <div class="settings-account-name">Marco</div>
-          <div class="settings-account-role">{{ t('settings.account.owner') }}</div>
+          <div class="settings-account-name">{{ currentUser?.name || t('settings.account.owner') }}</div>
+          <div class="settings-account-role">{{ currentUser?.role || t('settings.account.owner') }}</div>
         </div>
         <button class="settings-account-button" @click="handleChangeProfile">
           {{ t('settings.account.changeProfile') }}
