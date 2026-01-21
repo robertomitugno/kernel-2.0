@@ -66,7 +66,7 @@ const emit = defineEmits<{
   backdrop-filter: blur(20px);
   border-radius: 1.25rem;
   padding: 1.5rem;
-  margin: 0.75rem 0;
+  margin-top: 0.5rem;
   border: 1.5px solid var(--bg-secondary-70);
   box-shadow: 0 4px 24px var(--shadow), 0 1px 2px var(--white-90);
   cursor: pointer;

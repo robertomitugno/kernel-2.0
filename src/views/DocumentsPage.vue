@@ -6,14 +6,15 @@ import TagBar from '../components/shared/TagBar.vue'
 import DocumentCard from '../components/shared/DocumentCard.vue'
 import DocumentModal from '../components/documents/DocumentModal.vue'
 import DocumentComparisonModal from '../components/documents/comparison/DocumentComparisonModal.vue'
-import DateRangeFilter, { type DateRange } from '../components/documents/DateRangeFilter.vue'
+import DateRangeFilter from '../components/documents/DateRangeFilter.vue'
+import type { DateRange } from '../types/DataRange'
 import BatchActionsBar from '../components/documents/BatchActionsBar.vue'
-import type { Tag } from '../components/shared/TagBar.vue'
-import type { Document } from '../components/shared/DocumentCard.vue'
+import type { Tag } from '../types/Tag'
+import type { Document } from '../types/Documents'
 import { MOCK_DOCUMENTS } from '../constants/mockData'
 
 const searchQuery = ref('')
-const selectedTags = ref<string[]>([]) // Changed to array for multiple selection
+const selectedTags = ref<string[]>([])
 const selectedDocument = ref<Document | null>(null)
 const isModalOpen = ref(false)
 const isComparisonModalOpen = ref(false)
@@ -220,11 +221,11 @@ const handleCloseComparison = () => {
             :class="{ 'active': selectionMode }"
             @click="toggleSelectionMode"
           >
-            <CheckCircleIcon class="w-5 h-5" />
+            <CheckCircleIcon class="action-icon" />
             {{ selectionMode ? $t('documents.selection.cancel') : $t('documents.selection.selectMode') }}
           </button>
           <button class="action-btn comparison-btn" @click="handleOpenComparison">
-            <ArrowsRightLeftIcon class="w-5 h-5" />
+            <ArrowsRightLeftIcon class="action-icon" />
             {{ $t('documents.documentComparison') }}
           </button>
         </div>
@@ -267,13 +268,13 @@ const handleCloseComparison = () => {
         :document="doc"
         :selectable="selectionMode"
         :selected="selectedDocumentIds.has(doc.id)"
-        @click="() => handleDocumentClick(doc)"
+        @click="handleDocumentClick(doc)"
         @toggle-select="() => toggleDocumentSelection(doc.id)"
       />
     </div>
 
     <!-- Empty State -->
-    <div v-else class="text-center py-12 text-gray-500">
+    <div v-else class="empty-state">
       {{ $t('documents.noResults') }}
     </div>
   </div>
@@ -305,6 +306,25 @@ const handleCloseComparison = () => {
 </template>
 
 <style scoped>
+.action-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: inline-block;
+  vertical-align: middle;
+}
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  font-size: 1.125rem;
+  color: var(--gray-737373);
+  background: var(--white-15);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--white-20);
+  border-radius: 1.5rem;
+  box-shadow: 0 4px 16px var(--black-8);
+  position: relative;
+  z-index: 1;
+}
 
 .header-section {
   margin-bottom: 1.5rem;
