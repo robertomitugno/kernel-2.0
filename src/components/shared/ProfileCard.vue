@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { UserIcon, PlusIcon } from '@heroicons/vue/24/outline'
 import { useI18n } from 'vue-i18n'
-import type { ProfileCardProps } from '../../types/ProfileCard'
+import type { ProfileCard } from '../../types/ProfileCard'
 
 // i18n instance
 const { t } = useI18n()
 
 // Props definition
-const props = defineProps<ProfileCardProps>()
+const props = defineProps<ProfileCard>()
 
 // Emit click event
 const emit = defineEmits<{ click: [] }>()

@@ -1,5 +1,5 @@
-export interface ProfileCardProps {
+export interface ProfileCard {
   name?: string;
-  role: string;
+  role?: string;
   isAddCard?: boolean;
 }
