@@ -1,16 +1,8 @@
 <script setup lang="ts">
 import { ChevronRightIcon } from '@heroicons/vue/24/outline'
-import type { Component } from 'vue'
+import type { SettingItem } from '../../types/setting'
 
-interface Props {
-  icon?: Component
-  title: string
-  subtitle?: string
-  showChevron?: boolean
-  variant?: 'default' | 'danger'
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<SettingItem>(), {
   showChevron: true,
   variant: 'default'
 })

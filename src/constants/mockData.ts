@@ -743,3 +743,59 @@ export function getAvailableWidgets(t: (key: string) => string): WidgetOption[] 
     },
   ]
 }
+
+// Tag to color key mapping
+export const TAG_COLOR_MAP: Record<string, string> = {
+  'cardiologia': 'cardiologia',
+  'diabete': 'diabete',
+  'endocrinologia': 'endocrinologia',
+  'farmaci': 'farmaci',
+  'esami': 'esami',
+  'analisi': 'analisi',
+  'laboratorio': 'laboratorio',
+  'oculistica': 'oculistica',
+  'ortopedia': 'ortopedia',
+  'dermatologia': 'dermatologia',
+  'radiologia': 'radiologia',
+  'ecografia': 'ecografia',
+  'nefrologia': 'nefrologia',
+  'vascolare': 'vascolare',
+  'riabilitazione': 'riabilitazione',
+  'fisioterapia': 'fisioterapia',
+  'pediatria': 'pediatria',
+  'controllo': 'controllo',
+  'neurologia': 'neurologia',
+  'pneumologia': 'pneumologia',
+  'gastroenterologia': 'gastroenterologia',
+  'prescrizione': 'farmaci',
+  'visita': 'controllo',
+  'diagnostica': 'esami'
+}
+
+// Tag to icon mapping
+export const TAG_ICON_MAP: Record<string, string> = {
+  'cardiologia': '❤️',
+  'diabete': '🩸',
+  'endocrinologia': '🧬',
+  'farmaci': '💊',
+  'esami': '🔬',
+  'analisi': '🧪',
+  'laboratorio': '🧬',
+  'oculistica': '👁️',
+  'ortopedia': '🦴',
+  'dermatologia': '🔬',
+  'radiologia': '📷',
+  'ecografia': '📡',
+  'nefrologia': '🫘',
+  'vascolare': '🩸',
+  'riabilitazione': '💪',
+  'fisioterapia': '🏃',
+  'pediatria': '👶',
+  'controllo': '✅',
+  'neurologia': '🧠',
+  'pneumologia': '🫁',
+  'gastroenterologia': '🩺',
+  'prescrizione': '💊',
+  'visita': '👨‍⚕️',
+  'diagnostica': '🔬'
+}

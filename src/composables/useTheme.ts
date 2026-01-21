@@ -1,4 +1,4 @@
-import { ref, watch, computed } from 'vue'
+import { watch, computed } from 'vue'
 import { useStorage } from '@vueuse/core'
 
 export type ThemeMode = 'light' | 'dark'

@@ -6,17 +6,11 @@ import BaseCard from './BaseCard.vue'
 import BaseModal from './BaseModal.vue'
 import BarcodeDisplay from './BarcodeDisplay.vue'
 import type { CardMetadata } from '../../types/shared'
-import type { Document, BadgeColors, PrescriptionStatus } from '../../types/document'
-import { TAG_COLOR_MAP, TAG_ICON_MAP } from '../../types/document'
+import type { DocumentCard, BadgeColors, PrescriptionStatus } from '../../types/document'
+import { TAG_COLOR_MAP, TAG_ICON_MAP } from '../../constants/mockData'
 import { parseItalianDate, formatItalianDate } from '../../utils/dateUtils'
 
-interface Props {
-  document: Document
-  selectable?: boolean
-  selected?: boolean
-}
-
-const props = withDefaults(defineProps<Props>(), {
+const props = withDefaults(defineProps<DocumentCard>(), {
   selectable: false,
   selected: false
 })

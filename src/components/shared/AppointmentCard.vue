@@ -5,7 +5,7 @@ import { useI18n } from 'vue-i18n'
 import BaseCard from '../shared/BaseCard.vue'
 import type { CardMetadata } from '../../types/shared'
 import type { AppointmentCard } from '../../types/appointment'
-import { TAG_COLOR_MAP, TAG_ICON_MAP } from '../../types/document'
+import { TAG_COLOR_MAP, TAG_ICON_MAP } from '../../constants/mockData'
 import type { BadgeColors } from '../../types/document'
 
 const { t } = useI18n()
