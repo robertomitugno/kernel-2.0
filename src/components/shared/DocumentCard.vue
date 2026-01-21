@@ -29,9 +29,19 @@ const emit = defineEmits<{
 const { t } = useI18n()
 const showBarcodeModal = ref(false)
 
-/**
- * Get badge colors based on tag name
- */
+const handleCardClick = () => {
+  if (props.selectable) {
+    emit('toggleSelect')
+    return
+  }
+  
+  if (props.document.isPrescription) {
+    return
+  }
+  
+  emit('click')
+}
+
 const getBadgeColors = (tag: string): BadgeColors => {
   const normalizedTag = tag.toLowerCase()
     .normalize('NFD')
@@ -54,9 +64,6 @@ const getBadgeColors = (tag: string): BadgeColors => {
   }
 }
 
-/**
- * Get badge icon based on tag name
- */
 const getBadgeIcon = (tag: string): string => {
   const normalizedTag = tag.toLowerCase()
     .normalize('NFD')
@@ -65,7 +72,6 @@ const getBadgeIcon = (tag: string): string => {
   return TAG_ICON_MAP[normalizedTag] || '📄'
 }
 
-// Metadata for BaseCard
 const metadata = computed<CardMetadata[]>(() => {
   const meta: CardMetadata[] = [
     { icon: CalendarIcon, label: props.document.date }
@@ -82,7 +88,6 @@ const metadata = computed<CardMetadata[]>(() => {
   return meta
 })
 
-// Check if prescription is expired
 const isExpired = computed(() => {
   if (!props.document.isPrescription || !props.document.expirationDays) {
     return false
@@ -100,7 +105,6 @@ const isExpired = computed(() => {
   return today > expirationDate
 })
 
-// Calculate formatted expiration date
 const expirationDate = computed(() => {
   if (!props.document.isPrescription || !props.document.expirationDays) {
     return null
@@ -115,7 +119,6 @@ const expirationDate = computed(() => {
   return formatItalianDate(expDate)
 })
 
-// Prescription status: 'valid', 'expired', 'used'
 const prescriptionStatus = computed<PrescriptionStatus | null>(() => {
   if (!props.document.isPrescription) return null
 
@@ -124,16 +127,6 @@ const prescriptionStatus = computed<PrescriptionStatus | null>(() => {
   return 'valid'
 })
 
-// Handler for card click (normal documents only)
-const handleCardClick = () => {
-  if (props.selectable) {
-    emit('toggleSelect')
-  } else if (!props.document.isPrescription) {
-    emit('click')
-  }
-}
-
-// Handler to show barcode
 const handleShowBarcode = (event: Event) => {
   event.stopPropagation()
   showBarcodeModal.value = true
@@ -144,7 +137,7 @@ const handleCloseBarcode = () => {
   showBarcodeModal.value = false
 }
 
-// Handler for barcode download (placeholder)
+// Handler for barcode download
 const handleDownloadBarcode = () => {
   console.log('Download barcode for prescription:', props.document.id)
   // TODO: Implement download
@@ -152,46 +145,72 @@ const handleDownloadBarcode = () => {
 </script>
 
 <template>
-  <div class="document-card-wrapper" :class="{ 'selectable': selectable, 'selected': selected }"
-    @click="handleCardClick">
-    <!-- Selection Checkbox (when in selection mode) -->
-    <div v-if="selectable" class="selection-checkbox" :class="{ 'checked': selected }">
-      <svg v-if="selected" class="checkbox-icon" fill="currentColor" viewBox="0 0 20 20">
-        <path fill-rule="evenodd"
-          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-          clip-rule="evenodd" />
-      </svg>
-    </div>
+  <BaseCard
+    :title="document.title"
+    :description="document.description"
+    :icon="DocumentIcon"
+    :metadata="metadata"
+    :selectable="selectable"
+    :selected="selected"
+    :clickable="!document.isPrescription"
+    @click="handleCardClick"
+    @toggle-select="emit('toggleSelect')"
+  >
+    <!-- Barcode Button (inline with title) -->
+    <template v-if="document.isPrescription" #title-actions>
+      <button class="barcode-action-button" @click="handleShowBarcode">
+        <Bars4Icon class="barcode-action-icon" />
+        <span>{{ t('documents.showBarcode') }}</span>
+      </button>
+    </template>
 
-    <BaseCard :title="document.title" :description="document.description" :icon="DocumentIcon" :metadata="metadata">
-      <!-- Barcode Button (inline with title) -->
-      <template v-if="document.isPrescription" #title-actions>
-        <button class="barcode-action-button" @click="handleShowBarcode">
-          <Bars4Icon class="barcode-action-icon" />
-          <span>{{ t('documents.showBarcode') }}</span>
-        </button>
-      </template>
-
-      <!-- Document Tags (after title) -->
-      <template #after-title>
-        <div class="badges-row">
-          <div v-for="tag in document.tags.slice(0, 2)" :key="tag" class="document-badge" :style="{
+    <!-- Document Badges/Tags -->
+    <template #badges>
+      <div class="badges-row">
+        <div 
+          v-for="tag in document.tags.slice(0, 2)" 
+          :key="tag" 
+          class="document-badge" 
+          :style="{
             color: getBadgeColors(tag).color,
             backgroundColor: getBadgeColors(tag).bgColor,
             borderColor: getBadgeColors(tag).borderColor
-          }">
-            <span class="badge-icon">{{ getBadgeIcon(tag) }}</span>
-            <span class="badge-label">{{ tag }}</span>
-          </div>
+          }"
+        >
+          <span class="badge-icon">{{ getBadgeIcon(tag) }}</span>
+          <span class="badge-label">{{ tag }}</span>
         </div>
-      </template>
-    </BaseCard>
-  </div>
+      </div>
+    </template>
+
+    <!-- Status Badge for prescriptions used/expired -->
+    <template v-if="prescriptionStatus && prescriptionStatus !== 'valid'" #status-badge>
+      <div 
+        class="status-badge" 
+        :class="{
+          'status-used': prescriptionStatus === 'used',
+          'status-expired': prescriptionStatus === 'expired'
+        }"
+      >
+        <span v-if="prescriptionStatus === 'used'">
+          {{ t('documents.usedOn', { date: document.usedDate }) }}
+        </span>
+        <span v-else-if="prescriptionStatus === 'expired'">
+          {{ t('documents.expiredOn', { date: expirationDate }) }}
+        </span>
+      </div>
+    </template>
+  </BaseCard>
 
   <!-- Barcode Modal -->
   <Teleport to="body">
-    <BaseModal :is-open="showBarcodeModal" :title="t('documents.prescriptionCode')"
-      :subtitle="t('documents.prescriptionCodeSubtitle')" max-width="sm" @close="handleCloseBarcode">
+    <BaseModal 
+      :is-open="showBarcodeModal" 
+      :title="t('documents.prescriptionCode')"
+      :subtitle="t('documents.prescriptionCodeSubtitle')" 
+      max-width="sm" 
+      @close="handleCloseBarcode"
+    >
       <div class="barcode-container">
         <!-- Prescription info -->
         <div class="prescription-info">
@@ -238,69 +257,12 @@ const handleDownloadBarcode = () => {
 </template>
 
 <style scoped>
-/* Document Card Wrapper */
-.document-card-wrapper {
-  position: relative;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
-}
-
-.document-card-wrapper.selectable {
-  padding-left: 3rem;
-}
-
-.document-card-wrapper.selectable:hover {
-  transform: translateX(4px);
-}
-
-.document-card-wrapper.selected {
-  opacity: 0.95;
-}
-
-.selection-checkbox {
-  position: absolute;
-  left: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 1.75rem;
-  height: 1.75rem;
-  border: 2px solid var(--text-primary-20);
-  border-radius: 0.5rem;
-  background: var(--bg-secondary-80);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s cubic-bezier(0, 0, 0.2, 1);
-  z-index: 10;
-}
-
-.selection-checkbox.checked {
-  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
-  backdrop-filter: blur(16px);
-  border-color: var(--white-30);
-  color: var(--white);
-  box-shadow: 0 4px 12px var(--accent-primary-40);
-}
-
-
-
-.checkbox-icon {
-  width: 1.25rem;
-  height: 1.25rem;
-  color: var(--white);
-}
-
-/* Badges Row */
 .badges-row {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
-  margin-bottom: 0.75rem;
 }
 
-/* Document Badge */
 .document-badge {
   display: inline-flex;
   align-items: center;
@@ -329,7 +291,28 @@ const handleDownloadBarcode = () => {
   font-size: 0.8125rem;
 }
 
-/* Barcode Action Button */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 0.875rem;
+  border-radius: 0.625rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  border: 1px solid;
+}
+
+.status-used {
+  background: var(--success-10);
+  border-color: var(--success-30);
+  color: var(--success-text-dark);
+}
+
+.status-expired {
+  background: var(--warning-bg-accessible);
+  border-color: var(--warning-30);
+  color: var(--warning-text-accessible);
+}
+
 .barcode-action-button {
   display: flex;
   align-items: center;
@@ -364,20 +347,17 @@ const handleDownloadBarcode = () => {
   height: 1rem;
 }
 
-/* Animations */
 @keyframes fadeInScale {
   from {
     opacity: 0;
     transform: scale(0.9);
   }
-
   to {
     opacity: 1;
     transform: scale(1);
   }
 }
 
-/* Barcode Modal Content */
 .barcode-container {
   display: flex;
   flex-direction: column;
@@ -480,7 +460,6 @@ const handleDownloadBarcode = () => {
   line-height: 1.5;
 }
 
-/* Modal Buttons */
 .button {
   padding: 0.75rem 1.5rem;
   border-radius: 0.75rem;

@@ -12,6 +12,9 @@ export interface BaseCard {
   icon: FunctionalComponent
   metadata: CardMetadata[]
   selected?: boolean
+  selectable?: boolean
+  showActions?: boolean
+  clickable?: boolean
 }
 
 // BaseModal Types

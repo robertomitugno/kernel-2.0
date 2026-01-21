@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { XMarkIcon } from '@heroicons/vue/24/outline'
-import type { BaseModalProps } from '../../types/BaseModal'
+import type { BaseModal } from '../../types/shared'
 
-const props = withDefaults(defineProps<BaseModalProps>(), {
+const props = withDefaults(defineProps<BaseModal>(), {
   maxWidth: 'md',
   showFooter: true,
   closeOnBackdrop: true
