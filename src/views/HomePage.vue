@@ -49,7 +49,6 @@ const handleNewAppointment = () => {
 }
 
 const handleSuggestionBooking = (suggestion: SymptomSuggestion) => {
-  // Open booking modal with pre-filled visit type
   preselectedVisitType.value = suggestion.visitTypeId
   isBookingOpen.value = true
 }
@@ -84,7 +83,7 @@ const handleCloseToast = () => {
   <div class="home-page">
     <div class="content-grid">
       <div class="main-column">
-        <div class="section-card space-y-3">
+        <div class="section-card">
           <SearchBar @search="handleSearch" />
           <p class="search-hint">
             {{ $t('home.searchHint') }}
@@ -102,19 +101,19 @@ const handleCloseToast = () => {
         </div>
 
         <div class="quick-actions">
-          <div class="flex gap-4">
+          <div class="quick-actions-flex">
             <button 
               @click="handleUpload"
-              class="quick-action-btn flex-1"
+              class="quick-action-btn quick-action-btn-flex"
             >
-              <DocumentPlusIcon class="w-5 h-5" />
+              <DocumentPlusIcon class="quick-action-icon" />
               <span>{{ $t('home.uploadDocument') }}</span>
             </button>
             <button 
               @click="handleNewAppointment"
-              class="quick-action-btn flex-1"
+              class="quick-action-btn quick-action-btn-flex"
             >
-              <PlusIcon class="w-5 h-5" />
+              <PlusIcon class="quick-action-icon" />
               <span>{{ $t('home.newAppointment') }}</span>
             </button>
           </div>
@@ -128,9 +127,9 @@ const handleCloseToast = () => {
           />
         </div>
 
-        <div class="section-card space-y-3">
-          <h3 class="font-hand font-semibold text-2xl">{{ $t('home.recentDocuments') }}</h3>
-          <div class>
+        <div class="section-card section-card-spacing">
+          <h3 class="section-title">{{ $t('home.recentDocuments') }}</h3>
+          <div>
             <DocumentCard
               v-for="doc in recentDocuments.slice(0, 2)"
               :key="doc.id"
@@ -156,22 +155,22 @@ const handleCloseToast = () => {
       @confirm="handleBookingConfirm"
     />
 
-  <!-- Document Modal (Teleported to body) -->
-  <Teleport to="body">
-    <DocumentModal
-      :document="selectedDocument"
-      :is-open="isDocumentModalOpen"
-      @close="handleCloseDocumentModal"
-    />
-  </Teleport>
+    <!-- Document Modal (Teleported to body) -->
+    <Teleport to="body">
+      <DocumentModal
+        :document="selectedDocument"
+        :is-open="isDocumentModalOpen"
+        @close="handleCloseDocumentModal"
+      />
+    </Teleport>
 
-  <!-- Success Toast -->
-  <Toast
-    :show="showSuccessToast"
-    message="Prenotazione confermata con successo!"
-    :duration="4000"
-    @close="handleCloseToast"
-  />
+    <!-- Success Toast -->
+    <Toast
+      :show="showSuccessToast"
+      :message="$t('toast.bookingConfirmed')"
+      :duration="4000"
+      @close="handleCloseToast"
+    />
   </div>
 </template>
 
@@ -239,16 +238,19 @@ const handleCloseToast = () => {
   animation-fill-mode: both;
 }
 
-.section-card:nth-child(1) {
-  animation-delay: 0s;
+.quick-actions-flex {
+  display: flex;
+  gap: 1rem;
 }
 
-.section-card:nth-child(3) {
-  animation-delay: 0.2s;
+.quick-action-btn-flex {
+  flex: 1 1 0%;
+  min-width: 0;
 }
 
-.section-card:nth-child(4) {
-  animation-delay: 0.3s;
+.quick-action-icon {
+  width: 1.25rem;
+  height: 1.25rem;
 }
 
 .quick-actions {
@@ -328,25 +330,22 @@ const handleCloseToast = () => {
   .home-page {
     padding: 0.75rem;
   }
-  
   .section-card {
     padding: 0.875rem;
   }
-  
   .section-card h3 {
     font-size: 1.5rem;
   }
-  
   .quick-actions {
     margin: 0.5rem 0;
   }
-  
-  .quick-actions .flex {
+  .quick-actions-flex {
     flex-direction: column;
+    gap: 0.5rem;
   }
-  
-  .quick-action-btn {
+  .quick-action-btn-flex {
     width: 100%;
+    flex: unset;
     padding: 0.875rem 1rem;
   }
 }

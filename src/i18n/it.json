@@ -392,6 +392,7 @@
     "bookVisit": "Prenota visita"
   },
   "toast": {
-    "closeNotification": "Chiudi notifica"
+    "closeNotification": "Chiudi notifica",
+    "bookingConfirmed": "Prenotazione confermata con successo!"
   }
 }
