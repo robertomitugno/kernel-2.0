@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import AppointmentCard from './AppointmentCard.vue'
+import AppointmentCard from '../shared/AppointmentCard.vue'
 import type { UpcomingAppointments } from '../../types/appointment'
 
 const props = defineProps<UpcomingAppointments>()

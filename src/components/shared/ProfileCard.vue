@@ -67,9 +67,9 @@ const emit = defineEmits<{ click: [] }>()
 
 /* Icon container */
 .profile-card__icon {
-  width: 5rem; /* w-20 = 80px */
-  height: 5rem; /* h-20 = 80px */
-  border-radius: 9999px; /* rounded-full */
+  width: 5rem;
+  height: 5rem;
+  border-radius: 9999px;
   display: flex;
   align-items: center;
   justify-content: center;
