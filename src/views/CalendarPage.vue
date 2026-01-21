@@ -4,18 +4,19 @@ import type { CalendarOptions, EventClickArg, DateSelectArg } from '@fullcalenda
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
-import TagBar, { type Tag } from '../components/shared/TagBar.vue'
-import AppointmentCard, { type Appointment } from '../components/bookingAppointment/AppointmentCard.vue'
+import TagBar from '../components/shared/TagBar.vue'
+import type { Tag } from '../types/Tag'
+import AppointmentCard from '../components/bookingAppointment/AppointmentCard.vue'
+import type { Appointment } from '../types/Appointment'
 import { PlusIcon } from '@heroicons/vue/24/outline'
 import { MOCK_APPOINTMENTS } from '../constants/mockData'
 import { useI18n } from 'vue-i18n'
+import { parseItalianDate, formatDateToISO } from '../utils/dateUtils'
 
 const { t } = useI18n()
 
-// Appuntamenti centralizzati
 const appointments = ref<Appointment[]>(MOCK_APPOINTMENTS)
 
-// Tags per la TagBar
 const tags = computed<Tag[]>(() => [
   { id: 'all', label: t('calendar.categories.all'), count: appointments.value.length },
   { id: 'cardiologia', label: t('calendar.categories.cardiologia'), count: appointments.value.filter(a => a.tags?.includes('Cardiologia')).length },
@@ -26,9 +27,7 @@ const tags = computed<Tag[]>(() => [
 const selectedTag = ref('all')
 const selectedAppointmentId = ref<string | null>(null)
 
-// Eventi per FullCalendar - visualizzati come pallini
 const calendarEvents = computed(() => {
-  // Raggruppa appuntamenti per data
   const appointmentsByDate = new Map<string, Appointment[]>()
   
   appointments.value.forEach(apt => {
@@ -39,20 +38,19 @@ const calendarEvents = computed(() => {
     appointmentsByDate.get(dateKey)?.push(apt)
   })
   
-  // Crea un evento per ogni giorno con appuntamenti
   const events: any[] = []
   const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--blue-3b82f6').trim() || getComputedStyle(document.documentElement).getPropertyValue('--blue-3b82f6')
   const selectedColor = getComputedStyle(document.documentElement).getPropertyValue('--gray-171717').trim() || getComputedStyle(document.documentElement).getPropertyValue('--black')
   
   appointmentsByDate.forEach((apts, date) => {
     apts.forEach((apt, index) => {
-      if (index < 3) { // Max 3 pallini visibili
+      if (index < 3) {
         events.push({
           id: apt.id,
           start: date,
           allDay: true,
           display: 'block',
-          title: '●', // Pallino unicode
+          title: '●',
           classNames: selectedAppointmentId.value === apt.id ? ['appointment-dot', 'selected'] : ['appointment-dot'],
           backgroundColor: 'transparent',
           borderColor: 'transparent',
@@ -61,7 +59,6 @@ const calendarEvents = computed(() => {
       }
     })
     
-    // Aggiungi contatore se ci sono più di 3 appuntamenti
     if (apts.length > 3) {
       events.push({
         id: `more-${date}`,
@@ -80,7 +77,6 @@ const calendarEvents = computed(() => {
   return events
 })
 
-// Configurazione FullCalendar
 const calendarOptions = ref<CalendarOptions>({
   plugins: [dayGridPlugin, interactionPlugin],
   initialView: 'dayGridMonth',
@@ -101,7 +97,6 @@ const calendarOptions = ref<CalendarOptions>({
   eventDisplay: 'block'
 })
 
-// Appuntamenti filtrati per tag
 const filteredAppointments = computed(() => {
   if (selectedTag.value === 'all') {
     return appointments.value
@@ -118,7 +113,6 @@ function handleTagSelected(tagId: string) {
 function handleEventClick(clickInfo: EventClickArg) {
   selectedAppointmentId.value = clickInfo.event.id
   
-  // Scroll verso l'appuntamento nella lista (solo su desktop)
   if (window.innerWidth >= 768) {
     const element = document.getElementById(`appointment-${clickInfo.event.id}`)
     if (element) {
@@ -128,7 +122,6 @@ function handleEventClick(clickInfo: EventClickArg) {
 }
 
 function handleDateSelect(selectInfo: DateSelectArg) {
-  // Qui potresti aprire un dialog per creare un nuovo appuntamento
   console.log('Selected date range:', selectInfo.startStr, 'to', selectInfo.endStr)
 }
 
@@ -151,28 +144,13 @@ function handleCancelAppointment(id: string) {
   // Implementare conferma e cancellazione appuntamento
 }
 
-// Helper per convertire la data in formato ISO
 function parseDateToISO(dateString: string): string {
-  // Mappa per i mesi italiani abbreviati
-  const monthMap: { [key: string]: number } = {
-    'Gen': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'Mag': 4, 'Giu': 5,
-    'Lug': 6, 'Ago': 7, 'Set': 8, 'Ott': 9, 'Nov': 10, 'Dic': 11
+  const date = parseItalianDate(dateString)
+  if (date) {
+    return formatDateToISO(date)
   }
-  
-  const parts = dateString.split(' ')
-  const [dayStr, monthStr, yearStr] = parts
-  if (dayStr && monthStr && yearStr) {
-    const day = parseInt(dayStr, 10)
-    const month = monthMap[monthStr]
-    const year = parseInt(yearStr, 10)
-    
-    if (!isNaN(day) && month !== undefined && !isNaN(year)) {
-      const date = new Date(year, month, day)
-      return (date.toISOString().split('T')[0]) || ''
-    }
-  }
-  
-  return new Date().toISOString().split('T')[0] || ''
+  // fallback: today
+  return formatDateToISO(new Date())
 }
 </script>
 
@@ -186,7 +164,7 @@ function parseDateToISO(dateString: string): string {
           <p class="page-subtitle">{{ $t('calendar.subtitle') }}</p>
         </div>
         <button class="new-appointment-btn" @click="handleNewAppointment">
-          <PlusIcon class="w-5 h-5" />
+          <PlusIcon class="icon" />
           {{ $t('calendar.newAppointment') }}
         </button>
       </div>
@@ -220,7 +198,7 @@ function parseDateToISO(dateString: string): string {
           />
           
           <div v-if="filteredAppointments.length === 0" class="empty-state">
-            <p class="text-gray-500">{{ $t('calendar.noAppointments') }}</p>
+            <p class="empty-state-text">{{ $t('calendar.noAppointments') }}</p>
           </div>
         </div>
       </div>
@@ -372,7 +350,6 @@ function parseDateToISO(dateString: string): string {
   gap: 0.75rem;
 }
 
-/* Rimuovo regole scrollbar personalizzate non più necessarie */
 
 .empty-state {
   display: flex;
@@ -385,6 +362,9 @@ function parseDateToISO(dateString: string): string {
   border: 1px solid var(--white-20);
   border-radius: 1rem;
   box-shadow: 0 4px 16px var(--black-8);
+}
+
+.empty-state-text {
   color: var(--gray-525252);
 }
 
@@ -526,39 +506,23 @@ function parseDateToISO(dateString: string): string {
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
-  .calendar-page {
-    padding: 1rem;
-  }
-
-  .header-content {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 1.25rem 1.5rem;
-  }
-
-  .page-title {
-    font-size: 1.5rem;
-  }
-
-  .new-appointment-btn {
-    justify-content: center;
-    width: 100%;
-  }
-
+@media (max-width: 1024px) {
   .content-section {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
-    overflow-y: auto;
   }
+}
 
+@media (max-width: 768px) {
+  .content-section {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
   .calendar-container,
   .appointments-container {
-    overflow: visible;
+    padding: 1rem;
   }
-
-  .appointments-list {
-    overflow: visible;
+  .appointments-title {
+    font-size: 1.125rem;
   }
 }
 
@@ -603,7 +567,7 @@ function parseDateToISO(dateString: string): string {
   }
   
   .page-title {
-    font-size: 1.125rem;
+    font-size: 1.375rem;
   }
   
   .page-subtitle {
@@ -611,34 +575,19 @@ function parseDateToISO(dateString: string): string {
   }
   
   .calendar-container {
-    padding: 0.75rem;
+    padding: 0.5rem;
   }
   
   .appointments-container {
-    padding: 1rem;
+    padding: 0.5rem;
   }
-  
-  .appointments-title {
-    font-size: 1.125rem;
-  }
-  
-  /* Ottimizza FullCalendar per mobile */
-  :deep(.fc-toolbar-title) {
-    font-size: 1rem !important;
-  }
-  
-  :deep(.fc-button) {
-    padding: 0.375rem 0.625rem !important;
-    font-size: 0.8125rem !important;
-  }
-  
-  :deep(.fc-col-header-cell-cushion) {
-    font-size: 0.625rem !important;
-    padding: 0.25rem !important;
-  }
-  
-  :deep(.fc-daygrid-day-number) {
-    font-size: 0.75rem !important;
-  }
+}
+
+/* Icon sizing */
+.icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: inline-block;
+  vertical-align: middle;
 }
 </style>
