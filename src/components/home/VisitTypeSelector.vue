@@ -7,7 +7,7 @@ import LoadingSpinner from '../shared/LoadingSpinner.vue'
 
 const { t } = useI18n()
 
-import type { VisitTypeSelector } from '../../types/Appointment'
+import type { VisitTypeSelector } from '../../types/appointment'
 const props = withDefaults(defineProps<VisitTypeSelector>(), {
   loading: false
 })

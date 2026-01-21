@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { BaseCardProps } from '../../types/BaseCard'
+import type { BaseCard } from '../../types/shared'
 
-defineProps<BaseCardProps>()
+defineProps<BaseCard>()
 
 const emit = defineEmits<{
   click: []

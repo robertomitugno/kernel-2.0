@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import BaseModal from '../../shared/BaseModal.vue'
 import DocumentSelector from './DocumentSelector.vue'
 import DocumentViewer from '../DocumentViewer.vue'
-import type { DocumentComparisonModal } from '../../../types/Documents'
+import type { DocumentComparisonModal } from '../../../types/document'
 
 const props = defineProps<DocumentComparisonModal>()
 

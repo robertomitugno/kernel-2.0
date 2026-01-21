@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CheckCircleIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import { useI18n } from 'vue-i18n'
-import type { Toast } from '../../types/Toast'
+import type { Toast } from '../../types/shared'
 
 const props = withDefaults(defineProps<Toast>(), {
   duration: 3000,

@@ -2,7 +2,7 @@
 import { ref, computed, watch, nextTick } from 'vue'
 import { UserIcon, MapPinIcon } from '@heroicons/vue/24/outline'
 import BaseModal from '../shared/BaseModal.vue'
-import VisitTypeSelector from './VisitTypeSelector.vue'
+import VisitTypeSelector from '../../components/home/VisitTypeSelector.vue'
 import DateSelector from './DateSelector.vue'
 import TimeSlotSelector from './TimeSlotSelector.vue'
 import { getAppointmentDetails } from '../../constants/mockData'

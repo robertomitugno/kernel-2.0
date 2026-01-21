@@ -7,7 +7,7 @@ import {
   PlusIcon
 } from '@heroicons/vue/24/outline'
 import WidgetSelector from './WidgetSelector.vue'
-import type { WidgetOption } from '../../types/Widgets'
+import type { WidgetOption } from '../../types/widget'
 import HealthMetricWidget from '../health/HealthMetricWidget.vue'
 import HealthChart from '../health/HealthChart.vue'
 import { 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
-import type { TagBarProps } from '../../types/Tag'
+import type { TagBar } from '../../types/tag'
 
-const props = withDefaults(defineProps<TagBarProps>(), {
+const props = withDefaults(defineProps<TagBar>(), {
   selectedTag: '',
   multiple: false,
   activeTags: () => []

@@ -5,9 +5,9 @@ import { DocumentIcon, MapPinIcon, UserIcon, CalendarIcon, Bars4Icon, ArrowDownT
 import BaseCard from './BaseCard.vue'
 import BaseModal from './BaseModal.vue'
 import BarcodeDisplay from './BarcodeDisplay.vue'
-import type { CardMetadata } from '../../types/BaseCard'
-import type { Document, BadgeColors, PrescriptionStatus } from '../../types/Documents'
-import { TAG_COLOR_MAP, TAG_ICON_MAP } from '../../types/Documents'
+import type { CardMetadata } from '../../types/shared'
+import type { Document, BadgeColors, PrescriptionStatus } from '../../types/document'
+import { TAG_COLOR_MAP, TAG_ICON_MAP } from '../../types/document'
 import { parseItalianDate, formatItalianDate } from '../../utils/dateUtils'
 
 interface Props {

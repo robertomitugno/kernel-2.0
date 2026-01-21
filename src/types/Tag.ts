@@ -4,7 +4,7 @@ export interface Tag {
   count?: number
 }
 
-export interface TagBarProps {
+export interface TagBar {
   tags: Tag[]
   selectedTag?: string
   multiple?: boolean

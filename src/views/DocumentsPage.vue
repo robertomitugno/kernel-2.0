@@ -7,10 +7,10 @@ import DocumentCard from '../components/shared/DocumentCard.vue'
 import DocumentModal from '../components/documents/DocumentModal.vue'
 import DocumentComparisonModal from '../components/documents/comparison/DocumentComparisonModal.vue'
 import DateRangeFilter from '../components/documents/DateRangeFilter.vue'
-import type { DateRange } from '../types/DataRange'
+import type { DateRange } from '../types/date-range'
 import BatchActionsBar from '../components/documents/BatchActionsBar.vue'
-import type { Tag } from '../types/Tag'
-import type { Document } from '../types/Documents'
+import type { Tag } from '../types/tag'
+import type { Document } from '../types/document'
 import { MOCK_DOCUMENTS } from '../constants/mockData'
 
 const searchQuery = ref('')

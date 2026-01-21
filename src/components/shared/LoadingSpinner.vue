@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { LoadingSpinnerProps } from '../../types/LoadingSpinner'
+import type { LoadingSpinner } from '../../types/shared'
 
 // Props definition
-const props = withDefaults(defineProps<LoadingSpinnerProps>(), {
+const props = withDefaults(defineProps<LoadingSpinner>(), {
   size: 'medium',
   inline: false
 })

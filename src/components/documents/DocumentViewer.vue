@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/vue/24/outline'
 import { useI18n } from 'vue-i18n'
-import type { DocumentViewer } from '../../types/Documents'
+import type { DocumentViewer } from '../../types/document'
 
 // Import report images (currently the same for all)
 import referto1 from '../../assets/documents/referto_ECG_1.jpg'

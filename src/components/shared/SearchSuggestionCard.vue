@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 import { SparklesIcon, CalendarIcon } from '@heroicons/vue/24/outline'
 import { useI18n } from 'vue-i18n'
-import type { SymptomSuggestion } from '../../types/SymptomSuggestion'
+import type { SymptomSuggestion } from '../../types/symptom-suggestion'
 
 const props = defineProps<{ suggestion: SymptomSuggestion }>()
 

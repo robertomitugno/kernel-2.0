@@ -1,8 +1,8 @@
-import type { WidgetOption } from '../types/Widgets'
-import type { Document } from '../types/Documents'
-import type { Appointment } from '../types/Appointment'
+import type { WidgetOption } from '../types/widget'
+import type { Document } from '../types/document'
+import type { Appointment } from '../types/appointment'
 import type { HealthParameter, HealthAlert, HealthMetricHistory } from '../types/health'
-import type { SymptomSuggestion } from '../types/SymptomSuggestion'
+import type { SymptomSuggestion } from '../types/symptom-suggestion'
 
 // Intelligent search: symptom to visit mapping
 export const SYMPTOM_SUGGESTIONS: SymptomSuggestion[] = [
