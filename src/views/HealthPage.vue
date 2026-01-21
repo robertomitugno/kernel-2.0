@@ -24,8 +24,8 @@ const glucoseHistory = ref(GLUCOSE_HISTORY)
   <div class="health-page">
     <!-- Header Section -->
     <div class="page-header">
-      <h1 class="text-2xl font-bold text-gray-900">{{ $t('health.title') }}</h1>
-      <p class="text-base text-gray-500">
+      <h1 class="page-title">{{ $t('health.title') }}</h1>
+      <p class="page-subtitle">
         {{ $t('health.subtitle') }}
       </p>
     </div>
@@ -35,7 +35,7 @@ const glucoseHistory = ref(GLUCOSE_HISTORY)
       <h2 class="section-title">
         {{ $t('health.alerts.title') }}
       </h2>
-      <div class="space-y-3">
+      <div class="alerts-list">
         <HealthAlert v-for="alert in alerts" :key="alert.id" :alert="alert" />
       </div>
     </div>
@@ -45,7 +45,7 @@ const glucoseHistory = ref(GLUCOSE_HISTORY)
       <h2 class="section-title">
         {{ $t('health.parameters.title') }}
       </h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="metrics-grid">
         <HealthMetricWidget
           v-for="param in healthParameters"
           :key="param.id"
@@ -59,7 +59,7 @@ const glucoseHistory = ref(GLUCOSE_HISTORY)
       <h2 class="section-title">
         {{ $t('health.charts.title') }}
       </h2>
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div class="charts-grid">
         <HealthChart
           :title="$t('health.parameters.cholesterol')"
           :data="cholesterolHistory"
@@ -89,21 +89,13 @@ const glucoseHistory = ref(GLUCOSE_HISTORY)
 
     <!-- Info Section -->
     <div class="info-card">
-      <div class="flex items-start">
-        <div class="shrink-0">
-          <svg
-            class="w-6 h-6 text-sky-600"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-              clip-rule="evenodd"
-            />
+      <div class="info-row">
+        <div class="info-icon">
+          <svg class="info-svg" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
           </svg>
         </div>
-        <div class="ml-3">
+        <div class="info-content">
           <h3 class="info-title">
             {{ $t('health.info.title') }}
           </h3>
@@ -209,6 +201,86 @@ const glucoseHistory = ref(GLUCOSE_HISTORY)
 .info-description {
   font-size: 0.875rem;
   color: var(--text-muted);
+}
+
+.page-title {
+  margin: 0;
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: var(--gray-171717);
+  line-height: 1.25;
+}
+
+.page-subtitle {
+  margin: 0.5rem 0 0 0;
+  font-size: 1rem;
+  color: var(--gray-525252);
+  line-height: 1.5;
+}
+
+.alerts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .metrics-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .metrics-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 600px) {
+  .charts-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (min-width: 1024px) {
+  .charts-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.charts-grid > * {
+  min-width: 0;
+}
+
+.info-row {
+  display: flex;
+  align-items: flex-start;
+}
+
+.info-icon {
+  flex-shrink: 0;
+}
+
+.info-svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--sky-0ea5e9);
+}
+
+.info-content {
+  margin-left: 1rem;
 }
 
 @keyframes slideInDown {
